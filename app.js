@@ -11,6 +11,7 @@ let app = express();
 app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json({ type: 'application/json' }));
 
+const WELCOME_ACTION = 'input.welcome';
 const GENERATE_ANSWER_ACTION = 'generate_answer';
 const CHECK_GUESS_ACTION = 'check_guess';
 
@@ -45,6 +46,7 @@ app.post('/', function (request, response) {
 	}
 
 	let actionMap = new Map();
+	actionMap.set(WELCOME_ACTION, generateAnswer);
 	actionMap.set(GENERATE_ANSWER_ACTION, generateAnswer);
 	actionMap.set(CHECK_GUESS_ACTION, checkGuess);
 
