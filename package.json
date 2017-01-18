@@ -1,10 +1,10 @@
 {
-  "name": "number-genie",
-  "description": "Google Actions Number Genie sample for Node.js",
+  "name": "dungeon-adventure",
+  "description": "A roleplaying Dungeon Adventure for Node.js",
   "version": "0.0.1",
-  "private": true,
-  "license": "Apache-2.0",
-  "author": "Google Inc.",
+  "private": false,
+  "license": "MIT",
+  "author": "Jay Stevens",
   "scripts": {
     "start": "node app.js",
     "monitor": "nodemon app.js",
