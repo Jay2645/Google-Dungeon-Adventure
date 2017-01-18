@@ -12,7 +12,6 @@ app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json({ type: 'application/json' }));
 
 /// Prompts
-
 // These prompts are used to greet the player when they start the game
 const GREETING_PROMPTS = [
 	'Hello, and welcome to Dungeon Adventure! I\'ll be your Game Master tonight! Hopefully you\'re ready for some adventure!',
@@ -44,6 +43,10 @@ const INTELLIGENCE_STAT = 'Your intelligence stat is ';
 // Used to confirm the player is ready to start their game
 const READY_FOR_ADVENTURE = 'Are you ready to begin your adventure?';
 
+const CONFUSED = [
+	'I\'m sorry, but I didn\'t catch that. Can you say it again?'
+];
+
 /// Actions
 // This action is sent when the player first opens the game
 const WELCOME_ACTION = 'input.welcome';
@@ -53,6 +56,8 @@ const GENERATE_ANSWER_ACTION = 'generate_answer';
 const CHECK_GUESS_ACTION = 'check_guess';
 const VERIFY_NAME_NO_ACTION = 'verify_character_name_no';
 const VERIFY_NAME_YES_ACTION = 'verify_character_name_yes';
+
+const CONFUSED_ACTION = 'input.unknown';
 
 /// Contexts
 // This context is used when a user is picking a name
@@ -85,7 +90,7 @@ app.post('/', function (request, response) {
 		// Ask them to make a character
 		greeting += '\n' + getRandomPrompt(CHARACTER_PROMPTS);
 
-		assistant.setContext(NAME_CONTEXT, 5);
+		setContext(assistant, NAME_CONTEXT, 5);
 
 		assistant.data.lastAction = WELCOME_ACTION;
 		assistant.ask(greeting);
@@ -100,7 +105,7 @@ app.post('/', function (request, response) {
 		assistant.data.playerName = playerName;
 		let verification = VERIFY_PLAYER_NAME + playerName + "?";
 
-		assistant.setContext(VERIFY_NAME_CONTEXT, 2);
+		setContext(assistant, VERIFY_NAME_CONTEXT, 2);
 		assistant.data.lastAction = GET_NAME_ACTION;
 		assistant.ask(verification);
 	}
@@ -113,7 +118,7 @@ app.post('/', function (request, response) {
 
 		let verification = VERIFY_WEIRD_PLAYER_NAME + playerName + "?";
 
-		assistant.setContext(VERIFY_NAME_CONTEXT, 2);
+		setContext(assistant, VERIFY_NAME_CONTEXT, 2);
 		assistant.data.lastAction = GET_NAME_ACTION;
 		assistant.ask(verification);
 	}
@@ -126,7 +131,7 @@ app.post('/', function (request, response) {
 		let retryName = getRandomPrompt(PLAYER_NAME_NOT_RIGHT);
 		assistant.data.playerName = undefined;
 
-		assistant.setContext(NAME_CONTEXT, 5);
+		setContext(assistant, NAME_CONTEXT, 5);
 
 		assistant.data.lastAction = VERIFY_NAME_NO_ACTION;
 		assistant.ask(retryName);
@@ -150,30 +155,39 @@ app.post('/', function (request, response) {
 		
 		statString += READY_FOR_ADVENTURE;
 
-		assistant.setContext(READY_FOR_ADVENTURE_CONTEXT);
+		setContext(assistant, READY_FOR_ADVENTURE_CONTEXT, 5);
 
 		assistant.data.lastAction = VERIFY_NAME_YES_ACTION;
 		assistant.ask(statString);
 	}
 	actionMap.set(VERIFY_NAME_YES_ACTION, generatePlayerStats);
 
-	/*function checkGuess(assistant)
+
+
+	// This is used when the Game Master has absolutely no idea what the player just said
+	function unknownPlayerInput(assistant)
 	{
-		console.log('checkGuess');
-		let answer = assistant.data.answer;
-		let guess = parseInt(assistant.getArgument('guess'));
-		if (answer > guess) {
-			assistant.ask('It\'s higher than ' + guess + '. What\'s your next guess?');
-		} else if (answer < guess) {
-			assistant.ask('It\'s lower than ' + guess + '. Next guess?');
-		} else {
-			assistant.tell('Congratulations! You guessed ' + guess +', and I was thinking of ' + answer + '!');
+		// If we were talking about names last, that might be a name
+		if (assistant.data.lastContext == NAME_CONTEXT)
+		{
+			getWeirdPlayerName(assistant);
 		}
-	}*/
-	//actionMap.set(GENERATE_ANSWER_ACTION, generateAnswer);
-	//actionMap.set(CHECK_GUESS_ACTION, checkGuess);
+		else
+		{
+			// No idea
+			assistant.tell(getRandomPrompt(CONFUSED));
+		}
+	}
+	actionMap.set(CONFUSED_ACTION, unknownPlayerInput);
 
 	assistant.handleRequest(actionMap);
+
+	// Helpers
+	function setContext(assistant, context, length)
+	{
+		assistant.setContext(context, length);
+		assistant.data.lastContext = context;
+	}
 });
 
 // Start the server
