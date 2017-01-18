@@ -95,8 +95,9 @@ app.post('/', function (request, response) {
 		assistant.data.lastAction = WELCOME_ACTION;
 		assistant.ask(greeting);
 	}
-	actionMap.set(WELCOME_ACTION, greet);​	
-// Get the player's name and store it
+	actionMap.set(WELCOME_ACTION, greet);​
+
+	// Get the player's name and store it
 	// Then, ask them if the name is correct
 	function getPlayerName(assistant)
 	{
