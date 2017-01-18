@@ -40,7 +40,7 @@ app.post('/', function (request, response) {
 		} else if (answer < guess) {
 			assistant.ask('It\'s lower than ' + guess + '. Next guess?');
 		} else {
-			assistant.tell('Congratulations, that\'s it! I was thinking of ' + answer);
+			assistant.tell('Congratulations! You guessed ' + guess +', and I was thinking of ' + answer + '!');
 		}
 	}
 
