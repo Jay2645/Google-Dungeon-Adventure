@@ -56,7 +56,7 @@ const VERIFY_NAME_YES_ACTION = 'verify_character_name_yes';
 
 /// Contexts
 // This context is used when a user is picking a name
-const NAME_CONTEXT = 'name_character';
+const NAME_CONTEXT = 'character_name';
 const VERIFY_NAME_CONTEXT = 'verify_character_name';
 const READY_FOR_ADVENTURE_CONTEXT = 'ready_for_adventure';
 
@@ -117,7 +117,7 @@ app.post('/', function (request, response) {
 		assistant.data.lastAction = GET_NAME_ACTION;
 		assistant.ask(verification);
 	}
-	actionMap.set(GET_WEIRD_NAME_ACTION, getPlayerName);
+	actionMap.set(GET_WEIRD_NAME_ACTION, getWeirdPlayerName);
 
 	// Player said we didn't get their name right
 	// Try it one more time
