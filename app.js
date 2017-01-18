@@ -3,7 +3,7 @@
 // Enable actions client library debugging
 process.env.DEBUG = 'actions-on-google:*';
 
-let Assistant = require('actions-on-google').ApiAiAssistant;
+let ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
 let express = require('express');
 let bodyParser = require('body-parser');
 
