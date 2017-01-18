@@ -26,6 +26,15 @@ const CHARACTER_PROMPTS = [
 ];
 // This is used to verify the Game Master heard the player's name correctly
 const VERIFY_PLAYER_NAME = 'Okay, so you want me to call you ';
+const PLAYER_NAME_NOT_RIGHT = [
+	'I\'m sorry, let\'s try that again. What did you want me to call you?',
+	'Okay, let\'s try one more time. What do you want your character to be called?'
+];
+const START_GENERATE_STATS = 'It\'s now time to generate your stats.';
+const STRENGTH_STAT = 'Your strength stat is ';
+const DEXTERITY_STAT = 'Your dexterity stat is ';
+const INTELLIGENCE_STAT = 'Your intelligence stat is ';
+const READY_FOR_ADVENTURE = 'Are you ready to begin your adventure?';
 
 /// Actions
 // This action is sent when the player first opens the game
@@ -33,10 +42,14 @@ const WELCOME_ACTION = 'input.welcome';
 const GET_NAME_ACTION = 'get_player_name';
 const GENERATE_ANSWER_ACTION = 'generate_answer';
 const CHECK_GUESS_ACTION = 'check_guess';
+const VERIFY_NAME_NO_ACTION = 'verify_character_name_no';
+const VERIFY_NAME_YES_ACTION = 'verify_character_name_yes';
 
 /// Contexts
 // This context is used when a user is picking a name
-const NAME_CONTEXT = 'NAME_CHARACTER';
+const NAME_CONTEXT = 'name_character';
+const VERIFY_NAME_CONTEXT = 'verify_character_name';
+const READY_FOR_ADVENTURE_CONTEXT = 'ready_for_adventure';
 
 // Utility function to pick prompts
 function getRandomPrompt(array) {
@@ -78,18 +91,49 @@ app.post('/', function (request, response) {
 		assistant.data.playerName = playerName;
 		let verification = VERIFY_PLAYER_NAME + playerName + "?";
 
+		assistant.setContext(VERIFY_NAME_CONTEXT, 2);
 		assistant.data.lastAction = GET_NAME_ACTION;
 		assistant.ask(verification);
 	}
 	actionMap.set(GET_NAME_ACTION, getPlayerName);
+
+	// Player said we didn't get their name right
+	// Try it one more time
+	function retryCharacterName(assistant)
+	{
+		let retryName = getRandomPrompt(PLAYER_NAME_NOT_RIGHT);
+		assistant.data.playerName = undefined;
+
+		assistant.setContext(NAME_CONTEXT, 5);
+
+		assistant.data.lastAction = VERIFY_NAME_NO_ACTION;
+		assistant.ask(retryName);
+	}
+	actionMap.set(VERIFY_NAME_NO_ACTION, retryCharacterName);
 
 	// If the player says their name is correct, move on to next stage of character creation
 	// Generate each stat and tell the player what the stats are
 	// Then ask if they are ready to go
 	function generatePlayerStats(assistant)
 	{
+		let statString = 'Alright, ' + assistant.data.playerName + '!\n';
 
+		assistant.data.strengthStat = getRandomNumber(0, 20);
+		assistant.data.dexterityStat = getRandomNumber(0, 20);
+		assistant.data.intelligenceStat = getRandomNumber(0, 20);
+
+		statString += STRENGTH_STAT + assistant.data.strengthStat + '. \n';
+		statString += DEXTERITY_STAT + assistant.data.dexterityStat + '. \n';
+		statString += INTELLIGENCE_STAT + assistant.data.intelligenceStat + '. \n';
+		
+		statString += READY_FOR_ADVENTURE;
+
+		assistant.setContext(READY_FOR_ADVENTURE_CONTEXT);
+
+		assistant.data.lastAction = VERIFY_NAME_YES_ACTION;
+		assistant.ask(statString);
 	}
+	actionMap.set(VERIFY_NAME_YES_ACTION, generatePlayerStats);
 
 	/*function checkGuess(assistant)
 	{
