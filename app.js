@@ -26,20 +26,29 @@ const CHARACTER_PROMPTS = [
 ];
 // This is used to verify the Game Master heard the player's name correctly
 const VERIFY_PLAYER_NAME = 'Okay, so you want me to call you ';
+// This is used when the Game Master didn't recognize a player name
+const VERIFY_WEIRD_PLAYER_NAME = 'That\'s a strange name. So you wanted me to call you ';
+// Used when a player says the Game Master misheard their name
 const PLAYER_NAME_NOT_RIGHT = [
 	'I\'m sorry, let\'s try that again. What did you want me to call you?',
 	'Okay, let\'s try one more time. What do you want your character to be called?'
 ];
+// Used during stat generation
 const START_GENERATE_STATS = 'It\'s now time to generate your stats.';
+// Used during stat generation or stat lookup
 const STRENGTH_STAT = 'Your strength stat is ';
+// Used during stat generation or stat lookup
 const DEXTERITY_STAT = 'Your dexterity stat is ';
+// Used during stat generation or stat lookup
 const INTELLIGENCE_STAT = 'Your intelligence stat is ';
+// Used to confirm the player is ready to start their game
 const READY_FOR_ADVENTURE = 'Are you ready to begin your adventure?';
 
 /// Actions
 // This action is sent when the player first opens the game
 const WELCOME_ACTION = 'input.welcome';
 const GET_NAME_ACTION = 'get_player_name';
+const GET_WEIRD_NAME_ACTION = 'get_weird_player_name';
 const GENERATE_ANSWER_ACTION = 'generate_answer';
 const CHECK_GUESS_ACTION = 'check_guess';
 const VERIFY_NAME_NO_ACTION = 'verify_character_name_no';
@@ -96,6 +105,19 @@ app.post('/', function (request, response) {
 		assistant.ask(verification);
 	}
 	actionMap.set(GET_NAME_ACTION, getPlayerName);
+
+	// This is used as a fallback if we don't recognize a player's name
+	function getWeirdPlayerName(assistant) {
+		let playerName = assistant.getRawInput();
+		assistant.data.playerName = playerName;
+
+		let verification = VERIFY_WEIRD_PLAYER_NAME + playerName + "?";
+
+		assistant.setContext(VERIFY_NAME_CONTEXT, 2);
+		assistant.data.lastAction = GET_NAME_ACTION;
+		assistant.ask(verification);
+	}
+	actionMap.set(GET_WEIRD_NAME_ACTION, getPlayerName);
 
 	// Player said we didn't get their name right
 	// Try it one more time
