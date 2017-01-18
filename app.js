@@ -20,6 +20,9 @@ const GREETING_PROMPTS = [
 	'It\'s good to see you! I\'m your Game Master, and we\'re about to go on a Dungeon Adventure!',
 	'Hey there! Welcome to Dungeon Adventure! I\'m your Game Master, and I can\'t wait to find out what adventure we\'re going to have!'
 ];
+const GAME_PROMPTS = [
+	'I\'m thinking of a number from 0 and 100. What\'s your first guess?'
+];
 
 /// Actions
 // This action is sent when the player first opens the game
@@ -44,7 +47,7 @@ app.post('/', function (request, response) {
 
 	function greet(assistant)
 	{
-		assistant.tell(getRandomPrompt(GREETING_PROMPTS));
+		assistant.ask(getRandomPrompt(GREETING_PROMPTS) + '\n' + getRandomPrompt(GAME_PROMPTS));
 		generateAnswer(assistant);
 	}
 
@@ -53,7 +56,7 @@ app.post('/', function (request, response) {
 		console.log('generateAnswer');
 		var answer = getRandomNumber(0, 100);
 		assistant.data.answer = answer;
-		assistant.ask('I\'m thinking of a number from 0 and 100. What\'s your first guess?');
+		assistant.ask(getRandomPrompt(GAME_PROMPTS));
 	}
 
 	function checkGuess(assistant)
