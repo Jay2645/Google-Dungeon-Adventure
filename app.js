@@ -34,6 +34,10 @@ const GET_NAME_ACTION = 'get_player_name';
 const GENERATE_ANSWER_ACTION = 'generate_answer';
 const CHECK_GUESS_ACTION = 'check_guess';
 
+/// Contexts
+// This context is used when a user is picking a name
+const NAME_CONTEXT = 'NAME_CHARACTER';
+
 // Utility function to pick prompts
 function getRandomPrompt(array) {
 	return array[Math.floor(Math.random() * (array.length))];
@@ -58,6 +62,8 @@ app.post('/', function (request, response) {
 		let greeting = getRandomPrompt(GREETING_PROMPTS);
 		// Ask them to make a character
 		greeting += '\n' + getRandomPrompt(CHARACTER_PROMPTS);
+
+		assistant.setContext(NAME_CONTEXT, 5);
 
 		assistant.data.lastAction = WELCOME_ACTION;
 		assistant.ask(greeting);
