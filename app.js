@@ -3,7 +3,7 @@
 // Enable actions client library debugging
 process.env.DEBUG = 'actions-on-google:*';
 
-let Assistant = require('actions-on-google');
+let ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
 let express = require('express');
 let bodyParser = require('body-parser');
 
@@ -18,7 +18,7 @@ app.post('/', function (request, response) {
   console.log('headers: ' + JSON.stringify(request.headers));
   console.log('body: ' + JSON.stringify(request.body));
 
-  const assistant = new Assistant({request: request, response: response});
+  const assistant = new ApiAiAssistant({request: request, response: response});
   response.sendStatus(200); // OK
   
   
