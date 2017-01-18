@@ -95,9 +95,8 @@ app.post('/', function (request, response) {
 		assistant.data.lastAction = WELCOME_ACTION;
 		assistant.ask(greeting);
 	}
-	actionMap.set(WELCOME_ACTION, greet);
-
-	// Get the player's name and store it
+	actionMap.set(WELCOME_ACTION, greet);​	
+// Get the player's name and store it
 	// Then, ask them if the name is correct
 	function getPlayerName(assistant)
 	{
@@ -134,8 +133,8 @@ app.post('/', function (request, response) {
 		setContext(assistant, NAME_CONTEXT, 5);
 
 		assistant.data.lastAction = VERIFY_NAME_NO_ACTION;
-		assistant.ask(retryName);
-	}
+		assistant.ask(retryName);	
+}
 	actionMap.set(VERIFY_NAME_NO_ACTION, retryCharacterName);
 
 	// If the player says their name is correct, move on to next stage of character creation
@@ -143,7 +142,7 @@ app.post('/', function (request, response) {
 	// Then ask if they are ready to go
 	function generatePlayerStats(assistant)
 	{
-		let statString = 'Alright, ' + assistant.data.playerName + '!\n';
+		let statString = 'Alright, ' + assistant.data.playerName + '! ' + START_GENERATE_STATS + '\n';
 
 		assistant.data.strengthStat = getRandomNumber(0, 20);
 		assistant.data.dexterityStat = getRandomNumber(0, 20);
