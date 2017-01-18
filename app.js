@@ -33,7 +33,7 @@ const PLAYER_NAME_NOT_RIGHT = [
 	'Okay, let\'s try one more time. What do you want your character to be called?'
 ];
 // Used during stat generation
-const START_GENERATE_STATS = 'It\'s now time to generate your stats.';
+const START_GENERATE_STATS = 'It\'s now time to generate your stats. These stats range from 0 to 20.';
 // Used during stat generation or stat lookup
 const STRENGTH_STAT = 'Your strength stat is ';
 // Used during stat generation or stat lookup
