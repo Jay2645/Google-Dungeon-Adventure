@@ -34,12 +34,6 @@ const NAME_CONTEXT = 'character_name';
 const VERIFY_NAME_CONTEXT = 'verify_character_name';
 const READY_FOR_ADVENTURE_CONTEXT = 'ready_for_adventure';
 
-let rooms = [
-	{
-		let ROOM_NAME = 
-	},
-];
-
 // Utility function to pick prompts
 function getRandomPrompt(array) {
 	return array[Math.floor(Math.random() * (array.length))];
