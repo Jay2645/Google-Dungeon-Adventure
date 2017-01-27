@@ -283,6 +283,7 @@ app.post('/', function (request, response) {
 	// This is used when the Game Master has absolutely no idea what the player just said
 	const CONFUSED_ACTION = 'input.unknown';
 	function unknownPlayerInput(assistant) {
+		console.log("Unknown player input!");
 		// If we were talking about names last, that might be a name
 		if (assistant.data.lastContext == NAME_CONTEXT) {
 			getWeirdPlayerName(assistant);
@@ -296,10 +297,12 @@ app.post('/', function (request, response) {
 					assistant.tell(assistantDialog);
 			}
 			else {
+					console.log("Unable to resolve player input: " + assistant.getRawInput());
 					// Ask the player to repeat
 					// If on the try before the last try, offer some help
 					if(assistant.data.misheardReplyCount == MAX_MISHEARD_TRIES - 1)
 					{
+						console.log("Seeking help for player.");
 						assistantDialog += '\n';
 						assistantDialog += getHelp(assistant.data.lastContext, assistant.data.player);
 					}
