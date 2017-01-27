@@ -190,8 +190,8 @@ helpActions.set(READY_FOR_ADVENTURE_CONTEXT, helpReadyForAdventure);
 
 // Switch between various things for the assistant to say
 app.post('/', function (request, response) {
-	console.log('headers: ' + JSON.stringify(request.headers));
-	console.log('body: ' + JSON.stringify(request.body));
+	//console.log('headers: ' + JSON.stringify(request.headers));
+	//console.log('body: ' + JSON.stringify(request.body));
 
 	const assistant = new ApiAiAssistant({ request: request, response: response });
 	let actionMap = new Map();
