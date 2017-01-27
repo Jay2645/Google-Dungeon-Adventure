@@ -11,29 +11,9 @@ let app = express();
 app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json({ type: 'application/json' }));
 
-/// Prompts
-const CONFUSED = [
-	'I\'m sorry, but I didn\'t catch that. Can you say it again?'
-];
+let helpActions = new Map();
 
-/// Actions
-// This action is sent when the player first opens the game
-const WELCOME_ACTION = 'input.welcome';
-const GET_NAME_ACTION = 'get_player_name';
-const GET_WEIRD_NAME_ACTION = 'get_weird_player_name';
-const GENERATE_ANSWER_ACTION = 'generate_answer';
-const CHECK_GUESS_ACTION = 'check_guess';
-const VERIFY_NAME_NO_ACTION = 'verify_character_name_no';
-const VERIFY_NAME_YES_ACTION = 'verify_character_name_yes';
-
-const CONFUSED_ACTION = 'input.unknown';
-
-/// Contexts
-// This context is used when a user is picking a name
-const NAME_CONTEXT = 'character_name';
-const VERIFY_NAME_CONTEXT = 'verify_character_name';
-const READY_FOR_ADVENTURE_CONTEXT = 'ready_for_adventure';
-
+////////////////////////////// UTILITY FUNCTIONS
 // Utility function to pick prompts
 function getRandomPrompt(array) {
 	return array[Math.floor(Math.random() * (array.length))];
@@ -43,8 +23,57 @@ function getRandomNumber(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const HELP_ACTION = 'help_action';
+function getHelp(lastContext, player) {
+	const GIVE_HELP_LINES = [
+		'Here\'s some help for you:';
+		'I can give you some help:',
+		'Hopefully, you can find this information helpful:'
+	];
+	if(helpActions.has(lastContext)) {
+		return getRandomPrompt(GIVE_HELP_LINES) + '\n' + helpActions[lastContext](player);
+	}
+	else {
+		return "";
+	}
+}
+
+// Utility function to ask the player to repeat what they said
+const MAX_MISHEARD_TRIES = 3;
+function getMisheardDialog(numberOfAttempts)
+{
+	const MISHEARD_DIALOG_FIRST = [
+		'I\'m sorry, but I didn\'t catch that. Can you say it again?'
+	];
+	const MISHEARD_DIALOG_SECOND = [
+		'Sorry, I still didn\'t understand. How about trying one more time?'
+	];
+	const MISHEARD_DIALOG_LAST = [
+		'Looks like I\'m having some trouble understanding you. How about we try again later?'
+	];
+
+	// Sanity checking for number of attempts
+	if(numberOfAttempts == undefined || numberOfAttempts < 0) {
+		numberOfAttempts = 0;
+	}
+
+	if(numberOfAttempts == 0) {
+		// First try
+		return getRandomPrompt(MISHEARD_DIALOG_FIRST);
+	}
+	else if(numberOfAttempts == 1) {
+		// Second try
+		return getRandomPrompt(MISHEARD_DIALOG_SECOND);
+	}
+	else {
+		// Last try; if adding any more be sure to update MAX_MISHEARD_TRIES
+		return getRandomPrompt(MISHEARD_DIALOG_LAST);
+	}
+}
+
 ////////////////////////////// GREETINGS
 // This greets the player
+const WELCOME_ACTION = 'input.welcome';
 function getGreeting() {
 	// These prompts are used to greet the player when they start the game
 	const GREETING_PROMPTS = [
@@ -56,10 +85,14 @@ function getGreeting() {
 	// Greet the player
 	return getRandomPrompt(GREETING_PROMPTS);
 }
+// No help for greeting
 
 ////////////////////////////// CHARACTER NAMES
 // This asks the player to create a character
-function getCreateCharacter() {
+const GET_NAME_ACTION = 'get_player_name';
+const GET_WEIRD_NAME_ACTION = 'get_weird_player_name';
+const NAME_CONTEXT = 'character_name';
+function getCharacterName() {
 	// Ask them to make a character
 	// These prompts are used when starting character creation
 	const CHARACTER_PROMPTS = [
@@ -68,20 +101,32 @@ function getCreateCharacter() {
 
 	return getRandomPrompt(CHARACTER_PROMPTS);
 }
+function helpCharacterName(player) {
+	return 'You\'re naming your character. It can be anything you want! Just tell me whatever name you want to be called.';
+}
+helpActions.set(NAME_CONTEXT, helpCharacterName);
 
 // This is used to verify the Game Master heard the player's name correctly
+const VERIFY_NAME_NO_ACTION = 'verify_character_name_no';
+const VERIFY_NAME_YES_ACTION = 'verify_character_name_yes';
+const VERIFY_NAME_CONTEXT = 'verify_character_name';
 function getVerifyPlayerName(player, isWeirdName) {
 	const VERIFY_PLAYER_NAME = 'Okay, so you want me to call you ';
 	// This is used when the Game Master didn't recognize a player name
 	const VERIFY_WEIRD_PLAYER_NAME = 'That\'s a strange name. So you wanted me to call you ';
 
 	if(isWeirdName) {
-		return VERIFY_WEIRD_PLAYER_NAME + player.name;
+		return VERIFY_WEIRD_PLAYER_NAME + player.name + "?";
 	}
 	else {
-		return VERIFY_PLAYER_NAME + player.name;
+		return VERIFY_PLAYER_NAME + player.name + "?";
 	}
 }
+function helpVerifyPlayerName(player) {
+	return 'You\'re confirming that you want to be called ' + player.name+ '. Just say "yes" or "no".';
+}
+helpActions.set(VERIFY_NAME_CONTEXT, helpVerifyPlayerName);
+
 
 function getRetryPlayerName() {
 	// Used when a player says the Game Master misheard their name
@@ -92,6 +137,7 @@ function getRetryPlayerName() {
 
 	return getRandomPrompt(PLAYER_NAME_NOT_RIGHT);
 }
+// Help falls back to helpCharacterName
 
 ////////////////////////////// CHARACTER STATS
 function getGenerateStatsBegin(player) {
@@ -100,6 +146,7 @@ function getGenerateStatsBegin(player) {
 
 	return 'Alright, ' + player.name + '! ' + START_GENERATE_STATS;
 }
+// No help
 
 function getStrengthStat(player) {
 	// Used during stat generation or stat lookup
@@ -122,13 +169,23 @@ function getIntelligenceStat(player) {
 	return INTELLIGENCE_STAT + player.intelligenceStat;
 }
 
-////////////////////////////// BEGIN NEW Game
+////////////////////////////// BEGIN NEW GAME
+const READY_FOR_ADVENTURE_CONTEXT = 'ready_for_adventure';
 function getBeginNewGame() {
 	// Used to confirm the player is ready to start their game
 	const READY_FOR_ADVENTURE = 'Are you ready to begin your adventure?';
 
 	return READY_FOR_ADVENTURE;
 }
+function helpReadyForAdventure(player) {
+	let readyForAdventureHelp = 'You\'re confirming that you\'re ready to adventure with ' + player.name;
+	readyForAdventureHelp += ', with a strength stat of ' + player.strengthStat;
+	readyForAdventureHelp += ', a dexterity stat of ' +  player.dexterityStat;
+	readyForAdventureHelp += ', and an intelligence stat of ' + player.intelligenceStat + '.';
+	readyForAdventureHelp += ' If this sounds good to you, say "yes." Otherwise, say "no."';
+	return readyForAdventureHelp;
+}
+helpActions.set(READY_FOR_ADVENTURE_CONTEXT, helpReadyForAdventure);
 
 // Switch between various things for the assistant to say
 app.post('/', function (request, response) {
@@ -144,7 +201,7 @@ app.post('/', function (request, response) {
 	{
 		assistant.data.speech = getGreeting();
 		assistant.data.speech += '\n';
-		assistant.data.speech += getCreateCharacter();
+		assistant.data.speech += getCharacterName();
 
 		say(assistant, WELCOME_ACTION, NAME_CONTEXT, 5);
 	}
@@ -206,11 +263,11 @@ app.post('/', function (request, response) {
 		assistant.data.speech += '\n';
 
 		// Print the value for each stat
-		assistant.data.speech += getStrengthStat();
+		assistant.data.speech += getStrengthStat(assistant.data.player);
 		assistant.data.speech += '\n';
-		assistant.data.speech += getDexterityStat();
+		assistant.data.speech += getDexterityStat(assistant.data.player);
 		assistant.data.speech += '\n';
-		assistant.data.speech += getIntelligenceStat();
+		assistant.data.speech += getIntelligenceStat(assistant.data.player);
 		assistant.data.speech += '\n';
 
 		// Ask the player if they want to start a game
@@ -223,26 +280,48 @@ app.post('/', function (request, response) {
 
 
 	// This is used when the Game Master has absolutely no idea what the player just said
+	const CONFUSED_ACTION = 'input.unknown';
 	function unknownPlayerInput(assistant) {
 		// If we were talking about names last, that might be a name
-		if (assistant.data.lastContext == NAME_CONTEXT)
-		{
+		if (assistant.data.lastContext == NAME_CONTEXT) {
 			getWeirdPlayerName(assistant);
 		}
-		else
-		{
+		else {
 			// No idea
-			assistant.tell(getRandomPrompt(CONFUSED));
+			let assistantDialog = getMisheardDialog(assistant.data.misheardReplyCount);
+			assistant.data.misheardReplyCount++;
+			if(assistant.data.misheardReplyCount >= MAX_MISHEARD_TRIES) {
+					// Can't understand the player, close the conversation
+					assistant.tell(assistantDialog);
+			}
+			else {
+					// Ask the player to repeat
+					// If on the try before the last try, offer some help
+					if(assistant.data.misheardReplyCount == MAX_MISHEARD_TRIES - 1)
+					{
+						assistantDialog += '\n';
+						assistantDialog += getHelp(assistant.data.lastContext, assistant.data.player);
+					}
+					assistant.ask(assistantDialog);
+			}
 		}
 	}
 	actionMap.set(CONFUSED_ACTION, unknownPlayerInput);
+
+	// Called when the player asks for help
+	function playerNeedsHelp(assistant) {
+		assistant.data.speech = getHelp(assistant.data.lastContext, assistant.data.player);
+		say(assistant, assistant.data.currentAction, assistant.data.lastContext, 5);
+	}
+	actionMap.set(HELP_ACTION, playerNeedsHelp);
 
 	assistant.handleRequest(actionMap);
 
 
 	// Helpers
 	function say(assistant, action, context, length) {
-		assistant.data.lastAction = action;
+		assistant.data.misheardReplyCount = 0;
+		assistant.data.currentAction = action;
 
 		assistant.setContext(context, length);
 		assistant.data.lastContext = context;
