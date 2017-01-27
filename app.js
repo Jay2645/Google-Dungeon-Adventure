@@ -31,7 +31,7 @@ function getHelp(lastContext, player) {
 		'Hopefully, you can find this information helpful:'
 	];
 	if(helpActions.has(lastContext)) {
-		let helpAction = helpActions[lastContext];
+		let helpAction = helpActions.get(lastContext);
 		return getRandomPrompt(GIVE_HELP_LINES) + '\n' + helpAction(player);
 	}
 	else {
