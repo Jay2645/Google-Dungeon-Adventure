@@ -26,7 +26,7 @@ function getRandomNumber(min, max) {
 const HELP_ACTION = 'help_action';
 function getHelp(lastContext, player) {
 	const GIVE_HELP_LINES = [
-		'Here\'s some help for you:';
+		'Here\'s some help for you:',
 		'I can give you some help:',
 		'Hopefully, you can find this information helpful:'
 	];
