@@ -3,6 +3,8 @@
 // Enable actions client library debugging
 process.env.DEBUG = 'actions-on-google:*';
 
+let fs = require('fs');
+let xml2js = require('xml2js');
 let ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
 let express = require('express');
 let bodyParser = require('body-parser');
@@ -10,6 +12,117 @@ let bodyParser = require('body-parser');
 let app = express();
 app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json({ type: 'application/json' }));
+
+// Load the game itself
+let parser = new xml2js.Parser();
+let gameMap = new Map();
+let rooms = [];
+let game = {};
+
+	// This function takes an input script and turns it into a Javascript function
+function convertScriptToJS(script) {
+
+	// First, add semicolons to the end of each argument
+	script = script.replace(/\)\s/mg, ");");
+	script = script.replace(/\);{/mg, ") {");
+	script = script.replace(/play sound \(.+\);/mg, "");
+	console.log("Script: "+script);
+	return script;
+}
+
+// Populate the game from an XML file
+fs.readFile('game.aslx', function(err, data) {
+		parser.parseString(data, function (err, result) {
+				game = result.asl.object;
+				//console.dir(result.asl);
+				// Iterate over all objects in the game
+				for(var object in game) {
+					let room = {};
+					// Get the name and description from XML
+					room.name = game[object]['$'].name;
+
+					// We need to set the room description to be a string first
+					room.description = "";
+					room.description += game[object].description;
+					// Replace HTML tags with Javascript-friendly ones
+					room.description = room.description.replace(/<br\/>/mg,"\n");
+					room.description = room.description.replace(/\\"/mg, "\"");
+
+					room.enter = "";
+					for(var entrance in game[object].enter) {
+						var entranceText = game[object].enter[entrance]['_'];
+						if(entranceText === undefined) {
+							continue;
+						}
+						var entranceRegex = /msg \(\"(.+)\"\)/g;
+						var match = entranceRegex.exec(entranceText);
+						if(match != null)	{
+							// First line has no newline before it
+							var matchedText = match[1];
+							matchedText = matchedText.replace(/<br\/>/mg,"\n");
+							matchedText = matchedText.replace(/\\"/mg, "\"");
+							room.enter = matchedText;
+							match = entranceRegex.exec(entranceText);
+						}
+						while(match != null) {
+							// Any next matches get newlines
+							var matchedText = match[1];
+							matchedText = matchedText.replace(/<br\/>/mg,"\n");
+							matchedText = matchedText.replace(/\\"/mg, "\"");
+							room.enter += '\n' + matchedText;
+							match = entranceRegex.exec(entranceText);
+						}
+						if(room.description === "") {
+							room.description = room.enter;
+						}
+					}
+					//console.dir(game[object].enter);
+					// Iterate over all options the player can take
+					/*for(var option in game[object].options) {
+						room.options = [];
+						for(var item in game[object].options[option].item) {
+							room.options[item] = {};
+							// Assign the name of the room connected with this object to the key
+							for(var kvp in game[object].options[option].item[item]) {
+								room.options[item][kvp] = game[object].options[option].item[item][kvp][0];
+								//console.dir(kvp +": "+ game[object].options[option].item[item][kvp]);
+							}
+						}
+						//console.log(game[object].options[option].item);
+					}*/
+					room.exits = {};
+					for(var rawExit in game[object].exit) {
+						var exits = game[object].exit[rawExit]['$'];
+						if(exits != undefined) {
+							var exit = {};
+							exit.to = exits['to'];
+
+							var rawScript = game[object].exit[rawExit].script;
+							if(rawScript != undefined) {
+								var script = convertScriptToJS(rawScript[0]['_']);
+								//console.log(exits['alias'] +": "+script);
+							}
+							room.exits[exits['alias']] = exit;
+							//console.dir(room);
+						}
+					}
+					gameMap.set(room.name, room);
+					rooms[object] = room;
+				}
+
+				console.log('Done');
+				//var util = require('util');
+
+				/*for(var room in rooms) {
+					console.log(rooms[room].name + ' connects to:');
+					for(var option in rooms[room].exits) {
+						var key = rooms[room].exits[option];
+						console.log(option +': '+gameMap.get(key).name);
+					}
+					//console.log(rooms[room].name);
+				}*/
+		});
+});
 
 let helpActions = new Map();
 
@@ -35,7 +148,7 @@ function getHelp(lastContext, player) {
 		return getRandomPrompt(GIVE_HELP_LINES) + '\n' + helpAction(player);
 	}
 	else {
-		return "";
+		return 'I can\'t offer any help here. You\'re on your own.';
 	}
 }
 
@@ -153,21 +266,21 @@ function getStrengthStat(player) {
 	// Used during stat generation or stat lookup
 	const STRENGTH_STAT = 'Your strength stat is ';
 
-	return STRENGTH_STAT + player.strengthStat;
+	return STRENGTH_STAT + player.strengthStat + '.';
 }
 
 function getDexterityStat(player) {
 	// Used during stat generation or stat lookup
 	const DEXTERITY_STAT = 'Your dexterity stat is ';
 
-	return DEXTERITY_STAT + player.dexterityStat;
+	return DEXTERITY_STAT + player.dexterityStat + '.';
 }
 
 function getIntelligenceStat(player) {
 	// Used during stat generation or stat lookup
 	const INTELLIGENCE_STAT = 'Your intelligence stat is ';
 
-	return INTELLIGENCE_STAT + player.intelligenceStat;
+	return INTELLIGENCE_STAT + player.intelligenceStat + '.';
 }
 
 ////////////////////////////// BEGIN NEW GAME

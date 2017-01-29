@@ -1,0 +1,3033 @@
+﻿<!--Saved by Quest 5.5.5328.24555-->
+<asl version="550">
+  <template name="NothingToUndo">Nothing to undo!</template>
+  <game name="Victorian Detective 2">
+    <gameid>011e34e6-ea9a-4a11-92ec-1a206c69d5fe</gameid>
+    <version>1.0</version>
+    <firstpublished>2014</firstpublished>
+    <subtitle>Pathological</subtitle>
+    <author>Peter Carlson</author>
+    <category>Mystery</category>
+    <defaultbackground>LightGrey</defaultbackground>
+    <defaultlinkforeground>BlueViolet</defaultlinkforeground>
+    <showborder type="boolean">false</showborder>
+    <defaultforeground>Coral</defaultforeground>
+    <cover>Vd2 Cover.jpg</cover>
+  </game>
+  <object name="kidnap">
+    <inherit name="scripttext" />
+    <description><![CDATA[London 1861. Over the past 6 weeks, 3 girls have gone missing from their homes. Vanished into nothingness. At each home there's been a macabre smiley face carved deep into the floor, grinning up at family and investigators.<br/><br/>{img:Vd2 london bridge.jpg}<br/><br/><u><b>Worthington Estate</b></u><br/><br/>"You have to help me find her!" cries Mr. Henry Worthington as you stand in his daughter's empty bedroom with your police partner, Mardler. Morning light glows through the {page:kidnapwindow:girl's window}, warming the room.<br/><br/>Worthington's sixteen year old daughter, Chloe Worthington, disappeared the past night, no more than twelve hours ago. She's a student at the elite St. Anthony's private school. Mr. Worthington hands you a {page:kidnapphotoofchloe:photo of Chloe}. "She's never run off before, could she have been taken?"<br/><br/>The room is in good order, {page:kidnapbedmade:bed made} and {page:kidnapbookshelf:bookshelf} tidy. You wander the scene, looking through the {page:kidnapwastebasket:wastebasket} and {page:kidnapcloset:closet} for clues.<br/><br/>"So what do you think?" asks Mr. Worthington anxiously.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>kidnapkidnap</key>
+        <value>"Chloe was kidnapped."</value>
+      </item>
+      <item>
+        <key>kidnapran</key>
+        <value>"Chloe ran off by her own choice."</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+      SetCounter ("Deductive Reasoning", 0)
+      SetCounter ("Deductive Reasoning 3", 0)
+      SetCounter ("Guardian Angel", 0)
+      SetCounter ("Aggressive", 0)
+    </script>
+    <object name="player">
+      <inherit name="defaultplayer" />
+    </object>
+  </object>
+  <object name="kidnapkidnap">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>Mardler gives you a quizzical look. "But what about the book we found on her shelf?" he asks. Mardler holds up the book, "Love of the Sea," and hands the note to Mr. Worthington. "Your daughter had an admirer that wrote her this letter," says Mardler. "I figure she ran off with him, judging by the fact that her favorite spotted dress is missing from her closet and there's no sign of a struggle."<br/><br/>Mr. Worthington reads the note. "Who is this boy, Joseph?"<br/><br/>You suggest that he's most likely...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>kidnaprose</key>
+        <value>a flower salesman</value>
+      </item>
+      <item>
+        <key>kidnapschool</key>
+        <value>a classmate</value>
+      </item>
+      <item>
+        <key>kidnapnewspaper</key>
+        <value>a paperboy</value>
+      </item>
+    </options>
+  </object>
+  <object name="kidnapran">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>"Ran away? But why?" asks Mr. Worthington.<br/><br/>"She had a secret romance with an admirer," you respond. "Small scratches on the window from rocks points to the admirer coming here often, rose petals in the trash and under the bed were undoubtedly gifts from the admirer, and the fact that Chloe's favorite dress is missing makes me think that she took it with her when she left. There's no sign of a struggle whatsoever."<br/><br/>"So who's this admirer?" asks Mr. Worthington.<br/><br/>"Joseph," you say as you reveal the tattered book and love letter that were on Chloe's bookshelf. "He must have given this to Chloe as a gift, after it was previously given to him by his uncle."<br/><br/>You explain that Joseph is most likely...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>kidnaprose</key>
+        <value>a flower salesman</value>
+      </item>
+      <item>
+        <key>kidnapschool</key>
+        <value>a classmate</value>
+      </item>
+      <item>
+        <key>kidnapnewspaper</key>
+        <value>a paperboy</value>
+      </item>
+    </options>
+    <sound type="string"></sound>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+      }
+    </script>
+  </object>
+  <object name="kidnapwindow">
+    <inherit name="scripttext" />
+    <description><![CDATA[The window is open and you notice many small scratches on the outer glass. A gentle breeze floats through. You look out the window across the vast Worthington estate. The Worthingtons are one of the richest families in London.<br/><br/>Thick ivy runs up the wall of the house.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>kidnap</key>
+        <value>return</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="kidnapbedmade">
+    <inherit name="scripttext" />
+    <description><![CDATA[Chloe's bed is made with soft, silk sheets and plump pillows. Something catches your eye and you crouch down to look under the bed. There's a single rose petal, lost beneath the frame.<br/><br/>The petal looks no more than a week old judging by how much it has wilted.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>kidnap</key>
+        <value>return</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="kidnapphotoofchloe">
+    <inherit name="scripttext" />
+    <description><![CDATA[The photo shows a teenage girl in a spotted dress. She has a beaming smile and curly, blonde hair. There's a small gold bracelet on her thin wrist.<br/><br/>"That's her favorite dress," says Mr. Worthington. "We got it for her a few months ago, and she wears it all the time." Tears well in his eyes.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>kidnap</key>
+        <value>return</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="kidnapbookshelf">
+    <inherit name="scripttext" />
+    <description><![CDATA[Dozens of prestige books about language and art fill the bookshelf. All the books are in mint-condition, save one outlier at Chloe's eye height. The book is titled, "Love of the Sea."<br/><br/>You pull the worn book off the shelf and examine it. As you flip the book open a {page:kidnapsmallnote:small note} slides out and floats down to the floor.<br/><br/>Someone has written on the inside of the front cover of the book in faded black ink.<br/><br/>{img:Vd2 Book.jpg}<br/><br/><i>Joseph,<br/>I hope you enjoy this book as much as I did when I was your age. Buon compleanno.<br/>Zio Antonio</i>]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>kidnap</key>
+        <value>return</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="kidnapsmallnote">
+    <inherit name="scripttext" />
+    <description><![CDATA[The note is wrapped in a makeshift envelope made from an issue of the London Analyst, an uncommon London newspaper. You pull the note out and read it.<br/><br/><i>Chloe,<br/>How I love thee. You bring light to my day as I watch you from my stand, your beauty infinite as you walk home, seeming to glide on the air, weightless and eternal. The thought of you brings art and beauty to my life. We are on opposite ends of society, yet we are destined for each other.<br/>With love,<br/>Joseph</i><br/><br/>Chloe has quite the admirer.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>kidnapbookshelf</key>
+        <value>return</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="kidnapwastebasket">
+    <inherit name="scripttext" />
+    <description>You find a copy of the London Analyst, an uncommon London newspaper, in Chloe's wastebasket. It's folded in the shape of cone, and there's a small rose petal stuck to the page.</description>
+    <options type="stringdictionary">
+      <item>
+        <key>kidnap</key>
+        <value>return</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="kidnapcloset">
+    <inherit name="scripttext" />
+    <description>Chloe's closet is full of beautiful clothes, but you notice that her spotted dress is missing.</description>
+    <options type="stringdictionary">
+      <item>
+        <key>kidnap</key>
+        <value>return</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="kidnaprose">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"That's where he got the roses," you say.<br/><br/>"I'm not convinced," says Mr. Worthington. "He could have gotten the roses many different ways. He's probably a fellow student at Chloe's school."<br/><br/>Mardler interjects, "I doubt he's from the same school as Chloe. In the note, he mentioned that he and Chloe are on opposite ends of society, and the condition of the hand-me-down book confirms he's no wealthy man, so I don't think he goes to the same expensive private school. I'm more intrigued by the use of the London Analyst, a rare newspaper, to make the envelope and bouquet. I bet he's a paperboy, and he runs a paper stand outside where he can watch Chloe walk by."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>school</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="kidnapschool">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"That's how he knows Chloe," you say.<br/><br/>Mardler interjects, "I doubt he's from the same school as Chloe. In the note, he mentioned that he and Chloe are on opposite ends of society, and the condition of the hand-me-down book confirms he's no wealthy man, so I don't think he goes to the same expensive private school. I'm more intrigued by the use of the London Analyst, a rare newspaper, to make the envelope and bouquet. I bet he's a paperboy, and he runs a paper stand outside where he can watch Chloe walk by."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>school</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="kidnapnewspaper">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>"He made a bouquet and envelope out of the London Analyst, an uncommon newspaper," you say. "He also refers to a 'stand' in the love letter, most likely his paper stand."<br/><br/>"Perhaps he's a fellow student at St. Anthony's School," says Mr. Worthington.<br/><br/>"Doubtful," you respond. "He mentioned that Chloe and himself are on opposite ends of society, and the condition of the hand-me-down book confirms that he's no wealthy man, so I don't think he goes to the same expensive private school. He probably runs his paper stand outside and watches Chloe walk by."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>school</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <sound type="string"></sound>
+    <continuesound />
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+      }
+    </script>
+  </object>
+  <object name="school">
+    <inherit name="scripttext" />
+    <description><![CDATA[<u><b>St. Anthony's Private School</b></u><br/><br/>You and Mardler travel a few blocks across London and arrive at St. Anthony's Private School. You inquire with the locals about a boy named Joseph selling copies of the London Analyst on the outskirts of the campus.<br/><br/>Mardler bumps into a {page:schoolwanderinghomelessman:wandering homeless man}, begging for change. He's a war veteran, wearing a large baggy coat and missing his right arm. Mardler tosses him a couple pence that the man eyes eagerly.<br/><br/>There's a group of miscreant boys throwing stones at stray dogs in an alleyway, causing trouble in the neighborhood and being shooed away by faculty of the school. They crash into Mardler as they run away laughing.<br/><br/>"Get out of here, vagrants!" shouts Mardler in frustration.<br/><br/>London is alive and pulsing.<br/><br/>"I wish we had some sort of description of Joesph," says Mardler.<br/><br/>You tell him that Joseph is almost definitely...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>schoolitalian</key>
+        <value>Italian</value>
+      </item>
+      <item>
+        <key>schoolfrench</key>
+        <value>French</value>
+      </item>
+      <item>
+        <key>schoolirish</key>
+        <value>Irish</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+    </script>
+  </object>
+  <object name="schoolfrench">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"Why do you say that?" asks Mardler.<br/><br/>You can't seem to verify your answer. "Never mind," you say.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>schoolpocket</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+    </script>
+  </object>
+  <object name="schoolirish">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"Why do you say that?" asks Mardler.<br/><br/>You can't seem to verify your answer. "Never mind," you say.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>schoolpocket</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="schoolitalian">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>"In the hand-me-down book, 'Love of the Sea,' Joseph's uncle writes, 'buon compleanno,' which is Italian for 'happy birthday.' He also signed it, 'Zio Antonio,' instead of 'Uncle Antonio.' If Joesph isn't Italian, at least his uncle is," you explain.<br/><br/>Mardler nods his head in comprehension.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>schoolpocket</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+      }
+    </script>
+  </object>
+  <object name="schoolwanderinghomelessman">
+    <inherit name="scripttext" />
+    <description><![CDATA["Lost my arm in Berlin against Napoleon," says the man sadly, hungry for more money.<br/><br/>{img:Vd2 Veteran.jpg}]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>school</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="schoolpocket">
+    <description><![CDATA[Finally someone cooperates with your inquiries, sort of...<br/><br/>A large man, the local butcher, confronts you. He wipes the sweat off his brow and coughs up a thick glob of mucus. "Yeah I know Joseph," he growls. "I'll tell you where he lives if you help me out. There's a pickpocket in the neighborhood, but I can't pinpoint who it is. He's been robbing all of us! You're police, right? Do some investigating and find out who it is."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>schoolhomeless</key>
+        <value>"It's the homeless veteran."</value>
+      </item>
+      <item>
+        <key>schoolmicreants</key>
+        <value>"It's the miscreant boys."</value>
+      </item>
+      <item>
+        <key>schoolfaculty</key>
+        <value>"It's the school faculty."</value>
+      </item>
+      <item>
+        <key>schooltime</key>
+        <value>"We don't have time for this."</value>
+      </item>
+    </options>
+  </object>
+  <object name="schoolhomeless">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>"Old Georgie?" clarifies the butcher in disbelief. "No, it can't be."<br/><br/>Mardler looks at you doubtfully as well.<br/><br/>"The whole story about losing his arm in a battle is a rue to catch his victims off-guard," you say. "He has a pocket watch in his right pocket, yet he claims to be missing his right arm. The arm is undoubtedly hidden underneath his baggy clothes. Plus, Napoleon never fought in Berlin, the battle where he supposedly was wounded."<br/><br/>The butcher sighs, wiping another armful of sweat off his forehead. "I would've never guessed it was him, but if what you're saying is true, then he's been playing us like fools."<br/><br/>The butcher points you towards Joseph's residence on Barker Street, a few minutes up the road.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barker</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+      }
+    </script>
+  </object>
+  <object name="schoolmicreants">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"Hmmm, I always thought those ruffians were up to no good," says the butcher. "I'll give them a piece of my mind when I see them next."<br/><br/>The butcher points you towards Joseph's residence on Barker Street, a few minutes up the road.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barker</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="schoolfaculty">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"Why would the school faculty stoop to filching from pockets?" asks the butcher. "That's the most ridiculous thing I've heard in weeks. They work at a ritzy private school!"<br/><br/>"Look," says Mardler, stepping up to the butcher. "This is part of an official investigation, so you're going to need to tell us where Joseph lives."<br/><br/>The butcher grumbles and points you towards Joseph's residence on Barker Street, a few minutes up the road.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barker</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="schooltime">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"Some police you lot are," snorts the butcher. "You can't even help out us common folk."<br/><br/>"Look," says Mardler, stepping up to the butcher. "This is part of an official investigation, so you're going to need to tell us where Joseph lives."<br/><br/>The butcher grumbles and points you towards Joseph's residence on Barker Street, a few minutes up the road.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barker</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="barker">
+    <description><![CDATA[<u><b>Barker Street</b></u><br/><br/>You and Mardler follow the butcher's instructions and arrive at Joseph's small apartment on Barker Street. The neighborhood is rundown and ridden with poverty. Collapsed beggars and drunks are nearly hit by a large coffin carrying carriage as children run up to you and ask for spare change in exchange for newspapers and trinkets, almost certainly stolen.<br/><br/>{img:Vd2 london slum.jpg}<br/><br/>This is a distressed part of town, heavily contrasting with the Worthington's estate. You could prosecute dozens of these petty criminals, selling moonshine and cannabis, but you remember the old saying, "hitting dirt with a stick only causes it to spread."<br/><br/>Mardler motions towards Joseph's door handle as the two of you approach. You'd already noticed that it was broken and disfigured. Home invasion?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barkerapartment</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="barkerapartment">
+    <inherit name="scripttext" />
+    <description><![CDATA[Mardler pushes open the broken door and looks into the poorly lit apartment. You see a young Italian man sprawled on the floor face down, blood trickling down the back of his head.<br/><br/>Mardler rushes over to the man, shaking him and taking his pulse. "Joseph? Are you Joseph? What happened?"<br/><br/>The man slowly opens his eyes and rubs the back of his head in discomfort. He sits up and glances down at his palm, eyeing the sticky hot blood that leaked out of his skull. "Where's Chloe?" he coughs through the pain.<br/><br/>"We were going to ask you the same thing," you say. "Joseph, correct?"<br/><br/>"Yes," says the young man, slowly coming back to full consciousness. "Joseph Crespo."<br/><br/>"What happened here?" asks Mardler.<br/><br/>"Well I was here with my girl, then I heard someone at the door," he says. "Before I could even get a glance through the peephole, someone bashed right through the door. It was a big guy wearing a mask made of a burlap sack. We {page:barkerscuffledforaminute:scuffled for a minute}, but he was unnaturally strong. He caught me in the back of the head with something hard, a hammer or something, and that's all I remember."<br/><br/>Joseph looks around, growing increasingly more concerned. "Where's Chloe?" he whimpers.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barkerinvestigate</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script"><![CDATA[
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+      firsttime {
+        if (GetInt(game, "Deductive Reasoning") = 4) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter I Complete: Chapter Score 100%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning") = 3) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter I Complete: Chapter Score 75%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning") = 2) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter I Complete: Chapter Score 50%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning") = 1) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter I Complete: Chapter Score 25%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning") = 0) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter I Complete: Chapter Score 0%</b></i></font><br/>")
+        }
+      }
+    ]]></script>
+  </object>
+  <object name="barkerinvestigate">
+    <inherit name="scripttext" />
+    <description><![CDATA["What do you make of this?" asks Mardler in a hushed tone. "Is this some elaborate ploy being executed by Joseph to throw us off Chloe Worthington's location?"<br/><br/>"Well the wound on the back of his head is legitimate," you say. "He did some serious damage to himself if this really is some diversion. He also didn't know when we were arriving, so his timing would have had to be very lucky. It's possible that Chloe did this to him and ran away as well." You bite your fingernail in thought. "You go outside and ask Joseph's neighbors if they saw or heard anything, I'll stay in here and investigate."<br/><br/>You start looking for clues in the small apartment, trying piece together what happened here a few minutes earlier. You walk across the dirty room and catch a {page:barkerfaintyetsweetalcoholicsmell:faint yet sweet alcoholic smell}. You also pick up the smell of sawdust and formaldehyde.<br/><br/>On the ground you see a few long curly blond hairs. Chloe Worthington's. Beside the hairs you see a grim {page:barkersmileyface:smiley face} carved deep into the floorboards.<br/><br/>"What's going on?" asks Joseph, still dazed.<br/><br/>What's your opinion of the situation?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barkertruth</key>
+        <value>Joseph is telling the truth, Romeo and Juliet gone horribly wrong</value>
+      </item>
+      <item>
+        <key>barkerploy</key>
+        <value>This is a scheme planned by Joseph and Chloe to run away together</value>
+      </item>
+      <item>
+        <key>barkerchloe</key>
+        <value>Chloe changed her mind, attacked Joseph, and ran away</value>
+      </item>
+    </options>
+    <script type="script">
+      SetCounter ("Deductive Reasoning 2", 0)
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+    </script>
+  </object>
+  <object name="barkerscuffledforaminute">
+    <inherit name="scripttext" />
+    <description><![CDATA[There are red marks on Joseph's arms beginning to form. The color of blood leaking from damaged capillaries under the skin. Soon he'll have bruises, and they look like they were inflicted while he was defending himself.<br/><br/>You also notice a hole in the wall 5' 8" above the floor. It looks like it was just created judging by dust formation and lack thereof. Caused by the bludgeoning weapon? Perhaps.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barkerapartment</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="barkertruth">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>Deductive Reasoning +1</b></i></font><br/><br/>Who abducted Chloe Worthington? And why?<br/><br/>"Does anybody have a grudge against you?" you ask Joseph. Maybe Chloe was just caught in the wrong place at the wrong time. She could be collateral damage from an attack on Joseph.<br/><br/>"No," says Joseph. "No, I don't think so."<br/><br/>The kidnapper didn't leave much behind.<br/><br/>You walk to the back of the apartment and feel a steady breeze floating in through a widely open window. This was probably the kidnapper's exit route, into a deserted alley. You try to put the pieces together.<br/><br/><i><b>1:</b> Kidnapper breaks in and fights Joseph, knocking him out with a blunt weapon<br/><br/><b>2:</b> Kidnapper drugs Chloe<br/><br/><b>3:</b> Kidnapper leaves through the window</i><br/><br/>...but he couldn't carry Chloe for long without raising suspicion.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barkermardler</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 2")
+      }
+    </script>
+  </object>
+  <object name="barkerploy">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"The jig is up, Joseph," you say. "Where's Chloe? First you borderline kidnap her from her father, and now you're trying to throw us off her track."<br/><br/>Joseph unsteadily rises to his feet. "You've got it all wrong, sir," he says. "I'm a victim here too! I promise you, I had nothing to do with this. Chloe and I are in love!"<br/><br/>Joseph seems innocent, but it's hard to tell. If this really is a plan concocted by the two young adults, then it's incredibly drastic. Plus there are signs of a fight, just like the one Joseph described. The clues don't add up.<br/><br/>"Does anybody have a grudge against you?" you ask Joseph. Maybe Chloe was just caught in the wrong place at the wrong time. She could be collateral damage from an attack on Joseph.<br/><br/>"No," says Joseph. "No, I don't think so."<br/><br/>The kidnapper didn't leave much behind.<br/><br/>You walk to the back of the apartment and feel a steady breeze floating in through a widely open window. This was probably the kidnapper's exit route, into a deserted alley. You try to put the pieces together.<br/><br/><i><b>1:</b> Kidnapper breaks in and fights Joseph, knocking him out with a blunt weapon<br/><br/><b>2:</b> Kidnapper drugs Chloe<br/><br/><b>3:</b> Kidnapper leaves through the window</i><br/><br/>...but he couldn't carry Chloe for long without raising suspicion.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barkermardler</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="barkerchloe">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"What did you do to Chloe that made her attack you and run off?" you ask. "Where would she go?"<br/><br/>Joseph unsteadily rises to his feet. "You've got it all wrong, sir," he says. "I'm a victim here too! I promise you, I had nothing to do with this. Chloe and I are in love!"<br/><br/>Joseph seems innocent, but it's hard to tell. Did Chloe really do this much damage to Joseph?<br/><br/>"Does anybody have a grudge against you?" you ask Joseph. Maybe Chloe was just caught in the wrong place at the wrong time. She could be collateral damage from an attack on Joseph.<br/><br/>"No," says Joseph. "No, I don't think so."<br/><br/>The kidnapper didn't leave much behind.<br/><br/>You walk to the back of the apartment and feel a steady breeze floating in through a widely open window. This was probably the kidnapper's exit route, into a deserted alley. You try to put the pieces together.<br/><br/><i><b>1:</b> Kidnapper breaks in and fights Joseph, knocking him out with a blunt weapon<br/><br/><b>2:</b> Kidnapper drugs Chloe<br/><br/><b>3:</b> Kidnapper leaves through the window</i><br/><br/>...but he couldn't carry Chloe for long without raising suspicion.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>barkermardler</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="barkerfaintyetsweetalcoholicsmell">
+    <inherit name="scripttext" />
+    <description>Someone used chloroform here recently.</description>
+    <options type="stringdictionary">
+      <item>
+        <key>barkerinvestigate</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="barkermardler">
+    <description><![CDATA[Mardler reenters Joseph's apartment. "The locals aren't very cooperative, as expected," he says. "Police aren't especially adored in this part of town. A few people agree they heard a woman scream from this general area about fifteen to twenty minutes ago, but that's not uncommon in these parts so they paid little attention."<br/><br/>You mentally review the evidence, your encyclopedic mind whirring through a multitude of theories. "If that was Chloe's scream, we barely missed her. We haven't been here longer than six minutes."<br/><br/>"If we act fast, we can find him," says Mardler. "How far could he have gone?"<br/><br/>How did he leave undetected? How did he avoid arousing suspicion?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorynearby</key>
+        <value>the kidnapper went to a nearby house or apartment, staying off the streets</value>
+      </item>
+      <item>
+        <key>theorycarriage</key>
+        <value>the kidnapper jumped in a carriage as his getaway vehicle</value>
+      </item>
+      <item>
+        <key>theorystillhere</key>
+        <value>the kidnapper is still here</value>
+      </item>
+    </options>
+  </object>
+  <object name="theorynearby">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>No, that doesn't make sense. The kidnapping is targeting Chloe, which means the kidnapper must have been watching Chloe run off with Joseph last night. The chance of the kidnapper also living near Joseph is very unlikely, because he didn't know to come to this address twelve hours ago.<br/><br/>He probably escaped in a carriage, but which carriage?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorycarpentry</key>
+        <value>carpentry supply</value>
+      </item>
+      <item>
+        <key>theoryhearse</key>
+        <value>hearse</value>
+      </item>
+      <item>
+        <key>theoryworthington</key>
+        <value>Mr. Worthington's carriage</value>
+      </item>
+    </options>
+  </object>
+  <object name="theorycarriage">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>Deductive Reasoning +1</b></i></font><br/><br/>Excellent!<br/><br/>But what carriage?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorycarpentry</key>
+        <value>carpentry supply</value>
+      </item>
+      <item>
+        <key>theoryhearse</key>
+        <value>hearse</value>
+      </item>
+      <item>
+        <key>theoryworthington</key>
+        <value>Mr. Worthington's carriage</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 2")
+      }
+    </script>
+  </object>
+  <object name="theorycarpentry">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>No, there's something more...<br/><br/>Then the thought hits you!]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorycoffins</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="theoryhearse">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>Deductive Reasoning +1</b></i></font><br/><br/>Yes of course... Brilliant!]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorycoffins</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 2")
+      }
+    </script>
+  </object>
+  <object name="theoryworthington">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>That's rather extreme, not to mention Mr. Worthington didn't know who had kidnapped his daughter earlier this morning. Besides, he would have drugged his own daughter or had one of his lackeys drug her with chloroform, a potentially lethal maneuver is executed incorrectly.<br/><br/>Then the thought hits you!]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorycoffins</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="theorycoffins">
+    <description><![CDATA["I got it," you say to Mardler, your mind buzzing. Mardler and Joseph listen anxiously for your theory. "We're looking for someone that escaped in their own carriage minutes ago. Whoever did this doesn't live near here, because this crime is too obviously directed towards Chloe. If the kidnapper was after Joseph but they were surprised by Chloe's presence, why kidnap her? The kidnapper was wearing a mask so he could have ran off without Chloe being a problem. The kidnapper has been studying Chloe, and was there the night she left with Joseph, watching from the distance. That's the only way he would know to strike at this location.<br/><br/>"The recent presence of sawdust and formaldehyde left lingering odors. So the kidnapper probably works with wood, judging by the sawdust and use of a hammer or similar tool in his attack. He's a strong man, so he could plausibly have a job that requires manual labor and heavy lifting. But what of the formaldehyde? Formaldehyde is often used as a preservative to keep dead bodies from decomposing before funerals. I'd gamble the kidnapper works with a mortuary, building coffins and using formaldehyde."<br/><br/>Mardler's eyes grow wide. "We saw a coffin carrying carriage when we arrived!"<br/><br/>"Exactly," you say. "What a strange sight to see a carriage in this neighborhood at all. No one would ever detour through here unless they had business. The passing of that carriage matches with the timing of witnesses claiming to here a scream. We need to find that driver."<br/><br/>Joseph scratches his chin and gives you a quizzical look. "You're making a judgment call on this kidnapping based on the how the room smells?"<br/><br/>"It's all we have to work with for now," you respond. "We're going to need to visit some mortuaries."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>mortuary</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="mortuary">
+    <description><![CDATA[<b><u>Walker Mortuary</u></b><br/><br/>"That's the one," you say as you point to the large black carriage outside the mortuary. "That's definitely the carriage that went past us on Barker Street."<br/><br/>Three hours had passed since you left Joseph's house with Mardler and began investigating all the nearby mortuaries. Finally you stumbled upon Walker's Mortuary and identified the vehicle that you'd seen earlier that day.<br/><br/>"Who drives this carriage?" you ask Henry Walker, the owner of the establishment.<br/><br/>"Cade is the one that takes that cab out," replies the owner as he rubs his dirty glasses with a dirtier handkerchief. "Cade Brewer. I didn't even realize it was ever gone. He must have left and brought it back without me noticing."<br/><br/>"What can you tell me about Cade Brewer?" you ask.<br/><br/>Walker shrugs. "Not much to tell," he admits. "Cade has always been a loner, never talking to us or nothing. He came here one day looking for work, so I took him in. Seemed like a drifter, said something about losing his old job so he wanted a position here. He's a big fella, a little taller than six feet I'd guess. Short black hair. Dark eyes." The man leans in close and speaks in a muted tone. "To be frank, he's always given me the creeps. Lumbering around and acting all quiet. It's like he relates more to the dead than the living."<br/><br/>Mardler looks over at you and sighs. "So you have no idea where Cade is now? Where could he be?" asks your partner.<br/><br/>Walker scratches the back of his head. "Not the faintest. But feel free to look through his locker and his carriage."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>mortuarylocker</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="theorystillhere">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>The open window must be a red herring. You check around the small apartment for the kidnapper's hiding place, but come up with nothing. It is a very small apartment after all.<br/><br/>He probably escaped in a carriage, but which carriage?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorycarpentry</key>
+        <value>carpentry supply</value>
+      </item>
+      <item>
+        <key>theoryhearse</key>
+        <value>hearse</value>
+      </item>
+      <item>
+        <key>theoryworthington</key>
+        <value>Mr. Worthington's carriage</value>
+      </item>
+    </options>
+  </object>
+  <object name="mortuarylocker">
+    <inherit name="scripttext" />
+    <description><![CDATA[You start rifling through Cade Brewer's locker, though there's not much to see. The small space is nearly empty, save an {page:mortuaryoldshirt:old shirt} and a {page:mortuarysmalljar:small jar} near the back.<br/><br/>You take a look at the carriage and investigate the {page:mortuarycoffin:coffins in the back}.<br/><br/>"I say we stay here a while and see if Brewer comes back," says Mardler. "You still think he's our guy?"<br/><br/>"Definitely," you say.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>station</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+    </script>
+  </object>
+  <object name="mortuaryoldshirt">
+    <inherit name="scripttext" />
+    <description><![CDATA[You take a look at Cade Brewer's tattered shirt. It's covered in wood dust and stitched in multiple places. It was stitched up with a pattern not unlike the modern Gely suture.<br/><br/>You notice fresh pine needles stuck to the back of the shirt.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>mortuarylocker</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="mortuarysmalljar">
+    <inherit name="scripttext" />
+    <description><![CDATA[It's a small glass jar of painkillers with only three pills left. The jar is six months old according to the tag and the painkillers are a brand called "Opiox," a new type of opiate. There's a smiley face drawn on the bottle.<br/><br/>So Brewer was in pain...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>mortuarylocker</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="mortuarycoffin">
+    <inherit name="scripttext" />
+    <description><![CDATA[You open a coffin and a wave of foul smell hits your nose. The stench of blood and urine emanates from the wooden box, and you notice scratch marks dug deep into the inside of the coffin lid.<br/><br/>Mardler looks away in disgust as you lower the coffin lid back into place. Monstrous.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>mortuarylocker</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="station">
+    <description><![CDATA[You wait until nightfall, but Brewer never returns. He's out in London, hiding and biding his time, waiting for the predators to leave his lair.<br/><br/><b><u>Scotland Yard Station</u></b><br/><br/>Posting a couple police officers at Walker's Mortuary you deliver the news to Mr. Worthington about his daughter's second disappearance. You leave him grief stricken so you can carry on with the investigation, working deep into the night, looking over clues and evidence.<br/><br/>{img:Vd2 scotland yard.jpg}<br/><br/>Four girls missing in six weeks, all with the same smiley face calling card. Chloe Worthington, Amy Anderson, Tasha Lively and Julia Alberts all gone in a moment.<br/><br/><i><b>Chloe Worthington</b><br/>Age: 16<br/>Hair: Blonde<br/>Height: 5' 4"<br/>Weight: 120 lbs<br/>St. Anthony Private School<br/>Upper class<br/><br/><b>Amy Anderson</b><br/>Age: 19<br/>Hair: Straw<br/>Height: 5' 8"<br/>Weight: 135 lbs<br/>No education<br/>Lower class<br/><br/><b>Tasha Lively</b><br/>Age: 14<br/>Hair: Golden<br/>Height: 5' 2"<br/>Weight: 105 lbs<br/>Aperfield School<br/>Lower middle class<br/><br/><b>Julia Alberts</b><br/>Age: 13<br/>Hair: Fair<br/>Height: 5' 0"<br/>Weight: 100 lbs<br/>St. Broderick's School<br/>Upper middle class</i><br/><br/>Is Brewer responsible for all these disappearances? Why target them? What's common about these girls?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>stationage</key>
+        <value>age</value>
+      </item>
+      <item>
+        <key>stationhair</key>
+        <value>hair</value>
+      </item>
+      <item>
+        <key>stationbody</key>
+        <value>body</value>
+      </item>
+      <item>
+        <key>stationstatus</key>
+        <value>social status</value>
+      </item>
+      <item>
+        <key>stationname</key>
+        <value>name pattern</value>
+      </item>
+    </options>
+  </object>
+  <object name="stationage">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>No that can't be right. 19, 16, 14 and 13.<br/><br/>No, it's the hair. All the victims have had light hair. You're too tired to think clearly.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>stationnote</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="stationhair">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>He's got a thing for girls with light hair.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>stationnote</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 2")
+      }
+    </script>
+  </object>
+  <object name="stationbody">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>No that can't be right. They all have different body types, developed to different ages.<br/><br/>No, it's the hair. All the victims have had light hair. You're too tired to think clearly.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>stationnote</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="stationstatus">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>No that can't be right. Amy Anderson is much poorer than the other three.<br/><br/>No, it's the hair. All the victims have had light hair. You're too tired to think clearly.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>stationnote</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="stationnote">
+    <inherit name="scripttext" />
+    <description><![CDATA[You get little rest at the police station, dozing in and out of consciousness while comparing files and trying to piece together who Brewer really is. You have brief dreams of a man in a burlap sack mask. No, not a man. A monster.<br/><br/>Mardler jolts you awake with a shove. Morning light meekly shines through the windows of the office. He hands you an envelope.<br/><br/>"This was outside," he says. "It's addressed to you."<br/><br/>You carefully tear off the seal and pull out a note written on thick yellowing paper blotted with {page:stationdarkreddishbrowndots:dark reddish brown dots}.<br/><br/>"What does it say?" asks Mardler anxiously.<br/><br/><i>Mr. Detective<br/><br/>Iv red abut u lods of tims n the papper. Im hunored tht uve tacken nutice of my werk. Saw u befur u saw me. I c gud frum far away. Saw u at tha italys houz n, saw u at da ded mens home, but i cnt hve u findin me yet. U cn find ze gurl now tho. She hngry. She culd. She cri.<br/><br/>luv<br/><br/>Mr. Burlap</i><br/><br/>"He wants us to find one of the girls?" says Mardler in disbelief. "But where? She could be anywhere in London!"<br/><br/>You reflect for a moment. "I think I know."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>stationbarker</key>
+        <value>Barker Street</value>
+      </item>
+      <item>
+        <key>stationlighthouse</key>
+        <value>the cemetery</value>
+      </item>
+      <item>
+        <key>stationmortuary</key>
+        <value>Walker's Mortuary</value>
+      </item>
+      <item>
+        <key>stationhospital</key>
+        <value>a hospital</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+    </script>
+  </object>
+  <object name="stationname">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>You can't find a plausible pattern with letters of their names. You're over thinking it.<br/><br/>No, it's the hair. All the victims have had light hair. You're too tired to think clearly.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>stationnote</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="stationbarker">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"He's going back to Barker Street," you say. "He must be."<br/><br/>You, Mardler and a handful of police officers travel to Barker Street and push through the dingy little apartments. No trace of Brewer. You interrogate the locals but have no luck.<br/><br/>"She's not here," barks Mardler, kicking a can across the street in frustration. "But where is she? And where's Cade Brewer? Who is this fiend?"<br/><br/>You sit and think deeply about who Cade Brewer really is. What was his profession before working at the mortuary?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>wrongprofessionhospital</key>
+        <value>He worked at a hospital</value>
+      </item>
+      <item>
+        <key>wrongprofessiondocks</key>
+        <value>He worked at the docks</value>
+      </item>
+      <item>
+        <key>wrongprofessiongardner</key>
+        <value>He worked as a groundskeeper</value>
+      </item>
+    </options>
+  </object>
+  <object name="stationlighthouse">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"He brought her to the cemetery," you say. "He must have."<br/><br/>You, Mardler and a handful of police officers investigate several of London's cemeteries but have no luck. You can't seem to find a clue of Cade Brewer anywhere.<br/><br/>You sit and think deeply about who Cade Brewer really is. What was his profession before working at the mortuary?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>wrongprofessionhospital</key>
+        <value>He worked at a hospital</value>
+      </item>
+      <item>
+        <key>wrongprofessiondocks</key>
+        <value>He worked at the docks</value>
+      </item>
+      <item>
+        <key>wrongprofessiongardner</key>
+        <value>He worked as a groundskeeper</value>
+      </item>
+    </options>
+  </object>
+  <object name="stationmortuary">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"He's going back to Walker's Mortuary," you say. "He must be."<br/><br/>You, Mardler and a handful of police officers travel to Walker's Mortuary and investigate the coffins. You interview Henry Walker, but he still hasn't seen Cade Brewer.<br/><br/>"She's not here," barks Mardler. "Where is she? And where's Cade Brewer? Who is this fiend?"<br/><br/>You sit and think deeply about who Cade Brewer really is. What was his profession before working at the mortuary?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>wrongprofessionhospital</key>
+        <value>He worked at a hospital</value>
+      </item>
+      <item>
+        <key>wrongprofessiondocks</key>
+        <value>He worked at the docks</value>
+      </item>
+      <item>
+        <key>wrongprofessiongardner</key>
+        <value>He worked as a groundskeeper</value>
+      </item>
+    </options>
+  </object>
+  <object name="stationhospital">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>"A hospital?" says Mardler. "Why? And which one?"<br/><br/>"Working at a hospital was Brewer's job before he started working at Walker's Mortuary," you explain. "I'm thinking it was the Gander Hill Hospital that closed down about six months back. In his locker at the mortuary, he had an old shirt that was stitched up with a Gely suture, a modern suturing technique. He also had a vial of Opiox painkillers, a new variety of drug, that was issued six months ago, at the time of Gander Hill's closing. Gander Hill was renown for utilizing new techniques and medicines, but it shut down due to embezzlement and inner conflict.<br/><br/>"Look at the material that this note was made of. Thick and torn from what looks like a folder, quite possibly a scientist's or doctor's. The blotches on this note are laudanum, a painkiller made of an opium tincture. How does Brewer have access to Opiox, laudanum and chloroform? Because he worked with medicine, and he's still hiding out in the abandoned hospital."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>hospital</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 2")
+      }
+    </script>
+  </object>
+  <object name="stationdarkreddishbrowndots">
+    <inherit name="scripttext" />
+    <description><![CDATA[You sniff the discolored blotches and touch your tongue to one of them. You spit out the harshly bitter flavor and bite your fingernail in thought.<br/><br/>Laudanum.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>stationnote</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="hospital">
+    <inherit name="scripttext" />
+    <description><![CDATA[You, Mardler and a handful of other policemen travel across London towards the Gander Hill Hospital. It resides on the shore of the Thames, the smell of low tide hitting your acute nose.<br/><br/>You burst through the boarded doors, guns drawn. You're ready to face Brewer, aka Mr. Burlap, focusing your senses and analyzing the environment. You pick up the subtle sound of whimpering from the other room and push open the rotting door cautiously.<br/><br/>A young woman lays on the floor, tightly bound to a pipe protruding from the wall. She writhes in her own vomit, howling in agony. You run over to her and crouch beside her, noticing small chunks of a {page:hospitalpalepinkishmushroom:pale pinkish mushroom} beside her.<br/><br/>"What's wrong with her? Is she poisoned?!" Mardler cries out as he joins you. "What do we do?"<br/><br/>You look around the dirty hospital room as the young woman coughs and twitches.<br/><br/>You go for a vial of...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>hospitallaudanum</key>
+        <value>laudanum</value>
+      </item>
+      <item>
+        <key>hospitalatropine</key>
+        <value>atropine</value>
+      </item>
+      <item>
+        <key>hospitalwater</key>
+        <value>water</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+    </script>
+  </object>
+  <object name="hospitallaudanum">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>You grab the bottle of laudanum and force Amy Anderson to drink it.<br/><br/>"What was that?" asks Mardler in shock.<br/><br/>"Laudanum," you reply. "It's a painkiller that should save this girl."<br/><br/>Amy doesn't react well with the laudanum, continuing to writhe in agony. Another police officer steps in. "She needs atropine! It will counteract the mushroom's toxin! I used to study medicine!" He injects the girl with a shot of atropine.<br/><br/>The girl already appears more peaceful, as her breathing rate returns to normal and she sluggishly looks around the room.<br/><br/>The policeman looks up at you. "Be careful! She might die from an overdose of that laudanum."<br/><br/>"Hey, check this out," says one of your fellow policemen from the other side of the room.<br/><br/>You look over to him and see writing scratched into the wall.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>hospitalwriting</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="hospitalatropine">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>Eureka!<br/><br/>You grab the clear bottle and quickly plunge a syringe through the cork of it. The alkaloid fills the long needled tool and you stick it into the writhing girl's arm, depressing the liquid into her veins.<br/><br/>"What was that?" asks Mardler in shock.<br/><br/>"Atropine," you respond. "This girl ingested <i>Inocybe erubescens</i>, known as deadly fibrecap, a very poisonous mushroom. The dose of atropine should negate the mushroom's toxic symptoms. She should be alright in an hour."<br/><br/>The girl already appears more peaceful, as her breathing rate returns to normal and she sluggishly looks around the room.<br/><br/>Mardler pats you on the back and lets out a sigh of relief.<br/><br/>"Hey, check this out," says one of your fellow policemen from the other side of the room.<br/><br/>You look over to him and see writing scratched into the wall.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>hospitalwriting</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 2")
+      }
+      firsttime {
+        IncreaseCounter ("Guardian Angel")
+      }
+    </script>
+  </object>
+  <object name="hospitalwater">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>You grab a jug of water and force Amy Anderson to drink it. Hydrate!<br/><br/>Amy's condition doesn't improve, as she continues to writhe in agony. Another police officer steps in. "She needs atropine! It will counteract the mushroom's toxin! I used to study medicine!" He injects the girl with a shot of atropine.<br/><br/>The girl already appears more peaceful, as her breathing rate returns to normal and she sluggishly looks around the room.<br/><br/>"Hey, check this out," says one of your fellow policemen from the other side of the room.<br/><br/>You look over to him and see writing scratched into the wall.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>hospitalwriting</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="hospitalwriting">
+    <inherit name="scripttext" />
+    <description><![CDATA[<i>Mr. Detective<br/><br/>Did u sav the whor n tim? She hed a litle sneck erlier, wull she mek t tu desert? HA HA HA HA HA HA HA HA HA HAAA<br/><br/>Cn u find grl nmbr 2? She is n fr a story bok nding. U hv tull {page:hospital2oclockithink:2 o clock, i thnk}. Da fster the beter. Buono fortuna.<br/><br/>Sincurly,<br/><br/>Mr. Burlap</i><br/><br/>"Another damn riddle," spits Mardler. "We're just playing this freak's game!" He glances down at his watch. "It's almost 8 o' clock now, so we have a little more than 6 hours to find the next girl."<br/><br/>Mardler and the rest of the police look to you expectantly. You bite your thumb, concentrating your mind. All you can see are Amy Anderson's tears. You begin envisioning the pain of the other three girls; Julia Alberts, Tasha Lively and Chloe Worthington. The fear. The unknowing.<br/><br/>Unknowing is truly the greatest form of suffering.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>hospitalemotion</key>
+        <value>let your sympathy, anger and hot emotion fuel you</value>
+      </item>
+      <item>
+        <key>hospitalice</key>
+        <value>shut out your emotion and rely on cold calculation</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+    </script>
+  </object>
+  <object name="hospitalpalepinkishmushroom">
+    <inherit name="scripttext" />
+    <description><![CDATA[This is part of a partly eaten <i>Inocybe erubescens</i>, a dangerously poisonous mushroom containing muscarine, a chemical found in toxic mushrooms.<br/><br/>The deadly fibrecap mushroom is somewhat fresh, so where did Brewer get his hands on this?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>hospital</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="hospital2oclockithink">
+    <inherit name="scripttext" />
+    <description><![CDATA[<i>You have until 2 o' clock, I think</i><br/><br/>Why is Brewer acting unsure of this challenge's time limit? Is this next girl poisoned as well? The challenge is time sensitive, yet the time is unclear.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>hospitalwriting</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="hospitalemotion">
+    <description><![CDATA[You let your emotions drive you to. This isn't just a regular case, a domestic dispute, a burglary, this is a pathological serial killer that will kill again if you don't stop him. It's your responsibility to stop this deranged man and see that he is served justice.<br/><br/>You focus your mind on the problem at hand, every thought of the three other surviving girls pushing your deductive abilities further.<br/><br/>"What do we do now?" asks Mardler, eager to help.<br/><br/>Where is the next girl?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>juliabarker</key>
+        <value>Barker Street</value>
+      </item>
+      <item>
+        <key>juliathames</key>
+        <value>the River Thames</value>
+      </item>
+      <item>
+        <key>julialibrary</key>
+        <value>the library</value>
+      </item>
+      <item>
+        <key>juliaschool</key>
+        <value>St. Anthony's Private School</value>
+      </item>
+    </options>
+  </object>
+  <object name="hospitalice">
+    <description><![CDATA[You immediately block out thoughts of Amy Anderson's health and condition. You've done enough for her. Statistically, she'll live.<br/><br/>The other three girls will statistically die.<br/><br/>"What do we do now?" asks Mardler, annoying your train of thought.<br/><br/>You ignore him. Where is the next girl?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>juliabarker</key>
+        <value>Barker Street</value>
+      </item>
+      <item>
+        <key>juliathames</key>
+        <value>the River Thames</value>
+      </item>
+      <item>
+        <key>julialibrary</key>
+        <value>the library</value>
+      </item>
+      <item>
+        <key>juliaschool</key>
+        <value>St. Anthony's Private School</value>
+      </item>
+    </options>
+  </object>
+  <object name="juliabarker">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/><b><u>Barker Street</u></b><br/><br/>"She's not here," says Mardler as you interview your sixteenth resident of Barker Street. "We've been looking around here for hours."<br/><br/>"She has to be," you say. "The last note ended in 'Buono fortuna,' which is a poke at Joesph Crespo because he's Italian. We know Brewer knows Crespo is Italian because of his first note."<br/><br/>"It's almost 2 o' clock," persists Mardler. "Where else could this girl be?"<br/><br/>You stare at Mardler, eyes like daggers. "You think I don't know that it's almost 2 o' clock? It's exactly 1:35 and 21 seconds according to your watch, am I right? You think I don't know the importance of this situation? The value of every passing second?"<br/><br/>Mardler looks down, scorned by your remarks. 2 o' clock comes and goes, but there's no sign of another girl or Brewer.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>juliadead</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="juliathames">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>"I've got it," you say. Though lingering doubt burns in the back of your mind. You extinguish it and begin to explain. "Brewer ended his last note with, 'Buono fortuna,' Italian for 'good luck.' He also mentioned that the next girl, 'is in for a storybook ending.' He's poking fun at the investigation that Mardler and I conducted yesterday when tracking down Joseph Crespo. We know Brewer knows Joseph is Italian, as he mentioned that in his first note, and somehow he knows about Chloe's book, 'Love of the Sea.' He must have seen Joseph give it to Chloe, and seen Chloe reading it while stalking her. That's the storybook that he's referring to."<br/><br/>"So how does 'Love of the Sea' end?" asks Mardler.<br/><br/>"That's not important," you say. "That's not the ending that he has planned. He's just pointing us towards the sea, or the Thames in this case, or even more specifically, tideway. Tideway is the part of the Thames that's subject to changes in the tide. When we arrived here I noticed it was low tide, which means we have about six hours before high tide. That lands us at Brewer's deadline of 2 o' clock. That's also why he's unsure, because tides can be unpredictable."<br/><br/>"What happens at high tide?" asks one of the younger police officers.<br/><br/>"I can only assume a girl will die," you respond. "She's probably tied up somewhere where the water will rise and submerge her overtime. Delayed drowning."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>juliasearch</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 2")
+      }
+      firsttime {
+        IncreaseCounter ("Guardian Angel")
+      }
+    </script>
+  </object>
+  <object name="julialibrary">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"She's not here," says Mardler as you finish searching another London library and questioning it's staff.<br/><br/>"There's some trick to the message," you say. "Brewer wrote about a storybook ending, so what other place to find stories than the library? We're looking for a library that has a copy of 'Love of the Sea.' He must know about Chloe's book somehow."<br/><br/>"It's almost 2 o' clock," persists Mardler. "Where else could this girl be?"<br/><br/>You stare at Mardler, eyes like daggers. "You think I don't know that it's almost 2 o' clock? It's exactly 1:35 and 21 seconds according to your watch, am I right? You think I don't know the importance of this situation? The value of every passing second?"<br/><br/>Mardler looks down, scorned by your remarks. 2 o' clock comes and goes, but there's no sign of another girl or Brewer.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>juliadead</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="juliaschool">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/><b><u>St. Anthony's Private School</u></b><br/><br/>"She's not here," says Mardler as you interview your sixteenth staff member of St. Anthony's Private School. "We've been looking around here for hours."<br/><br/>"She has to be," you say. "I just know it."<br/><br/>"It's almost 2 o' clock," persists Mardler. "Where else could this girl be?"<br/><br/>You stare at Mardler, eyes like daggers. "You think I don't know that it's almost 2 o' clock? It's exactly 1:35 and 21 seconds according to your watch, am I right? You think I don't know the importance of this situation? The value of every passing second?"<br/><br/>Mardler looks down, scorned by your remarks. 2 o' clock comes and goes, but there's no sign of another girl or Brewer.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>juliadead</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="juliasearch">
+    <description><![CDATA[The London police force springs into action and begins searching all over tidewater for the next girl. They check every boat and dock, hastily covering ground.<br/><br/>You just hope you're fast enough.<br/><br/><b><u>Tideway</u></b><br/><br/>{img:Vd2 thames.jpg}<br/><br/>Hours into the challenge a police officer catches up with you as you're questioning the a group of sailors. His hands are on his knees and he's panting, sweat dripping from his brow.<br/><br/>"We found her," he gasps. "Julia Alberts. She was gagged and tied to the beam of a dock. We cut her loose and got her out before the tide rose above her." The officer breathes heavily, but relieved. "You were right!"]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensive</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="offensive">
+    <inherit name="scripttext" />
+    <description><![CDATA[<u><b>Worthington Estate</b></u><br/><br/>You decide to go back to the Worthington Estate to look for more clues before you receive another note from Cade Brewer. He must have been watching over Chloe for a while, carefully stalking and waiting to strike. When she ran off with Joesph, he followed them and attacked.<br/><br/>"Here it is," you say as you crouch down beside the pit of a mostly eaten {page:offensivewhitedamsonfruit:white damson fruit}. "This is where Brewer crouched and watched Chloe. It's easily accessed by the hole in the fence over there, there's good cover, and there's fading footprints in the soil from long hours of staying here."<br/><br/>You perch yourself in the hiding spot, concealed by the surrounding bushes, staring up at Chloe Worthington's window from the shadows. You take the point of view of Brewer.<br/><br/>"So where is Brewer keeping the other two girls, Tasha Lively and Chloe Worthington, since we already found his hideout at the Gander Hill Hospital?"<br/><br/>"He must have another hideout," you respond, "and I have an idea of where it is."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensiveneighborhood</key>
+        <value>another house in this wealthy neighborhood</value>
+      </item>
+      <item>
+        <key>offensiveforest</key>
+        <value>the forest on the outskirts of London</value>
+      </item>
+      <item>
+        <key>offensiveboat</key>
+        <value>on a boat on the Thames</value>
+      </item>
+    </options>
+    <script type="script"><![CDATA[
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+      firsttime {
+        if (GetInt(game, "Deductive Reasoning 2") = 7) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter II Complete: Chapter Score 100%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning 2") = 6) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter II Complete: Chapter Score 85.7%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning 2") = 5) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter II Complete: Chapter Score 71.4%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning 2") = 4) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter II Complete: Chapter Score 57.1%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning 2") = 3) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter II Complete: Chapter Score 42.9%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning 2") = 2) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter II Complete: Chapter Score 28.6%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning 2") = 1) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter II Complete: Chapter Score 14.3%</b></i></font><br/>")
+        }
+        else if (GetInt(game, "Deductive Reasoning 2") = 0) {
+          msg ("<font color = \"darkgoldenrod\"><i><b>Chapter II Complete: Chapter Score 0%</b></i></font><br/>")
+        }
+      }
+    ]]></script>
+  </object>
+  <object name="barkersmileyface">
+    <inherit name="scripttext" />
+    <description>Is this a copycat? Or is Chloe's disappearance related to the three abductions that happened over the past six weeks?</description>
+    <options type="stringdictionary">
+      <item>
+        <key>barkerinvestigate</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="wrongprofessionhospital">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>You grip the bridge of your nose between thumb and index as you let out a frustrated sigh. The clues snap together in your mind.<br/><br/>"We're looking in the wrong place," you say, getting the attention of your police task force. "We need to go to the Gander Hill Hospital."<br/><br/>"Why there?" asks Mardler.<br/><br/>"Use your brain for once," you say in frustration of your own misjudgment, taking your anger out on Mardler. "Cade Brewer must have worked at a hospital before going to the Walker Mortuary. In his locker, he had an old shirt stitched up with a Gely suture, a modern suturing technique, and he had a vial of Opiox painkillers, a rare new variety of drug. The painkillers were issued six months ago, at the time of Gander Hill's closing. Gander Hill was renown for utilizing new techniques and medicines, but shut down to to embezzlement and inner conflict.<br/><br/>"Remember the material that the note was made of? It was thick and torn, like it was torn from a folder, quite possibly a scientist's or doctor's. The blotches on the note were laudanum, a painkiller made from an opium tincture. Brewer has access to chloroform, Opiox and laudanum because he still must hide out in the derelict Gander Hill Hospital."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>wronghospital</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 2")
+      }
+    </script>
+  </object>
+  <object name="wrongprofessiondocks">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"Brewer worked at the docks," you mutter to yourself. "No that doesn't make sense."<br/><br/>Mardler grabs you shoulder. "Look," he says, "we all know you're the best chance these girls have of living. The girl isn't here, but if anyone can figure out where she is, it's you. Cade Brewer probably has some sort of hideout that he's using to hold these girls. Somewhere he's familiar with. Remember Henry Walker told us that he had just lost his old job before joining the mortuary? Where do you think he used to work?"<br/><br/>You slip into deep reflection, mentally browsing through the clues.<br/><br/>"I think I've got it," says Mardler. "Think about it, Brewer has had access to chloroform and painkillers, and we saw from the stitching of his shirt in his locker that he knows how to make a Gely suture. That's all medical supplies and knowledge! He probably worked at a hospital or as some sort of doctor."<br/><br/>"And the letter that he sent to the police station had drops of laudanum on it, another type of painkiller," you say. "Not to mention it was thick, like it was torn from a folder, maybe a doctor's or scientist's. The painkiller in Brewer's locker was Opiax, which is very modern and not used by a lot of hospitals. The Gander Hill Hospital shut down about six months ago, which coincides with the date on the vial. Brewer probably worked there until it shut down."<br/><br/>"He may be keeping the girl there!" exclaims Mardler.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>wronghospital</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="wrongprofessiongardner">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"Brewer worked as a groundskeeper," you mutter to yourself. "No that doesn't make sense."<br/><br/>Mardler grabs you shoulder. "Look," he says, "we all know you're the best chance these girls have of living. The girl isn't here, but if anyone can figure out where she is, it's you. Cade Brewer probably has some sort of hideout that he's using to hold these girls. Somewhere he's familiar with. Remember Henry Walker told us that he had just lost his old job before joining the mortuary? Where do you think he used to work?"<br/><br/>You slip into deep reflection, mentally browsing through the clues.<br/><br/>"I think I've got it," says Mardler. "Think about it, Brewer has had access to chloroform and painkillers, and we saw from the stitching of his shirt in his locker that he knows how to make a Gely suture. That's all medical supplies and knowledge! He probably worked at a hospital or as some sort of doctor."<br/><br/>"And the letter that he sent to the police station had drops of laudanum on it, another type of painkiller," you say. "Not to mention it was thick, like it was torn from a folder, maybe a doctor's or scientist's. The painkiller in Brewer's locker was Opiax, which is very modern and not used by a lot of hospitals. The Gander Hill Hospital shut down about six months ago, which coincides with the date on the vial. Brewer probably worked there until it shut down."<br/><br/>"He may be keeping the girl there!" exclaims Mardler.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>wronghospital</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="wronghospital">
+    <inherit name="scripttext" />
+    <description><![CDATA[You, Mardler and a handful of other policemen travel across London towards the Gander Hill Hospital. It resides on the shore of the Thames, the smell of low tide hitting your acute nose.<br/><br/>You burst through the boarded doors, guns drawn. You're ready to face Brewer, aka Mr. Burlap, focusing your senses and analyzing the environment. The hospital is deathly quiet as you push open door and scan the desolate rooms.<br/><br/>You enter a room and wince as you see a young girl lying motionless on the cold floor. She's tied tightly to pipe protruding from the wall, and she looks to have choked on her own vomit. There are bits of {page:wronghospitalpalepinkishmushroom:pale pinkish mushrooms} on the ground beside her.<br/><br/>"That's Amy Anderson," mutters Mardler as he checks the young woman's pulse. It's a meaningless action, as you can tell the girl is lifeless from across the room.<br/><br/>"Hey! Come look at this!" A fellow policeman calls you over to see writing scratched into the wall.<br/><br/><i>Mr. Detective<br/><br/>Did u sav the whor n tim? She hed a litle sneck erlier, wull she mek t tu desert? HA HA HA HA HA HA HA HA HA HAAA<br/><br/>Cn u find grl nmbr 2? She is n fr a story bok nding. U hv tull {page:wronghospital2oclockithink:2 o clock, i thnk}. Da fster the beter. Buono fortuna.<br/><br/>Sincurly,<br/><br/>Mr. Burlap</i><br/><br/>"Another damn riddle," spits Mardler. "We're just playing this freak's game!" He glances down at his watch. "It's almost 8 o' clock now, so we have a little more than 6 hours to find the next girl."<br/><br/>Mardler and the rest of the police look to you expectantly. You bite your thumb, concentrating your mind. All you can see is Amy Anderson's corpse. You begin envisioning the pain of the other three girls; Julia Alberts, Tasha Lively and Chloe Worthington. The fear. The unknowing.<br/><br/>Unknowing is truly the greatest form of suffering.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>wronghospitalemotion</key>
+        <value>let your sympathy, anger and hot emotion fuel you</value>
+      </item>
+      <item>
+        <key>wronghospitalice</key>
+        <value>shut out your emotion and rely on cold calculation</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+    </script>
+  </object>
+  <object name="wronghospitalemotion">
+    <description><![CDATA[You let your emotions drive you to. This isn't just a regular case, a domestic dispute, a burglary, this is a pathological serial killer that will kill again if you don't stop him. It's your responsibility to stop this deranged man and see that he is served justice.<br/><br/>You focus your mind on the problem at hand, every thought of the three surviving girls pushing your deductive abilities further.<br/><br/>"What do we do now?" asks Mardler, eager to help.<br/><br/>Where is the next girl?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>juliabarker</key>
+        <value>Barker Street</value>
+      </item>
+      <item>
+        <key>juliathames</key>
+        <value>the River Thames</value>
+      </item>
+      <item>
+        <key>julialibrary</key>
+        <value>the library</value>
+      </item>
+      <item>
+        <key>juliaschool</key>
+        <value>St. Anthony's Private School</value>
+      </item>
+    </options>
+  </object>
+  <object name="wronghospitalice">
+    <description><![CDATA[You immediately block out thoughts of Amy Anderson's. You tried to save her and you failed. Another footnote in the history of crime in London.<br/><br/>There are three other girls that will statistically die. You have an opportunity to lower that probability.<br/><br/>"What do we do now?" asks Mardler, annoying your train of thought.<br/><br/>You ignore him. Where is the next girl?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>juliabarker</key>
+        <value>Barker Street</value>
+      </item>
+      <item>
+        <key>juliathames</key>
+        <value>the River Thames</value>
+      </item>
+      <item>
+        <key>julialibrary</key>
+        <value>the library</value>
+      </item>
+      <item>
+        <key>juliaschool</key>
+        <value>St. Anthony's Private School</value>
+      </item>
+    </options>
+  </object>
+  <object name="wronghospitalpalepinkishmushroom">
+    <inherit name="scripttext" />
+    <description><![CDATA[This is part of a partly eaten <i>Inocybe erubescens</i>, a dangerously poisonous mushroom containing muscarine, a chemical found in toxic mushrooms.<br/><br/>The mushroom is somewhat fresh, so where did Brewer get his hands on this?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>wronghospital</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="wronghospital2oclockithink">
+    <inherit name="scripttext" />
+    <description><![CDATA[<i>You have until 2 o' clock, I think</i><br/><br/>Why is Brewer acting unsure of this challenge's time limit? Is this next girl poisoned as well? The challenge is time sensitive, yet the time is unclear.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>wronghospital</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="juliadead">
+    <description>It's mid-evening when word of Julia Albert's appearance gets to you. Someone had found a freshly dead young girl tied to a support beam of a dock, and as high tide rose, water engulfed her. Delayed drowning.</description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensive</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="offensiveneighborhood">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"That way Cade Brewer had a chance to spy on Chloe," you explain.<br/><br/>"Well that could be," says Mardler, "but does that mean Brewer has a hideout in every neighborhood of the girls he stalks? We have no evidence of him being a wealthy man, so how does he afford all this? There aren't any abandoned houses in this neighborhood. It just doesn't seem right."<br/><br/>You rethink and reevaluate. "You might be right," you admit.<br/><br/>"I think Brewer may have a hideout outside the city," says Mardler. "Think about it, we found pine needles on his shirt in his locker, a white damson fruit pit where he's been stalking, and he somehow got his hands on rare mushrooms to feed to Amy Anderson. He's clearly familiar with the forest."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensivemap</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="offensiveforest">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>You begin to explain to Mardler. "Cade Brewer is an introvert, eager to seclude himself from society. What better place to find isolation than the forest? We've found pine needles on his shirt, this rare white damson fruit pit where he's been stalking, and he fed a fresh deadly fibrecap mushroom to Amy Anderson. He's been in contact with the forest a lot lately."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensivemap</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+    </script>
+  </object>
+  <object name="offensiveboat">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>"That way Cade Brewer could easily tie up Julia Alberts to the beam on the dock," you explain.<br/><br/>"Well that could be," says Mardler, "but there's no other evidence that points to him having a boat. There's no evidence that shows Brewer is wealthy, so I'm not sure how he'd afford a boat, though it's not impossible of course. But he worked at a hospital and a mortuary, not at the docks or as a fisherman. I just want more evidence before we investigate every single boat on the Thames."<br/><br/>You rethink and reevaluate. "You might be right," you admit.<br/><br/>"I think Brewer may have a hideout outside the city," says Mardler. "Think about it, we found pine needles on his shirt in his locker, a white damson fruit pit where he's been stalking, and he somehow got his hands on rare mushrooms to feed to Amy Anderson. He's clearly familiar with the forest."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensivemap</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="offensivewhitedamsonfruit">
+    <inherit name="scripttext" />
+    <description>A small rare fruit. Cade Brewer ate these while watching over Chloe. There are no white damson trees in the Worthington garden.</description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensive</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="offensivemap">
+    <inherit name="scripttext" />
+    <description><![CDATA[You consult with some local experts of ecology and forestry, acquiring vegetation maps of the Epping Forest. You cross-reference the data and find a few small patches of forestland that are near deadly fibrecaps, white damsons and pine trees. Night begins to set in over London as you organize policemen into search parties and send them out into the woods towards suspect portions of land.<br/><br/><u><b>Epping Forest</b></u><br/><br/>{img:Vd2 forest3.jpg}<br/><br/>You grip a dim lantern in your outstretched hand as you, Mardler and two other officers; Henderson and Yates, wander through the dense forest. A shimmering glint of light catches your eye as the flame of the lantern passes over it. There's a {page:offensivesmallgoldbracelet:small gold bracelet} on the earthy ground.<br/><br/>Up ahead your keen eyes pick out a small cabin in the woods, dim light glowing from the windows. You motion for the other officers to remain silent as you all approach the rickety hut.<br/><br/>You're ten yards from the shack, remaining in the shadows, when you hear the loud sound of metal jaws wrenching upwards and the sickening noise of crunching bone and flesh. Yates howls in pain and drops to the ground, clutching his wounded leg, trapped in a large bear trap.<br/><br/>Your eyes dart between the injured officer and the cabin, and you can make out motion inside. Is this him, Cade Brewer? Mr. Burlap himself?<br/><br/>You and Mardler run towards the cabin as Henderson tends to the wounded. Mardler kicks in the door and pulls out his pistol, only to be stopped cold by a swinging shovel to the nose. He collapses to the floor as you step over him, finding yourself face-to-face with a hulking man wearing a grotesque burlap mask.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensiveburlap</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+    </script>
+  </object>
+  <object name="offensiveburlap">
+    <description><![CDATA[Mr. Burlap lunges towards you as your fire your revolver, but the shot merely glances his side as he grabs hold of you and grapples. He knocks the pistol out of your hand, far into the dark woods, then pushes you down. He quickly retreats into his cabin.<br/><br/>You get a good look at the cabin, though it is only dimly lit by a few candles on a center table. There are a multitude of animal traps and furs around the room, and a long wooden crutch up against the wall. What stands out the most though are the hundreds of sinister smiley faces carved into the walls and floor.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensivegun</key>
+        <value>go find your gun or Mardler's</value>
+      </item>
+      <item>
+        <key>offensivechase</key>
+        <value>chase Mr. Burlap</value>
+      </item>
+    </options>
+  </object>
+  <object name="offensivegun">
+    <inherit name="scripttext" />
+    <description><![CDATA[You look around in the dark leaves and pine needles for Mardler's gun. It had landed a few feet away beneath some foliage, but even in the low light you manage to find the pistol, warmed by Mardler's anxious hands.<br/><br/>Turning back to the cabin, you rush inside, gun drawn, but no one's here. There's the small window in the back that's agape, a cool breeze fluttering in, and an old ladder going upwards into a sort of attic above a {page:gunlargebearpelt:large bear pelt}.<br/><br/>Where did he go? Investigate the...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>gunwindow</key>
+        <value>window</value>
+      </item>
+      <item>
+        <key>gunladder</key>
+        <value>ladder</value>
+      </item>
+      <item>
+        <key>gunbear</key>
+        <value>bear pelt</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("Black")
+      SetBackgroundColour ("LightGrey")
+    </script>
+  </object>
+  <object name="offensivechase">
+    <inherit name="scripttext" />
+    <description><![CDATA[The monster of a man runs to the back of the cabin and pulls open a trapdoor beneath a large bear pelt, then descends into the basement.<br/><br/>You give chase. This may be the only chance you have to stop Mr. Burlap. You throw open the trapdoor and jump down into the earthy basement level of the cabin. There's a small lantern in the center of the 20 foot by 20 foot room, and you see a young girl, Tasha Lively tied and gagged, standing on a chair with a rope tied around her neck in a noose. She trembles as warm tears drip from her eyes.<br/><br/>How long has she been standing like that? Standing to stay alive?<br/><br/>In front of her there's a table with a large jug of moonshine and long knife. This fiend sits and watches as his victims suffer.<br/><br/>Your sharp senses catch movement behind you, and you turn to see the lumbering giant reaching towards you. He latches onto you, his strength far greater than yours, and begins to squeeze the life out of you.<br/><br/>"I didn't want to hurt to hurt those girls!" sobs Cade Brewer from beneath the burlap mask. His voice is muffled and deep. "You're doing a good job trying to save them! It's just that I have to finish the cycle! The set needs to be completed!"<br/><br/>Your body is being crushed by the monstrous arms.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensiveheadbutt</key>
+        <value>headbutt</value>
+      </item>
+      <item>
+        <key>offensivewriggle</key>
+        <value>wriggle free</value>
+      </item>
+      <item>
+        <key>offensiveleg</key>
+        <value>kick him in the leg</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Aggressive")
+      }
+    </script>
+  </object>
+  <object name="offensiveheadbutt">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>Skulls collide as you reel back and land a powerful headbutt on Cade Brewer's face. You wince at the pain of your own attack, a headache already forming, while Brewer just growls and squeezes you tighter. He lifts you up over his head with ease and slams you down on the hard ground.<br/><br/>You groan in soreness, your whole body aching.<br/><br/>"I'll carve you, Mr. Detective!" barks Mr. Burlap as he reaches back and pulls a rusty hatchet from his belt. He brings the blade down fast, nearly slicing you as you roll out of way.<br/><br/>You stagger to your feet and grab the...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensiveknife</key>
+        <value>knife</value>
+      </item>
+      <item>
+        <key>offensivemoonshine</key>
+        <value>moonshine</value>
+      </item>
+    </options>
+  </object>
+  <object name="offensivewriggle">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>You helplessly try to wriggle out of Cade Brewer's powerful grip. He chuckles at your efforts and lifts you up over his head with ease, slamming you down on the hard ground.<br/><br/>You groan in soreness, your whole body aching.<br/><br/>"I'll carve you, Mr. Detective!" barks Mr. Burlap as he reaches back and pulls a rusty hatchet from his belt. He brings the blade down fast, nearly slicing you as you roll out of way.<br/><br/>You stagger to your feet and grab the...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensiveknife</key>
+        <value>knife</value>
+      </item>
+      <item>
+        <key>offensivemoonshine</key>
+        <value>moonshine</value>
+      </item>
+    </options>
+  </object>
+  <object name="offensiveleg">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>You put all you can muster into a kick to Cade Brewer's leg, your energy fading fast. Brewer cries out in pain and releases you from his grip enough for you to push him away and jump back.<br/><br/>You figured his leg was already injured because of the crutch upstairs, and the fact that you know he takes pain medication.<br/><br/>"I'll carve you, Mr. Detective!" barks Mr. Burlap as he reaches back and pulls a rusty hatchet from his belt. He brandishes it wildly and staggers towards you.<br/><br/>You grab the...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensiveknife</key>
+        <value>knife</value>
+      </item>
+      <item>
+        <key>offensivemoonshine</key>
+        <value>moonshine</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+    </script>
+  </object>
+  <object name="offensiveknife">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>You arm yourself with the blade and jab at Mr. Burlap. You slash into his arm, but he's hardly phased by the attack. Mr. Burlap catches you in the nose with his elbow, and hits the knife out of your hand, sending it clattering across the room.<br/><br/>The giant grabs you by the collar and tosses you towards Tasha Lively, smashing her rickety chair. You land beneath her and instantly grab her legs to support her so the noose doesn't break her neck or suffocate her. Mr. Burlap pushes through a door on the other side of the room and slams it shut as he hurries down a dark hallway.<br/><br/>He's getting away!]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensivepursue</key>
+        <value>chase him</value>
+      </item>
+      <item>
+        <key>offensivehold</key>
+        <value>hold up Tasha</value>
+      </item>
+    </options>
+  </object>
+  <object name="offensivemoonshine">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>You throw the jug at Mr. Burlap, dousing him in alcohol as he lumbers towards you. He swings his hatchet, but you duck under it, grabbing the lantern in the middle of the room and smashing it against your attacker.<br/><br/>The moonshine catches fire because of it's high alcohol content, and Mr. Burlap screams out as his mask begins burning. He goes berserk and wildly swings the hatchet while trying to put out the flames.<br/><br/>You dodge his incoming assault and take hold of the knife, jabbing at him as he stumbles around in panic. You stick the knife into his arm, but he's hardly phased in his frenzied state. Mr. Burlap pushes you backwards, knocking the knife across the room and sending you crashing into Tasha Lively.<br/><br/>Her rickety chair clatters to the floor and breaks as you land beneath her, quickly grabbing hold of her legs and supporting her so the noose doesn't break her neck or suffocate her. Mr. Burlap pushes through a door on the other side of the room and slams it shut as he hurries down a dark hallway.<br/><br/>He's getting away!]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensivepursue</key>
+        <value>chase him</value>
+      </item>
+      <item>
+        <key>offensivehold</key>
+        <value>hold up Tasha</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+    </script>
+  </object>
+  <object name="offensivepursue">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>If you don't stop Mr. Burlap now, there's no saying how many more lives he'll take. You let go of Tasha, leaving her dangling and gasping for breath, and you run over to the door. It's locked tight, and after each time you crash your body against it, it becomes more and more clear that it's barred from the other side as well.<br/><br/>The trapdoor above you swings open and Henderson jumps down into the basement. He looks over at Tasha in shock, then back to you. Without skipping a beat, he darts over to her side and lifts her up so she can breath again.<br/><br/>"Are you crazy?!" he shouts. "She almost died!"<br/><br/>The two of you cut her down, but by then Mr. Burlap is long gone into the forest.<br/><br/>"Where's Chloe?" asks Henderson.<br/><br/>You have no answer.<br/><br/>"She's gone," murmurs Tasha through sobs. "He took her away. He said she would complete the cycle."<br/><br/>What cycle?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theory</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="offensivehold">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>You can't just let this defenseless fourteen year old girl suffocate while you fiddle with a locked door and chase an armed psychopath into the woods at night. You can feel Tasha has grown weak and is near collapsing as you hold gently hold her above her death.<br/><br/>The trap door swings open and Henderson climbs down into the basement. You point down to the discarded knife, and he rushes over to grab it. He reaches up and cuts Tasha's rope, allowing you to lower her to safety.<br/><br/>The door that Mr. Burlap escaped through is locked tight, and even after firing a few shots into it, it's clear that it's barred from the other side. After a few minutes you finally get the door open, but by then Mr. Burlap is long gone.<br/><br/>"Where's Chloe?" asks Henderson.<br/><br/>You have no answer.<br/><br/>"She's gone," murmurs Tasha through sobs. "He took her away. He said she would complete the cycle."<br/><br/>What cycle?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theory</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+      firsttime {
+        IncreaseCounter ("Guardian Angel")
+      }
+    </script>
+  </object>
+  <object name="gunwindow">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>You rush over to the window. He must have jumped out and escaped. No, that's not right. The window is too small, and judging by the crutch and pain medication, Mr. Burlap has some persistent injury to his leg. There's no way he could maneuver through the window that fast.<br/><br/>You rule the ladder out as well, because he's not that quick.<br/><br/>After a moment of thought you push aside the bear pelt and find a trapdoor. You throw open the trapdoor and jump down into the earthy basement level of the cabin. There's a small lantern in the center of the 20 foot by 20 foot room, and you see a young girl, Tasha Lively tied and gagged, standing on a chair with a rope tied around her neck in a noose. She trembles as warm tears drip from her eyes.<br/><br/>How long has she been standing like that? Standing to stay alive?<br/><br/>In front of her there's a table with a large jug of moonshine and long knife. This fiend sits and watches as his victims suffer.<br/><br/>Opposite to Tasha, you see a door. This was Mr. Burlap's only route of escape. The door is locked and barred from the other side, but with a few strategic shots from your revolver, you weaken the barricade enough so that you burst through it by launching the table at it.<br/><br/>The tunnel is dark and ominous.<br/><br/>OH NO! LOOK...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>gunup</key>
+        <value>UP</value>
+      </item>
+      <item>
+        <key>gundown</key>
+        <value>DOWN</value>
+      </item>
+    </options>
+  </object>
+  <object name="gunladder">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>You rush over to the ladder. He must have climbed up it and hidden in the attic. No, that's not right. The ladder is too tall for him to climb so fast. After all, judging by the crutch and pain medication, Mr. Burlap has some persistent injury to his leg.<br/><br/>You rule the window out as well, because he's not that small and quick.<br/><br/>After a moment of thought you push aside the bear pelt and find a trapdoor. You throw open the trapdoor and jump down into the earthy basement level of the cabin. There's a small lantern in the center of the 20 foot by 20 foot room, and you see a young girl, Tasha Lively tied and gagged, standing on a chair with a rope tied around her neck in a noose. She trembles as warm tears drip from her eyes.<br/><br/>How long has she been standing like that? Standing to stay alive?<br/><br/>In front of her there's a table with a large jug of moonshine and long knife. This fiend sits and watches as his victims suffer.<br/><br/>Opposite to Tasha, you see a door. This was Mr. Burlap's only route of escape. The door is locked and barred from the other side, but with a few strategic shots from your revolver, you weaken the barricade enough so that you burst through it by launching the table at it.<br/><br/>The tunnel is dark and ominous.<br/><br/>OH NO! LOOK...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>gunup</key>
+        <value>UP</value>
+      </item>
+      <item>
+        <key>gundown</key>
+        <value>DOWN</value>
+      </item>
+    </options>
+  </object>
+  <object name="gunbear">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>You rush over to the bear pelt and toss it aside to reveal a hidden trapdoor. Mr. Burlap has an injured leg, judging by the crutch and painkillers, so there's no way he jumped out the window or climbed up the ladder that fast.<br/><br/>You throw open the trapdoor and jump down into the earthy basement level of the cabin. There's a small lantern in the center of the 20 foot by 20 foot room, and you see a young girl, Tasha Lively tied and gagged, standing on a chair with a rope tied around her neck in a noose. She trembles as warm tears drip from her eyes.<br/><br/>How long has she been standing like that? Standing to stay alive?<br/><br/>In front of her there's a table with a large jug of moonshine and long knife. This fiend sits and watches as his victims suffer.<br/><br/>Opposite to Tasha, you see a door. This was Mr. Burlap's only route of escape. The door is locked and barred from the other side, but with a few strategic shots from your revolver, you weaken the barricade enough so that you burst through it by launching the table at it.<br/><br/>The tunnel is dark and ominous.<br/><br/>OH NO! LOOK...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>gunup</key>
+        <value>UP</value>
+      </item>
+      <item>
+        <key>gundown</key>
+        <value>DOWN</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+    </script>
+  </object>
+  <object name="gunlargebearpelt">
+    <inherit name="scripttext" />
+    <description>It looks like the bear pelt moved since you last looked into the cabin, fifteen seconds ago. Did someone walk over it?</description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensivegun</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <object name="gunup">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>Your head brushes through a dangling spiderweb and you look up, but fail to see the bear trap hidden beneath leaves and small sticks on the dark, earthy ground.<br/><br/>The jaws snap upwards and your quick reflexes barely manage to save you, metal fangs slashing at your leg as you pull away from the trap. Blood trickles down your leg and you wince in pain, your skin peeled off effortlessly.<br/><br/>You're about to continue trekking through the perilous hall when you hear an exasperated cry for help from the main basement room.<br/><br/>You look back to see Tasha slipping from her unbalanced perch atop the chair. If she slips the noose will tighten around her neck, which will kill her instantly or cause her to die of suffocation.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>gunsave</key>
+        <value>go back and save Tasha</value>
+      </item>
+      <item>
+        <key>gunchase</key>
+        <value>follow the tunnel to pursue Mr. Burlap</value>
+      </item>
+    </options>
+  </object>
+  <object name="gundown">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>You look down just in time to see a set bear trap beneath your feet, hidden beneath leaves and small sticks. You let out a sigh of relief, and you're about to continue trekking through the perilous hall when you hear an exasperated cry for help from the main basement room.<br/><br/>You look back to see Tasha slipping from her unbalanced perch atop the chair. If she slips the noose will tighten around her neck, which will kill her instantly or cause her to die of suffocation.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>gunsave</key>
+        <value>go back and save Tasha</value>
+      </item>
+      <item>
+        <key>gunchase</key>
+        <value>follow the tunnel to pursue Mr. Burlap</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+    </script>
+  </object>
+  <object name="gunsave">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>You can't just let this defenseless fourteen year old girl suffocate while you chase a psychopath into the woods at night. You sprint over to Tasha and grab hold of her legs as she falls from the chair. You support her weight, keeping her elevated above suffocation.<br/><br/>The trap door swings open and Henderson climbs down into the basement. You point down to the discarded knife, and he rushes over to grab it. He reaches up and cuts Tasha's rope, allowing you to lower her to safety.<br/><br/>Mr. Burlap is long gone, out into the forest that he knows so well. Pursuing him would be fruitless.<br/><br/>"Where's Chloe?" asks Henderson.<br/><br/>You have no answer.<br/><br/>"She's gone," murmurs Tasha through sobs. "He took her away. He said she would complete the cycle."<br/><br/>What cycle?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theory</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+      firsttime {
+        IncreaseCounter ("Guardian Angel")
+      }
+    </script>
+  </object>
+  <object name="gunchase">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>If you don't stop Mr. Burlap now, there's no saying how many more lives he'll take. You abandon Tasha and continue down the dark path. Ahead you see the tunnel split off into multiple branches, and you soon realize that Mr. Burlap is long gone.<br/><br/>From the other room you can hear Tasha coughing and gasping for breath. You turn and run back to save her, giving up on chasing Mr. Burlap through the labyrinthine tunnels, only to find Henderson coming down through the trapdoor and lifting up Tasha so she can breath.<br/><br/>"Are you crazy?!" he shouts. "She almost died!"<br/><br/>The two of you cut her down, but by then Mr. Burlap is long gone into the forest.<br/><br/>"Where's Chloe?" asks Henderson.<br/><br/>You have no answer.<br/><br/>"She's gone," murmurs Tasha through sobs. "He took her away. He said she would complete the cycle."<br/><br/>What cycle?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theory</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="theory">
+    <description><![CDATA[It's 11:18 at night as you ponder in Mr. Burlap's cabin. You rifle through his belongings, but find little evidence that points to where Chloe is being held. There are journals that he's kept of his life as an assistant at the Gander Hill Hospital. The writing seems fairly normal until about six months ago. Then it becomes more of the scribbling of a madman.<br/><br/>Henderson is tending to the injured as you focus your mind on the "cycle" that Mr. Burlap is so eager to complete.<br/><br/>What connects the assaults on the three girls?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorylocation</key>
+        <value>the location of the girl</value>
+      </item>
+      <item>
+        <key>theorymethod</key>
+        <value>the method used to kill the girl</value>
+      </item>
+      <item>
+        <key>theorytime</key>
+        <value>the timing of the attack on the girl</value>
+      </item>
+    </options>
+  </object>
+  <object name="theorylocation">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>Amy Anderson was poisoned at the Gander Hill Hospital, Julia Alberts was tied up on the shore of Tidewater, and Tasha Lively was hanged in the Epping forest. You can't seem to find the connection...<br/><br/>No, there's some sort of theme to method of the crimes...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorynature</key>
+        <value>nature</value>
+      </item>
+      <item>
+        <key>theoryreligion</key>
+        <value>religion</value>
+      </item>
+      <item>
+        <key>theorytechnology</key>
+        <value>technology</value>
+      </item>
+      <item>
+        <key>theoryviolence</key>
+        <value>increasing violence</value>
+      </item>
+    </options>
+  </object>
+  <object name="theorymethod">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>Ah, very clever. It's as if there's a theme...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorynature</key>
+        <value>nature</value>
+      </item>
+      <item>
+        <key>theoryreligion</key>
+        <value>religion</value>
+      </item>
+      <item>
+        <key>theorytechnology</key>
+        <value>technology</value>
+      </item>
+      <item>
+        <key>theoryviolence</key>
+        <value>increasing violence</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+    </script>
+  </object>
+  <object name="theorytime">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>Amy Anderson was poisoned at around 8, Julia Alberts was tied up to drown at around 2 with the high tide, and Tasha Lively was to be hanged at about 11. You can't seem to find the connection...<br/><br/>No, there's some sort of theme to method of the crimes...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorynature</key>
+        <value>nature</value>
+      </item>
+      <item>
+        <key>theoryreligion</key>
+        <value>religion</value>
+      </item>
+      <item>
+        <key>theorytechnology</key>
+        <value>technology</value>
+      </item>
+      <item>
+        <key>theoryviolence</key>
+        <value>increasing violence</value>
+      </item>
+    </options>
+  </object>
+  <object name="theorynature">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>Everything becomes clear to you!<br/><br/>You turn to the others, thoughts racing. "Each murder has been part of a pattern," you say. "First, Amy Anderson was poisoned with deadly fibrecap, then Julia Alberts was targeted with a delayed drowning, then Tasha Lively was suffocated!"<br/><br/>"I don't get it," mutters Mardler, rubbing his dizzied skull and trying to fight a powerful headache.<br/><br/>"It's all part of a cycle. The mushroom is earth, the drowning is water, and the suffocation is air. Earth, water and air. All that's left is for Mr. Burlap to attack with fire. He told Tasha that Chloe's already in position to complete the cycle, so where is she?"<br/><br/>"Remote control fire?" says Mardler. "You think he's going to use a bomb?"<br/><br/>"I doubt it," you respond. "He's too primitive for that. He's just been using rope and mushrooms for his past crimes, aside from the chloroform. I'm thinking he went back to his old job, the mortuary. He could drug Chloe and throw her in a coffin, then wait for someone to put her through the incinerator to be cremated. Ultimate fire."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>cremate</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+    </script>
+  </object>
+  <object name="theoryreligion">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>No, that's not right...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorystuck</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="theorytechnology">
+    <options type="stringdictionary">
+      <item>
+        <key>theorystuck</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>No, that's not right...]]></description>
+  </object>
+  <object name="theoryviolence">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>No, that's not right...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>theorystuck</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="cremate">
+    <inherit name="scripttext" />
+    <description><![CDATA[<b><i>You're now playing at Cade Brewer</i></b><br/><br/>You stumble through the forest, breathing heavily, your leg throbbing. It burns white hot.<br/><br/>Should have taken another Opiox.<br/><br/>The cycle is almost complete. Earth, water, wind and fire. You're just bringing balance to the world. It's not that you want to hurt people, in fact, it's a relief when the police save them, but it's just something you have to do.<br/><br/>Then comes that relentless voice in the back of your head...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>crematecon</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Black")
+    </script>
+  </object>
+  <object name="crematecon">
+    <description><![CDATA[<i>Mr. Detective is gon figur it out. He gon sav the gurl. We ned too git him.</i><br/><br/>"No, kidnapping those girls is alright, because it's all part of the plan." You begin justifying your actions to yourself. "Killing Mr. Detective isn't alright. He's not part of the cycle."<br/><br/><i>Hes tring tu stop the cicle!</i><br/><br/>Your inner conflict grows. Surely Mr. Burlap is right. If you don't stop Mr. Detective, he'll destroy the cycle. The cycle is necessary!<br/><br/>Though sometimes you disagree with Mr. Burlap. How necessary is the cycle really? Is it worth kidnapping young girls?]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>cremateback</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="theorystuck">
+    <description><![CDATA["Chloe's going to die by fire," coughs Tasha as she gently massages her bruised neck. "I understand now, that's the cycle he was talking about."<br/><br/>"I don't get it," mutters Mardler, rubbing his dizzied skull and trying to fight a powerful headache.<br/><br/>"Well he's focused on the elements for some reason. He used mushrooms against Amy, so that's earth. Then he used water against Julia. He just tried to choke all the air out of me. All that's left is fire."<br/><br/>"That could be right," says Henderson. "He's obviously got some sort of obsessive compulsive disorder among other problems, maybe he feels an unquenchable need to theme his murders.<br/><br/>"He said Chloe was already in position to complete the cycle," says Tasha. "Do you think she's strapped to a bomb or something? Something automatic or remote control?"<br/><br/>"I doubt it," you respond. "He's too primitive for that. He's just been using rope and mushrooms for his past crimes, aside from the chloroform. I'm thinking he went back to his old job, the mortuary. He could drug Chloe and throw her in a coffin, then wait for someone to put her through the incinerator to be cremated. Ultimate fire."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>cremate</key>
+        <value>continue</value>
+      </item>
+    </options>
+  </object>
+  <object name="cremateback">
+    <inherit name="scripttext" />
+    <description><![CDATA[<br/>"The Gander Hill Hospital is officially closing down in a few days," says Jane while running a hand through her flowing blond hair. She always loved that hair. So shiny and golden, shimmering in the light. "I just wanted to thank you for all your help over the past weeks, Cade."<br/><br/>You pop an Opiox pill into your mouth. That leg injury you'd gotten from getting hit by a speeding carriage was still very painful, but Jane had been kind enough to write you a prescription to ease the agony. She even drew a cute little smiley face on the bottle. "Of course, Jane, no problem."<br/><br/>The warmth of the Opiox was already kicking into action. Your body began drifting into painlessness. But it also made you angry sometimes. It gave you angry thoughts. Mean, venomous, horrible thoughts.<br/><br/>But you hadn't acted on those thoughts until that night. That night when you followed Jane home from the hospital. You didn't want her to die, but she had to die. And it felt so right when her warm flowing blood stained your hands as you repeatedly brought your scalpel down on her. Swing after swing. The screams of a fading human life became the squealching of a lacerated corpse.<br/><br/>Squealch. Squealch. Squealch.<br/><br/>And you didn't want to kill her, that's for sure. You liked Jane the most of anyone. But with the hospital dying, she had to die to. It was just something that couldn't be avoided in life. Like when your mom tells you to eat your vegetables and get your sleep. You don't why, but you have to do it.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>crematehit</key>
+        <value>keep stabbing her</value>
+      </item>
+      <item>
+        <key>crematerest</key>
+        <value>that's enough</value>
+      </item>
+    </options>
+    <script type="script"><![CDATA[
+      SetBackgroundColour ("White")
+      SetForegroundColour ("Black")
+      TextFX_Unscramble ("<b>About 6 months ago</b><br/>", 500, 1)
+    ]]></script>
+  </object>
+  <object name="crematearrive">
+    <inherit name="scripttext" />
+    <description><![CDATA[Sometimes you blackout. You can't remember details about your life, or you just lose consciousness and can't remember any of your actions at all. Like a wild animal, you act on instincts alone. That's when Mr. Burlap takes control.<br/><br/>Like now for instance. You don't know how you attained a makeshift arson kit, complete with acetone, rags and matches, but there it is in your hands. And you don't know how you got to the Walker Mortuary, but there it is in front of you.<br/><br/>You can hear people inside, moving about. Mr. Burlap was right.<br/><br/><i>Dats Mr. Detective in thur! Hes stoping the cicle! He's savin da gurl!</i><br/><br/>"Do we really have to do this? Do we really have to kill them too?"<br/><br/><i>Yus, Cade. Yees we do.</i>]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>crematedetective</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      SetBackgroundColour ("Black")
+      SetForegroundColour ("White")
+    </script>
+  </object>
+  <object name="crematedetective">
+    <inherit name="scripttext" />
+    <description><![CDATA[<b><i>You're now playing as Mr. Detective</i></b><br/><br/><b><u>Walker Mortuary</u></b><br/><br/>"She's drugged, but she'll live," you say as you pull Chloe Worthington's limp body out of the coffin. "Looks like Mr. Burlap brought her back here and forged the ledger so her body would be cremated in the morning. They would have unknowingly burned an innocent girl alive."<br/><br/>The sharp odor of acetone hits your nose, along with the smell of smoke and a subtle warmth. There loud noise of grinding mechanisms sounds by the door. You rush over to it and try to push it open, but it won't budge.<br/><br/>"Sorry, Mr. Detective!" Mr. Burlap shouts from beyond the door. "I've decided you can't live any longer."<br/><br/>There are four of you in the small incinerator room: Mardler, Henderson, Chloe and yourself. The room is getting warmer and there are no obvious exits.<br/><br/>Henderson throws himself against the door in desperation. "Let us out!"<br/><br/>"Goodbye, friends," you hear from the other side of the door, along with the lumbering steps the madman leaving.<br/><br/>"Wait!" you shout. "I know what's wrong with you! I can help you! It's the..."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>cremateopiox</key>
+        <value>"Opiox!"</value>
+      </item>
+      <item>
+        <key>cremateburlap</key>
+        <value>"burlap mask!"</value>
+      </item>
+    </options>
+    <script type="script">
+      SetBackgroundColour ("LightGrey")
+      SetForegroundColour ("Black")
+    </script>
+  </object>
+  <object name="crematehit">
+    <inherit name="scripttext" />
+    <description><![CDATA[Squealch. Squealch. Squealch.<br/><br/>Spurts of blood splash up on your face.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>creamatehitagain</key>
+        <value>more stabbing</value>
+      </item>
+      <item>
+        <key>crematerest</key>
+        <value>no more stabbing</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Aggressive")
+      }
+    </script>
+  </object>
+  <object name="crematerest">
+    <description><![CDATA[You find it easier to commit atrocities while hiding your face. You reach down and grab a burlap sack, cut some eye holes, and throw it on.<br/><br/>Ah, much better.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>crematearrive</key>
+        <value>back to the present</value>
+      </item>
+    </options>
+  </object>
+  <object name="creamatehitagain">
+    <inherit name="scripttext" />
+    <description><![CDATA[Squealch. Squealch. Squealch. Squealch. Squealch. Squealch.<br/><br/>Why can't you stop?!]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>crematehit</key>
+        <value>stab again</value>
+      </item>
+      <item>
+        <key>crematerest</key>
+        <value>stop stabbing</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Aggressive")
+      }
+    </script>
+  </object>
+  <object name="cremateopiox">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/>The sound of Mr. Burlap's steps stops.<br/><br/>"Listen!" you yell through the door. "You have an illness! You're having a reaction to your medication, Opiox! It's just an experimental drug, never fully tested, and it's tearing your mind apart! Six months ago, when the hospital closed and you got your prescription, you started hearing Mr. Burlap, am I right? I've seen your journals and I've seen your prescription bottle. This all started six months ago with a smiley face on the bottle that you've obsessed over!"<br/><br/>You have Cade Brewer's attention. You can hear him wander over to the door. The temperature in the room is rising fast.<br/><br/>You continue talking. "You're suffering from violent obsessive compulsive disorder. I get it, I like patterns too, but you're taking this too far, Cade. That's your name, 'Cade Brewer.' You aren't Mr. Burlap. There is no such thing as Mr. Burlap."<br/><br/>"Please shut up, Mr. Detective," you hear from the other side of the door. Smoke begins billowing into the room. "The cycle must be completed. I'm sorry, but there's nothing I can do about it."<br/><br/>You'll only have his attention for a moment...]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>cremateshootburlap</key>
+        <value>shoot him through the door</value>
+      </item>
+      <item>
+        <key>cremateshootchloe</key>
+        <value>pretend to shoot Chloe</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+    </script>
+  </object>
+  <object name="cremateburlap">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/>You hear a laugh from beyond the door. "The mask just makes it easy."<br/><br/>Mr. Burlap is walking away, leaving you all to die in the rising inferno. He's escaping earshot. You need to get his attention!]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>cremateshootburlap</key>
+        <value>shoot him through the door</value>
+      </item>
+      <item>
+        <key>cremateshootchloe</key>
+        <value>pretend to shoot Chloe</value>
+      </item>
+    </options>
+  </object>
+  <object name="cremateshootburlap">
+    <description><![CDATA[<font color = "red"><i><b>Deductive Reasoning Fail</b></i></font><br/><br/><b>BANG</b><br/><br/>You hear the madman cry out, then slump to the floor, coughing wet mouthfuls of blood.<br/><br/>"What did you just do?" Mardler looks into your eyes. "He's the only one that could let us out of this hell. We're all going to die."<br/><br/>Henderson continues slamming against the door, teeth gritted and tears welling in his eyes.<br/><br/>Your mind races for an answer, another exit perhaps, but there are none. You killed Mr. Burlap, but at what cost?<br/><br/>The fire grows into a raging holocaust, and in the morning there are only ashes.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>end</key>
+        <value>the end</value>
+      </item>
+    </options>
+  </object>
+  <object name="cremateshootchloe">
+    <inherit name="scripttext" />
+    <description><![CDATA[<font color = "blueviolet"><i><b>+1 Deductive Reasoning</b></i></font><br/><br/><b>BANG</b><br/><br/>You fire a shot into the floor, much to the surprise of Mardler and Henderson.<br/><br/>"I just shot Chloe Worthington, Cade," you say. "I shot her in the head. Blew her brains out. She's dead now, which means she'll never die by your fire. She never even saw your fire. The cycle is broken."<br/><br/>There's a tense pause, sweat forming on your brow as flames begin licking their way into the room. An eternal silence.<br/><br/>"You're bluffing," says Cade Brewer. "You wouldn't shoot a little girl."<br/><br/>"Maybe I'm bluffing," you say, "but maybe I'm not. Are you willing to risk that? Are you willing to live the rest of your life without knowing if the cycle was properly completed? How will you live with the uncertainty? Personally, it would drive me crazy. You never had that satisfying cathartic moment where you were absolutely sure that the cycle completed."<br/><br/>More silence.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>cremateconfront</key>
+        <value>continue</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Deductive Reasoning")
+        IncreaseCounter ("Deductive Reasoning 3")
+      }
+    </script>
+  </object>
+  <object name="cremateconfront">
+    <description><![CDATA[The door to the incinerator room bursts open and Mr. Burlap steps through, a large burlap sack over his face and a hatchet in hand. He's breathing heavily, smoke pouring in from behind him and fire enveloping the hallway.<br/><br/>"SHOW ME HER BODY!" he shouts. "SHOW ME HER CORPSE!"]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>endingshoot</key>
+        <value>shoot him</value>
+      </item>
+      <item>
+        <key>endingtalk</key>
+        <value>"I want to help you, Cade."</value>
+      </item>
+    </options>
+  </object>
+  <object name="endingshoot">
+    <inherit name="scripttext" />
+    <description><![CDATA[<b>BANG</b><br/><br/>There's no room for men like him in the world. Mr. Burlap slumps to the floor, coughing up mouthfuls of warm blood, choking on his own life.<br/><br/>You carry Chloe in your arms as you charge out of the deteriorating building, smoke burning in your eyes and fire licking at your feet.<br/><br/>Outside you gasp for the sweet smoggy air of industrial London and collapse to the ground. The mortuary falls apart, completely consumed by the conflagration. A blazing beacon of hot cleansing.<br/><br/>Chloe Worthington opens her eyes and blinks, coughing and massaging her temples. She's alive.<br/><br/>You breath out a long sigh of relief.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>end</key>
+        <value>the end</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Aggressive")
+      }
+    </script>
+  </object>
+  <object name="endingtalk">
+    <inherit name="scripttext" />
+    <description><![CDATA["It's the Opiox, Cade," you say. "We can cure you. Just stop taking the Opiox. I'm a detective, so I solve things. I can solve the mystery of your illness."<br/><br/>Who are you really talking to, Mr. Burlap or Cade Brewer? It's hard to tell in that moment, as the madman darts his head back and forth, the flames in the room growing to a hellish furnace, oxygen running thin.<br/><br/>The can almost see the man reflecting on his life, on his actions. He grips the handle of his hatchet until his knuckles turn white, then drops it to the floor. You can see his chest depress with a long contemplative breath.<br/><br/>"I'll end the cycle by killing the real monster," he says, muffled through the thick mask. You can hear the tears in his voice.<br/><br/>With that Cade Brewer sprints towards the heart of the blazing flame and throws himself in, screaming in agony.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>endingsave</key>
+        <value>save him</value>
+      </item>
+      <item>
+        <key>endingrun</key>
+        <value>escape before the mortuary burns down</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Guardian Angel")
+      }
+    </script>
+  </object>
+  <object name="endingsave">
+    <inherit name="scripttext" />
+    <description><![CDATA["Henderson and Mardler, save Chloe!" you cry as you race after Cade. You cover your face with your shirt as you push through the fire. Cade is rolling in agony through the embers and flames as you grab hold of him and pull him out of the inferno.<br/><br/>It's too hot and he's too heavy. You can feel yourself suffocating in the smoke and your skin burning. Just as you're about to leave him, your burden is lightened. You look over to see Mardler pulling Cade as well, and together you drag him out of the collapsing building.<br/><br/>Outside you gasp for the sweet smoggy air of industrial London and collapse to the ground. The mortuary falls apart, completely consumed by the conflagration. A blazing beacon of hot cleansing.<br/><br/>Cade Brewer sits and sobs, discarding his burnt mask. He doesn't attempt to stand or fight. Henderson keeps a close eye on him, all the same.<br/><br/>Chloe Worthington opens her eyes and blinks, coughing and massaging her temples. She's alive.<br/><br/>"Why'd you save him?" asks Mardler as he crouches beside you.<br/><br/>"He's a sick man," you respond. "His road to recovery won't be easy, but he can do it."]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>end</key>
+        <value>the end</value>
+      </item>
+    </options>
+    <script type="script">
+      firsttime {
+        IncreaseCounter ("Guardian Angel")
+      }
+    </script>
+  </object>
+  <object name="endingrun">
+    <description><![CDATA[You watch in awe as Cade throws himself into the pits of hell, sacrificing himself in penance. He chose his fate, and there's no time to help him.<br/><br/>You carry Chloe in your arms as you charge out of the deteriorating building, smoke burning in your eyes and fire licking at your feet.<br/><br/>Outside you gasp for the sweet smoggy air of industrial London and collapse to the ground. The mortuary falls apart, completely consumed by the conflagration. A blazing beacon of hot cleansing.<br/><br/>Chloe Worthington opens her eyes and blinks, coughing and massaging her temples. She's alive.<br/><br/>You breath out a long sigh of relief.]]></description>
+    <options type="stringdictionary">
+      <item>
+        <key>end</key>
+        <value>the end</value>
+      </item>
+    </options>
+  </object>
+  <object name="end">
+    <inherit name="scripttext" />
+    <description><![CDATA[<b>You've completed Victorian Detective: Pathological</b><br/><br/>How efficient were you in solving the mystery? Were you a bumbling sidekick, or a deductionist? How many of the girls did you save?<br/><br/>Post your scores and review!]]></description>
+    <script type="script"><![CDATA[
+      if (GetInt(game, "Deductive Reasoning 3") = 7) {
+        msg ("<font color = \"darkgoldenrod\"><i><b>Chapter III Complete: Chapter Score 87.5%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning 3") = 6) {
+        msg ("<font color = \"darkgoldenrod\"><i><b>Chapter III Complete: Chapter Score 75.0%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning 2") = 5) {
+        msg ("<font color = \"darkgoldenrod\"><i><b>Chapter II Complete: Chapter Score 62.5%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning 3") = 4) {
+        msg ("<font color = \"darkgoldenrod\"><i><b>Chapter II Complete: Chapter Score 50.0%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning 3") = 3) {
+        msg ("<font color = \"darkgoldenrod\"><i><b>Chapter III Complete: Chapter Score 37.5%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning 2") = 2) {
+        msg ("<font color = \"darkgoldenrod\"><i><b>Chapter III Complete: Chapter Score 25.0%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning 3") = 1) {
+        msg ("<font color = \"darkgoldenrod\"><i><b>Chapter III Complete: Chapter Score 12.5%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning 3") = 0) {
+        msg ("<font color = \"darkgoldenrod\"><i><b>Chapter III Complete: Chapter Score 0%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning 3") = 8) {
+        msg ("<font color = \"darkgoldenrod\"><i><b>Chapter III Complete: Chapter Score 100%</b></i></font><br/>")
+      }
+      if (GetInt(game, "Deductive Reasoning") = 7) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 36.8%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 6) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 31.6%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 5) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 26.3%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 4) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 21.1%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 3) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 15.8%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 2) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 10.5%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 1) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 5.3%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 0) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 0%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 8) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 42.1%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 9) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 47.4%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 10) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 52.6%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 11) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 57.9%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 12) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 63.2%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 13) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 68.4%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 14) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 73.7%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 15) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 78.9%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 16) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 84.2%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 17) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 89.5%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 18) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 94.7%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 19) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 100%</b></i></font><br/>")
+      }
+      else if (GetInt(game, "Deductive Reasoning") = 20) {
+        msg ("<font color = \"blueviolet\"><i><b>Total Deductive Reasoning Score 100%</b></i></font><br/>")
+      }
+      if (GetInt(game, "Guardian Angel") = 5) {
+        msg ("You earned the <b>\"Guardian Angel\"</b> Feat<br/>You were always there to save those in need.<br/>")
+      }
+      if (GetInt(game, "Aggressive") = 4) {
+        msg ("You earned the <b>\"Aggressive Justice\"</b> Feat<br/>You have a wild and dangerous attitude, with little patience for wrongdoing.<br/>")
+      }
+    ]]></script>
+  </object>
+  <object name="offensivesmallgoldbracelet">
+    <inherit name="scripttext" />
+    <description>You recognize the bracelet from the photo of Chloe that Mr. Worthington showed you. She's been here. You're on the right track.</description>
+    <options type="stringdictionary">
+      <item>
+        <key>offensivemap</key>
+        <value>back</value>
+      </item>
+    </options>
+    <script type="script">
+      SetForegroundColour ("White")
+      SetBackgroundColour ("Gray")
+    </script>
+  </object>
+  <type name="defaultgame">
+    <attr name="_editorstyle">gamebook</attr>
+    <defaultfont>Georgia, serif</defaultfont>
+    <defaultfontsize type="int">12</defaultfontsize>
+    <defaultbackground>White</defaultbackground>
+    <defaultforeground>Black</defaultforeground>
+    <defaultlinkforeground>Blue</defaultlinkforeground>
+    <menufont>Arial</menufont>
+    <menufontsize type="int">9</menufontsize>
+    <menubackground>White</menubackground>
+    <menuforeground>Black</menuforeground>
+    <menuhoverbackground>LightGrey</menuhoverbackground>
+    <menuhoverforeground>Black</menuhoverforeground>
+    <description type="string"></description>
+    <setcustomwidth />
+    <customwidth type="int">700</customwidth>
+    <setcustompadding type="boolean">false</setcustompadding>
+    <custompaddingtop type="int">30</custompaddingtop>
+    <custompaddingbottom type="int">0</custompaddingbottom>
+    <custompaddingleft type="int">20</custompaddingleft>
+    <custompaddingright type="int">20</custompaddingright>
+    <showborder type="boolean">false</showborder>
+    <showtitle />
+    <noclear type="boolean">false</noclear>
+    <clearlastpage type="boolean">false</clearlastpage>
+    <deactivatecommandlinks type="boolean">false</deactivatecommandlinks>
+  </type>
+  <type name="defaultobject">
+    <description type="string"></description>
+  </type>
+  <type name="defaultplayer">
+    <changedparent type="script">
+      DoPage (player.parent)
+    </changedparent>
+  </type>
+  <type name="picture" />
+  <type name="youtube" />
+  <type name="link">
+    <address>http://</address>
+  </type>
+  <type name="script">
+    <runscriptonly />
+  </type>
+  <type name="scripttext">
+    <runscript />
+  </type>
+  <function name="OutputText" parameters="text">
+    data = NewDictionary()
+    dictionary add (data, "fulltext", text)
+    text = ProcessTextSection(text, data)
+    OutputTextRaw (text)
+  </function>
+  <function name="OutputTextRaw" parameters="text"><![CDATA[
+    format = GetCurrentTextFormat("")
+    JS.addText ("<span style=\"" + format + "\">" + text + "</span><br/>")
+    if (GetString(game, "commandbarformat") <> format) {
+      format = format + ";background:" + game.defaultbackground
+      game.commandbarformat = format
+      JS.setCommandBarStyle (format)
+    }
+    request (Speak, text)
+  ]]></function>
+  <function name="OutputTextNoBr" parameters="text">
+    data = NewDictionary()
+    dictionary add (data, "fulltext", text)
+    text = ProcessTextSection(text, data)
+    OutputTextRawNoBr (text)
+  </function>
+  <function name="OutputTextRawNoBr" parameters="text"><![CDATA[
+    JS.addText ("<span style=\"" + GetCurrentTextFormat("") + "\">" + text + "</span>")
+    request (Speak, text)
+  ]]></function>
+  <function name="GetCurrentTextFormat" parameters="colour" type="string"><![CDATA[
+    style = ""
+    if (UIOptionUseGameFont()) {
+      font = GetCurrentFontFamily()
+    }
+    else {
+      font = GetUIOption("OverrideFontName")
+    }
+    if (LengthOf(font) > 0) {
+      style = style + "font-family:" + font + ";"
+    }
+    if (LengthOf(colour) = 0) {
+      if (UIOptionUseGameColours()) {
+        colour = game.defaultforeground
+      }
+      else {
+        colour = GetUIOption("OverrideForeground")
+      }
+    }
+    if (LengthOf(colour) > 0) {
+      style = style + "color:" + colour + ";"
+    }
+    if (UIOptionUseGameFont()) {
+      size = game.defaultfontsize
+    }
+    else {
+      size = ToDouble(GetUIOption("OverrideFontSize"))
+    }
+    if (size > 0) {
+      style = style + "font-size:" + ToString(size) + "pt;"
+    }
+    return (style)
+  ]]></function>
+  <function name="GetCurrentLinkTextFormat" type="string">
+    return (GetCurrentTextFormat(GetLinkTextColour()))
+  </function>
+  <function name="UIOptionUseGameFont" type="boolean">
+    value = GetUIOption("UseGameFont")
+    if (value = null or value = "true") {
+      return (true)
+    }
+    else {
+      return (false)
+    }
+  </function>
+  <function name="UIOptionUseGameColours" type="boolean">
+    value = GetUIOption("UseGameColours")
+    if (value = null or value = "true") {
+      return (true)
+    }
+    else {
+      return (false)
+    }
+  </function>
+  <function name="GetLinkTextColour" type="string">
+    if (UIOptionUseGameColours()) {
+      return (game.defaultlinkforeground)
+    }
+    else {
+      return (GetUIOption("OverrideLinkForeground"))
+    }
+  </function>
+  <function name="ProcessTextSection" parameters="text, data" type="string"><![CDATA[
+    containsUnprocessedSection = false
+    open = Instr(text, "{")
+      if (open > 0) {
+        nestCount = 1
+        searchStart = open + 1
+        finished = false
+        while (not finished) {
+          nextOpen = Instr(searchStart, text, "{")
+            nextClose = Instr(searchStart, text, "}")
+          if (nextClose > 0) {
+            if (nextOpen > 0 and nextOpen < nextClose) {
+              nestCount = nestCount + 1
+              searchStart = nextOpen + 1
+            }
+            else {
+              nestCount = nestCount - 1
+              searchStart = nextClose + 1
+              if (nestCount = 0) {
+                close = nextClose
+                containsUnprocessedSection = true
+                finished = true
+              }
+            }
+          }
+          else {
+            finished = true
+          }
+        }
+      }
+      if (containsUnprocessedSection) {
+        section = Mid(text, open + 1, close - open - 1)
+        value = ProcessTextCommand(section, data)
+        text = Left(text, open - 1) + value + ProcessTextSection(Mid(text, close + 1), data)
+      }
+      return (text)
+  ]]></function>
+  <function name="ProcessTextCommand" parameters="section, data" type="string">
+    if (StartsWith(section, "if ")) {
+      return (ProcessTextCommand_If(section, data))
+    }
+    else if (StartsWith(section, "object:")) {
+      return (ProcessTextCommand_Object(section, data))
+    }
+    else if (StartsWith(section, "command:")) {
+      return (ProcessTextCommand_Command(Mid(section, 9), data))
+    }
+    else if (StartsWith(section, "page:")) {
+      return (ProcessTextCommand_Command(Mid(section, 6), data))
+    }
+    else if (StartsWith(section, "exit:")) {
+      return (ProcessTextCommand_Exit(section, data))
+    }
+    else if (StartsWith(section, "once:")) {
+      return (ProcessTextCommand_Once(section, data))
+    }
+    else if (StartsWith(section, "random:")) {
+      return (ProcessTextCommand_Random(section, data))
+    }
+    else if (StartsWith(section, "rndalt:")) {
+      return (ProcessTextCommand_RandomAlias(section, data))
+    }
+    else if (StartsWith(section, "img:")) {
+      return (ProcessTextCommand_Img(section, data))
+    }
+    else if (StartsWith(section, "counter:")) {
+      return (ProcessTextCommand_Counter(Mid(section, 9), data))
+    }
+    else if (StartsWith(section, "select:")) {
+      return (ProcessTextCommand_Select(section, data))
+    }
+    else {
+      dot = Instr(section, ".")
+      if (dot = 0) {
+        return ("{" + ProcessTextSection(section, data) + "}")
+      }
+      else {
+        objectname = Left(section, dot - 1)
+        attributename = Mid(section, dot + 1)
+        object = GetObject(objectname)
+        if (object = null) {
+          return ("{" + ProcessTextSection(section, data) + "}")
+        }
+        else {
+          if (HasAttribute(object, attributename)) {
+            type = TypeOf(object, attributename)
+            switch (type) {
+              case ("string", "int", "double") {
+                return (ToString(GetAttribute(object, attributename)))
+              }
+              case ("boolean") {
+                result = GetAttribute(object, attributename)
+                if (result) {
+                  return ("true")
+                }
+                else {
+                  return ("false")
+                }
+              }
+              default {
+                return ("(" + type + ")")
+              }
+            }
+          }
+          else {
+            return ("")
+          }
+        }
+      }
+    }
+  </function>
+  <function name="ProcessTextCommand_Object" parameters="section, data" type="string"><![CDATA[
+    objectname = Mid(section, 8)
+    text = ""
+    colon = Instr(objectname, ":")
+    if (colon > 0) {
+      text = Mid(objectname, colon + 1)
+      objectname = Left(objectname, colon - 1)
+    }
+    object = GetObject(objectname)
+    if (object = null) {
+      return ("{" + ProcessTextSection(section, data) + "}")
+    }
+    else {
+      if (LengthOf(text) = 0) {
+        text = SafeXML(GetDisplayAlias(object))
+      }
+      if (game.enablehyperlinks) {
+        linkid = ProcessTextCommand_GetNextLinkId()
+        colour = ""
+        if (HasString(object, "linkcolour") and GetUIOption("UseGameColours") = "true") {
+          colour = object.linkcolour
+        }
+        else {
+          colour = GetLinkTextColour()
+        }
+        style = GetCurrentTextFormat(colour)
+        return ("<a id=\"" + linkid + "\" style=\"" + style + "\" class=\"cmdlink elementmenu\" data-elementid=\"" + object.name + "\">" + text + "</a>")
+      }
+      else {
+        return (text)
+      }
+    }
+  ]]></function>
+  <function name="ProcessTextCommand_GetNextLinkId" type="string">
+    if (not HasInt(game, "lastlinkid")) {
+      game.lastlinkid = 0
+    }
+    game.lastlinkid = game.lastlinkid + 1
+    return ("verblink" + game.lastlinkid)
+  </function>
+  <function name="ProcessTextCommand_Command" parameters="command, data" type="string"><![CDATA[
+    text = command
+    colon = Instr(command, ":")
+    if (colon > 0) {
+      text = Mid(command, colon + 1)
+      command = Left(command, colon - 1)
+    }
+    style = GetCurrentLinkTextFormat()
+    candidates = NewObjectList()
+    foreach (cmd, ScopeCommands()) {
+      if (IsRegexMatch(cmd.pattern, command, cmd.name)) {
+        list add (candidates, cmd)
+      }
+    }
+    elementid = ""
+    if (ListCount(candidates) = 1) {
+      cmd = ObjectListItem(candidates, 0)
+      elementid = cmd.name
+    }
+    linkid = ProcessTextCommand_GetNextLinkId()
+    dataattrs = ""
+    if (game.deactivatecommandlinks) {
+      dataattrs = dataattrs + "data-deactivateonclick=\"true\" "
+    }
+    dataattrs = dataattrs + "data-command=\"" + command + "\""
+    return ("<a id=\"" + linkid + "\" style=\"" + style + "\" class=\"cmdlink commandlink\" data-elementid=\"" + elementid + "\" " + dataattrs + ">" + ProcessTextSection(text, data) + "</a>")
+  ]]></function>
+  <function name="ProcessTextCommand_Exit" parameters="section, data" type="string"><![CDATA[
+    exitname = Mid(section, 6)
+    exit = GetObject(exitname)
+    if (exit = null) {
+      return ("{" + ProcessTextSection(section, data) + "}")
+    }
+    else {
+      verbs = GetDisplayVerbs(exit)
+      alias = GetDisplayAlias(exit)
+      command = LCase(StringListItem(verbs, 0)) + " " + alias
+      style = GetCurrentLinkTextFormat()
+      return ("<a style=\"" + style + "\" class=\"cmdlink exitlink\" data-elementid=\"" + exit.name + "\" data-command=\"" + command + "\">" + alias + "</a>")
+    }
+  ]]></function>
+  <function name="ProcessTextCommand_Once" parameters="section, data" type="string">
+    if (not HasAttribute(game, "textprocessor_seen")) {
+      game.textprocessor_seen = NewDictionary()
+    }
+    fulltext = StringDictionaryItem(data, "fulltext")
+    if (not DictionaryContains(game.textprocessor_seen, fulltext)) {
+      onceSectionsInThisText = NewList()
+      dictionary add (game.textprocessor_seen, fulltext, onceSectionsInThisText)
+    }
+    else {
+      onceSectionsInThisText = DictionaryItem(game.textprocessor_seen, fulltext)
+    }
+    if (not ListContains(onceSectionsInThisText, section)) {
+      list add (onceSectionsInThisText, section)
+      return (ProcessTextSection(Mid(section, 6), data))
+    }
+    else {
+      return ("")
+    }
+  </function>
+  <function name="ProcessTextCommand_Random" parameters="section, data" type="string">
+    elements = Mid(section, 8)
+    elementslist = Tsplit(elements)
+    index = GetRandomInt(0, ListCount(elementslist) - 1)
+    return (ProcessTextSection(ListItem(elementslist, index), data))
+  </function>
+  <function name="Tsplit" parameters="splittext" type="stringlist"><![CDATA[
+    itemlist = NewStringList()
+    sections = 0
+    startpos = 1
+    for (i, 1, LengthOf(splittext)) {
+      if (Mid(splittext, i, 1) = "{") {
+          sections = sections + 1
+        }
+        if (Mid(splittext, i, 1) = "}") {
+        sections = sections - 1
+      }
+      if (Mid(splittext, i, 1) = ":" and 0 >= sections) {
+        item = Mid(splittext, startpos, i - startpos)
+        list add (itemlist, item)
+        startpos = i + 1
+      }
+    }
+    item = Mid(splittext, startpos)
+    list add (itemlist, item)
+    return (itemlist)
+  ]]></function>
+  <function name="ProcessTextCommand_RandomAlias" parameters="section, data" type="string"><![CDATA[
+    objectname = Mid(section, 8)
+    object = GetObject(objectname)
+    if (object = null) {
+      return ("{" + ProcessTextSection(section, data) + "}")
+    }
+    else {
+      count = ListCount(object.alt)
+      if (count > 0) {
+        return (ListItem(object.alt, GetRandomInt(0, count - 1)))
+      }
+      else {
+        return ("")
+      }
+    }
+  ]]></function>
+  <function name="ProcessTextCommand_If" parameters="section, data" type="string"><![CDATA[
+    command = Mid(section, 4)
+    colon = Instr(command, ":")
+    if (colon = 0) {
+      return ("{if " + command + "}")
+    }
+    else {
+      text = Mid(command, colon + 1)
+      condition = Left(command, colon - 1)
+      operator = Instr(condition, "<=")
+      if (operator <> 0) {
+        operatorlength = 2
+      }
+      if (operator = 0) {
+        operator = Instr(condition, ">=")
+        if (operator <> 0) {
+          operatorlength = 2
+        }
+      }
+      if (operator = 0) {
+        operator = Instr(condition, "<>")
+        if (operator <> 0) {
+          operatorlength = 2
+        }
+      }
+      if (operator = 0) {
+        operator = Instr(condition, "<")
+        if (operator <> 0) {
+          operatorlength = 1
+        }
+      }
+      if (operator = 0) {
+        operator = Instr(condition, ">")
+        if (operator <> 0) {
+          operatorlength = 1
+        }
+      }
+      if (operator = 0) {
+        operator = Instr(condition, "=")
+        if (operator <> 0) {
+          operatorlength = 1
+        }
+      }
+      if (operator = 0) {
+        checkfor = true
+        if (StartsWith(condition, "not ")) {
+          checkfor = false
+          condition = Mid(condition, 5)
+        }
+        dot = Instr(condition, ".")
+        if (dot = 0) {
+          result = GetBoolean(game, condition)
+        }
+        else {
+          objectname = Left(condition, dot - 1)
+          attributename = Mid(condition, dot + 1)
+          object = GetObject(objectname)
+          if (object = null) {
+            result = false
+          }
+          else {
+            result = GetBoolean(object, attributename)
+          }
+        }
+        if (result = checkfor) {
+          return (ProcessTextSection(text, data))
+        }
+        else {
+          return ("")
+        }
+      }
+      else {
+        lhs = Left(condition, operator - 1)
+        rhs = Mid(condition, operator + operatorlength)
+        op = Mid(condition, operator, operatorlength)
+        dot = Instr(lhs, ".")
+        if (dot = 0) {
+          objectname = ""
+          attributename = ""
+          if (HasInt(game, lhs)) {
+            objectname = "game"
+            attributename = lhs
+          }
+          else {
+            return ("{if " + command + "}")
+          }
+        }
+        else {
+          objectname = Left(lhs, dot - 1)
+          attributename = Mid(lhs, dot + 1)
+        }
+        object = GetObject(objectname)
+        if (object = null) {
+          return ("{if " + command + "}")
+        }
+        else {
+          value = GetAttribute(object, attributename)
+          if (op = "=") {
+            if (ToString(value) = rhs) {
+              return (ProcessTextSection(text, data))
+            }
+            else {
+              return ("")
+            }
+          }
+          else if (op = "<>") {
+            if (not ToString(value) = rhs) {
+              return (ProcessTextSection(text, data))
+            }
+            else {
+              return ("")
+            }
+          }
+          else if (op = ">") {
+            if (ToDouble(ToString(value)) > ToDouble(rhs)) {
+              return (ProcessTextSection(text, data))
+            }
+            else {
+              return ("")
+            }
+          }
+          else if (op = "<") {
+            if (ToDouble(ToString(value)) < ToDouble(rhs)) {
+              return (ProcessTextSection(text, data))
+            }
+            else {
+              return ("")
+            }
+          }
+          else if (op = ">=") {
+            if (ToDouble(ToString(value)) >= ToDouble(rhs)) {
+              return (ProcessTextSection(text, data))
+            }
+            else {
+              return ("")
+            }
+          }
+          else if (op = "<=") {
+            if (ToDouble(ToString(value)) <= ToDouble(rhs)) {
+              return (ProcessTextSection(text, data))
+            }
+            else {
+              return ("")
+            }
+          }
+        }
+      }
+    }
+  ]]></function>
+  <function name="ProcessTextCommand_Img" parameters="section, data" type="string"><![CDATA[
+    filename = Mid(section, 5)
+    return ("<img src=\"" + GetFileURL(filename) + "\" />")
+  ]]></function>
+  <function name="ProcessTextCommand_Counter" parameters="section, data" type="string">
+    if (HasAttribute(game, section)) {
+      return (ToString(GetAttribute(game, section)))
+    }
+    else {
+      return ("0")
+    }
+  </function>
+  <function name="ProcessTextCommand_Select" parameters="section, data" type="string"><![CDATA[
+    elements = Mid(section, 8)
+    elementslist = Split(elements, ":")
+    objectandatt = StringListItem (elementslist, 0)
+    list remove (elementslist, objectandatt)
+    objectandattlist = Split(objectandatt, ".")
+    if (not ListCount (objectandattlist) = 2) {
+      return ("{" + ProcessTextSection(section, data) + "}")
+    }
+    else {
+      object = GetObject(StringListItem(objectandattlist, 0))
+      if (object = null) {
+        return ("{" + ProcessTextSection(section, data) + "}")
+      }
+      else if (not HasInt (object, StringListItem(objectandattlist, 1))) {
+        return ("{" + ProcessTextSection(section, data) + "}")
+      }
+      else {
+        index = GetInt(object, StringListItem(objectandattlist, 1))
+        if ((0 > index) or (index >= Listcount(elementslist))) {
+          return ("{" + ProcessTextSection(section, data) + "}")
+        }
+        else {
+          return (ProcessTextSection(ListItem(elementslist, index), data))
+        }
+      }
+    }
+  ]]></function>
+  <function name="SetFramePicture" parameters="filename"><![CDATA[
+    request (SetPanelContents, "<img src=\"" + GetFileURL(filename) + "\" onload=\"setPanelHeight()\"/>")
+    game.panelcontents = filename
+  ]]></function>
+  <function name="ClearFramePicture">
+    request (SetPanelContents, "")
+    game.panelcontents = null
+  </function>
+  <function name="ClearScreen">
+    request (ClearScreen, "")
+  </function>
+  <function name="SetForegroundColour" parameters="colour">
+    request (Foreground, colour)
+    game.defaultforeground = colour
+  </function>
+  <function name="SetBackgroundColour" parameters="colour">
+    request (Background, colour)
+    game.defaultbackground = colour
+  </function>
+  <function name="SetFontName" parameters="font">
+    game.defaultfont = font
+    game.defaultwebfont = ""
+  </function>
+  <function name="SetWebFontName" parameters="font">
+    AddExternalStylesheet ("http://fonts.googleapis.com/css?family=" + Replace(font, " ", "+"))
+    game.defaultwebfont = font
+  </function>
+  <function name="AddExternalStylesheet" parameters="stylesheet">
+    if (game.externalstylesheets = null) {
+      game.externalstylesheets = NewStringList()
+    }
+    if (not ListContains(game.externalstylesheets, stylesheet)) {
+      list add (game.externalstylesheets, stylesheet)
+      JS.addExternalStylesheet (stylesheet)
+    }
+  </function>
+  <function name="SetFontSize" parameters="size">
+    game.defaultfontsize = size
+  </function>
+  <function name="PrintCentered" parameters="text">
+    SetAlignment ("center")
+    msg (text)
+    SetAlignment ("left")
+  </function>
+  <function name="ShowYouTube" parameters="id">
+    JS.AddYouTube (id)
+  </function>
+  <function name="ShowVimeo" parameters="id">
+    JS.AddVimeo (id)
+  </function>
+  <function name="WaitForKeyPress">
+    request (Wait, "")
+  </function>
+  <function name="DisplayHttpLink" parameters="text, url, https"><![CDATA[
+    pos = Instr(url, "://")
+    if (pos > 0) {
+      url = Mid(url, pos + 3)
+    }
+    if (https) {
+      url = "https://" + url
+    }
+    else {
+      url = "http://" + url
+    }
+    msg ("<a style=\"" + GetCurrentLinkTextFormat() + "\" href=\"" + url + "\">" + text + "</a>")
+  ]]></function>
+  <function name="DisplayMailtoLink" parameters="text, url"><![CDATA[
+    if (Instr(url, "mailto:") = 0) {
+      url = "mailto:" + url
+    }
+    msg ("<a style=\"" + GetCurrentLinkTextFormat() + "\" href=\"" + url + "\">" + text + "</a>")
+  ]]></function>
+  <function name="CommandLink" parameters="cmd, text" type="string">
+    return ("{command:" + cmd + ":" + text + "}")
+  </function>
+  <function name="Log" parameters="text">
+    request (Log, text)
+  </function>
+  <function name="SetBackgroundImage" parameters="filename">
+    JS.SetBackgroundImage (GetFileURL(filename))
+    game.backgroundimage = filename
+  </function>
+  <function name="SetBackgroundOpacity" parameters="opacity">
+    JS.SetBackgroundOpacity (opacity)
+    game.backgroundopacity = opacity
+    game.setbackgroundopacity = true
+  </function>
+  <function name="DisplayList" parameters="list, numbers"><![CDATA[
+    if (numbers) {
+      result = "<ol>"
+    }
+    else {
+      result = "<ul>"
+    }
+    foreach (item, list) {
+      result = result + "<li>" + item + "</li>"
+    }
+    if (numbers) {
+      result = result + "</ol>"
+    }
+    else {
+      result = result + "</ul>"
+    }
+    msg (result)
+  ]]></function>
+  <function name="SetAlignment" parameters="align">
+    JS.createNewDiv (align)
+  </function>
+  <function name="GetCurrentFontFamily" type="string">
+    if (game.defaultwebfont = null) {
+      return (game.defaultfont)
+    }
+    else {
+      if (game.defaultwebfont = "") {
+        return (game.defaultfont)
+      }
+      else {
+        return ("'" + game.defaultwebfont + "', " + game.defaultfont)
+      }
+    }
+  </function>
+  <function name="TextFX_Typewriter" parameters="text, speed">
+    TextFX_Typewriter_Internal (text, speed, GetCurrentFontFamily(), game.defaultforeground, game.defaultfontsize)
+  </function>
+  <function name="TextFX_Typewriter_Internal" parameters="text, speed, font, color, size">
+    JS.TextFX.Typewriter (text, speed, font, color, size)
+  </function>
+  <function name="TextFX_Unscramble" parameters="text, speed, reveal">
+    TextFX_Unscramble_Internal (text, speed, reveal, GetCurrentFontFamily(), game.defaultforeground, game.defaultfontsize)
+  </function>
+  <function name="TextFX_Unscramble_Internal" parameters="text, speed, reveal, font, color, size">
+    JS.TextFX.Unscramble (text, speed, reveal, font, color, size)
+  </function>
+  <function name="InitInterface">
+    if (game.setcustomwidth) {
+      JS.setGameWidth (game.customwidth)
+    }
+    if (not game.showborder) {
+      JS.hideBorder ()
+    }
+    if (game.setcustompadding) {
+      JS.setGamePadding (game.custompaddingtop, game.custompaddingbottom, game.custompaddingleft, game.custompaddingright)
+    }
+    request (Background, game.defaultbackground)
+    request (Foreground, game.defaultforeground)
+    request (LinkForeground, game.defaultlinkforeground)
+    JS.SetMenuBackground (game.menubackground)
+    JS.SetMenuForeground (game.menuforeground)
+    JS.SetMenuHoverBackground (game.menuhoverbackground)
+    JS.SetMenuHoverForeground (game.menuhoverforeground)
+    JS.SetMenuFontName (game.menufont)
+    JS.SetMenuFontSize (game.menufontsize + "pt")
+    request (Hide, "Panes")
+    request (Hide, "Command")
+    request (Hide, "Location")
+  </function>
+  <function name="StartGame"><![CDATA[
+    if (game.showtitle) {
+      PrintCentered ("<span style=\"font-size:260%\">" + game.gamename + "</span>")
+      if (game.subtitle <> null) {
+        if (LengthOf(game.subtitle) > 0) {
+          PrintCentered ("<span style=\"font-size:130%\">" + game.subtitle + "</span>")
+        }
+      }
+      if (game.author <> null) {
+        if (LengthOf(game.author) > 0) {
+          PrintCentered ("<br/><span style=\"font-size:140%\">" + game.author + "</span>")
+        }
+      }
+      msg ("<div style=\"margin-top:20px\"></div>")
+    }
+    game.noclear = true
+    DoPage (player.parent)
+    game.noclear = false
+  ]]></function>
+  <function name="ScopeInventory" type="objectlist">
+    result = NewObjectList()
+    return (result)
+  </function>
+  <function name="GetPlacesObjectsList" type="objectlist">
+    result = NewObjectList()
+    return (result)
+  </function>
+  <function name="ScopeExits" type="objectlist">
+    result = NewObjectList()
+    return (result)
+  </function>
+  <function name="ScopeCommands" type="objectlist">
+    result = NewObjectList()
+    foreach (command, AllCommands()) {
+      if (command.parent = game.pov.parent) {
+        list add (result, command)
+      }
+    }
+    return (result)
+  </function>
+  <function name="HandleCommand" parameters="command"><![CDATA[
+    if (command = "undo") {
+      // ignore
+    }
+    else {
+      newpage = GetObject(command)
+      if (newpage = null) {
+        msg ("Error - no page named '" + command + "'")
+      }
+      else {
+        if (not game.clearlastpage and HasAttribute(player.parent, "options")) {
+          if (DictionaryContains(player.parent.options, command)) {
+            optiontext = StringDictionaryItem(player.parent.options, command)
+            msg ("<b>" + optiontext + "</b>")
+            msg ("")
+          }
+          JS.disableAllCommandLinks ()
+        }
+        player.parent = GetObject(command)
+      }
+    }
+  ]]></function>
+  <function name="DoPage" parameters="page"><![CDATA[
+    parent = player.parent
+    if (game.clearlastpage) {
+      if (not game.noclear) {
+        request (ClearScreen, "")
+      }
+    }
+    else {
+      if (HasString(game, "optionsoutputsection")) {
+        HideOutputSection (game.optionsoutputsection)
+      }
+    }
+    if (not GetBoolean(game, "continuesound")) {
+      stop sound
+    }
+    if (HasScript( game, "roomenter")) {
+      do (game, "roomenter")
+    }
+    on ready {
+      if (GetBoolean(player.parent, "runscript") or GetBoolean(player.parent, "runscriptonly")) {
+        if (HasScript(player.parent, "script")) {
+          do (player.parent, "script")
+        }
+        else {
+          msg ("No script has been created for this page.")
+        }
+      }
+      // script may have moved the player, so finish DoPage if parent has changed
+      if (parent = player.parent and not GetBoolean(player.parent, "runscriptonly")) {
+        if (HasString(player.parent, "sound")) {
+          if (LengthOf(player.parent.sound) > 0) {
+            play sound (player.parent.sound, false, false)
+            game.continuesound = GetBoolean(player.parent, "continuesound")
+          }
+        }
+        if (HasString(player.parent, "picture")) {
+          if (LengthOf(player.parent.picture) > 0) {
+            picture (player.parent.picture)
+            msg ("")
+          }
+        }
+        if (HasString(player.parent, "youtube")) {
+          if (LengthOf(player.parent.youtube) > 0) {
+            JS.AddYouTube (player.parent.youtube)
+            msg ("")
+            msg ("")
+          }
+        }
+        msg (player.parent.description)
+        msg ("")
+        msg ("")
+        game.optionsoutputsection = StartNewOutputSection()
+        if (TypeOf(player.parent, "options") = "stringdictionary") {
+          foreach (key, player.parent.options) {
+            destination = GetObject(key)
+            if (destination = null) {
+              msg (StringDictionaryItem(player.parent.options, key) + " (broken link)")
+            }
+            else {
+              if (DoesInherit(destination, "link")) {
+                msg ("<a href=\"" + destination.address + "\">" + StringDictionaryItem(player.parent.options, key) + "</a>")
+              }
+              else {
+                msg (CommandLink(key, StringDictionaryItem(player.parent.options, key)))
+              }
+            }
+            msg ("")
+          }
+        }
+        EndOutputSection (game.optionsoutputsection)
+      }
+    }
+    set (player.parent, "visited", true)
+  ]]></function>
+  <function name="StartNewOutputSection" type="string">
+    if (not HasInt(game, "lastoutputsection")) {
+      game.lastoutputsection = 0
+    }
+    game.lastoutputsection = game.lastoutputsection + 1
+    name = "section" + game.lastoutputsection
+    JS.StartOutputSection (name)
+    return (name)
+  </function>
+  <function name="EndOutputSection" parameters="name">
+    JS.EndOutputSection (name)
+  </function>
+  <function name="HideOutputSection" parameters="name">
+    JS.HideOutputSection (name)
+  </function>
+  <function name="RandomChance" parameters="percentile" type="boolean"><![CDATA[
+    return (GetRandomInt(1,100) <= percentile)
+  ]]></function>
+  <function name="HasSeenPage" parameters="page" type="boolean">
+    return (GetBoolean(page, "visited"))
+  </function>
+  <function name="SetFlagOn" parameters="flag">
+    set (game, flag, true)
+  </function>
+  <function name="SetFlagOff" parameters="flag">
+    set (game, flag, false)
+  </function>
+  <function name="SetCounter" parameters="counter, value">
+    set (game, counter, value)
+  </function>
+  <function name="ChangeCounter" parameters="counter, value">
+    if (not HasInt(game, counter)) {
+      set (game, counter, 0)
+    }
+    set (game, counter, GetInt(game, counter) + value)
+  </function>
+  <function name="IncreaseCounter" parameters="counter">
+    if (not HasInt(game, counter)) {
+      set (game, counter, 0)
+    }
+    set (game, counter, GetInt(game, counter) + 1)
+  </function>
+  <function name="DecreaseCounter" parameters="counter">
+    if (not HasInt(game, counter)) {
+      set (game, counter, 0)
+    }
+    set (game, counter, GetInt(game, counter) - 1)
+  </function>
+  <function name="GetInput" parameters="callback">
+    request (Show, "Command")
+    get input {
+      request (Hide, "Command")
+      parameters = NewStringDictionary()
+      dictionary add (parameters, "result", result)
+      invoke (callback, parameters)
+    }
+  </function>
+  <function name="AddPageLink" parameters="source, destination, text">
+    RemovePageLink (source, destination)
+    dictionary add (source.options, destination.name, text)
+  </function>
+  <function name="RemovePageLink" parameters="source, destination">
+    if (source.options = null) {
+      source.options = NewStringDictionary()
+    }
+    if (DictionaryContains(source.options, destination.name)) {
+      dictionary remove (source.options, destination.name)
+    }
+  </function>
+  <function name="MovePlayer" parameters="destination">
+    player.parent = destination
+  </function>
+</asl>
