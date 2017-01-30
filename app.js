@@ -340,8 +340,8 @@ app.post('/', function (request, response) {
 			case GET_NAME_ACTION:
 				// Get the player's name and store it
 				// Then, ask them if the name is correct
-				let playerName = assistant.getArgument('given-name');
-				let player = {};
+				var playerName = assistant.getArgument('given-name');
+				var player = {};
 				player.name = playerName;
 				updatePlayer(assistant, player);
 
@@ -356,8 +356,8 @@ app.post('/', function (request, response) {
 				// Used when we don't recognize a player's name
 
 				// Make the player
-				let playerName = assistant.getRawInput();
-				let player = {};
+				var playerName = assistant.getRawInput();
+				var player = {};
 				player.name = playerName;
 				updatePlayer(assistant, player);
 
@@ -387,7 +387,7 @@ app.post('/', function (request, response) {
 				// Generate each stat and tell the player what the stats are
 				// Then ask if they are ready to go
 
-				let player = assistant.data.player;
+				var player = assistant.data.player;
 				// Generate player stats
 				player.strengthStat = getRandomNumber(0, 20);
 				player.dexterityStat = getRandomNumber(0, 20);
