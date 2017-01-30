@@ -356,8 +356,8 @@ app.post('/', function (request, response) {
 				// Used when we don't recognize a player's name
 
 				// Make the player
-				playerName = assistant.getRawInput();
-				player = {};
+				let playerName = assistant.getRawInput();
+				let player = {};
 				player.name = playerName;
 				updatePlayer(assistant, player);
 
@@ -387,7 +387,7 @@ app.post('/', function (request, response) {
 				// Generate each stat and tell the player what the stats are
 				// Then ask if they are ready to go
 
-				player = assistant.data.player;
+				let player = assistant.data.player;
 				// Generate player stats
 				player.strengthStat = getRandomNumber(0, 20);
 				player.dexterityStat = getRandomNumber(0, 20);
