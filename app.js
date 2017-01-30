@@ -14,7 +14,7 @@ app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json({ type: 'application/json' }));
 
 // Load the game itself
-let parser = new xml2js.Parser();
+/*let parser = new xml2js.Parser();
 let gameMap = new Map();
 let rooms = [];
 let game = {};
@@ -89,7 +89,7 @@ fs.readFile('game.aslx', function(err, data) {
 							}
 						}
 						//console.log(game[object].options[option].item);
-					}*/
+					}*//*
 					room.exits = {};
 					for(var rawExit in game[object].exit) {
 						var exits = game[object].exit[rawExit]['$'];
@@ -120,9 +120,9 @@ fs.readFile('game.aslx', function(err, data) {
 						console.log(option +': '+gameMap.get(key).name);
 					}
 					//console.log(rooms[room].name);
-				}*/
+				}*//*
 		});
-});
+});*/
 
 let helpActions = new Map();
 
@@ -307,133 +307,169 @@ app.post('/', function (request, response) {
 	//console.log('body: ' + JSON.stringify(request.body));
 
 	const assistant = new ApiAiAssistant({ request: request, response: response });
-	let actionMap = new Map();
 
-	// Greet the player
-	// After greeting them, ask them to create a character
-	function greet(assistant)
-	{
-		assistant.data.speech = getGreeting();
-		assistant.data.speech += '\n';
-		assistant.data.speech += getCharacterName();
-
-		say(assistant, WELCOME_ACTION, NAME_CONTEXT, 5);
+	function handleRequest(assistant) {
+			// Current action
+			let action = assistant.getIntent();
+			determineAction(assistant, action);
 	}
-	actionMap.set(WELCOME_ACTION, greet);
+	assistant.handleRequest(handleRequest);
 
-	// Get the player's name and store it
-	// Then, ask them if the name is correct
-	function getPlayerName(assistant)
-	{
-		// Make the player
-		let playerName = assistant.getArgument('given-name');
-		let player = {};
-		player.name = playerName;
-		updatePlayer(assistant, player);
+	function determineAction(assistant, action) {
+		// The context for this action
+		let context = "";
+		// The timeout for the context
+		let timeout = 5;
+		// What the assistant will say
+		let speech = "";
 
-		// Verify the name is correct
-		assistant.data.speech = getVerifyPlayerName(player, false);
-		say(assistant, GET_NAME_ACTION, VERIFY_NAME_CONTEXT, 2);
-	}
-	actionMap.set(GET_NAME_ACTION, getPlayerName);
+		// Whether this action closes the game
+		let gameOver = false;
 
-	// This is used as a fallback if we don't recognize a player's name
-	function getWeirdPlayerName(assistant) {
-		// Make the player
-		let playerName = assistant.getRawInput();
-		let player = {};
-		player.name = playerName;
-		updatePlayer(assistant, player);
+		switch(action) {
+			case WELCOME_ACTION:
+				// The welcome action, called when the player first starts the game
+				// After greeting them, ask them to create a character
+				speech = getGreeting();
+				speech += '\n';
+				speech += getCharacterName();
 
-		// Verify that the name is correct
-		assistant.data.speech = getVerifyPlayerName(player, true);
-		say(assistant, GET_NAME_ACTION, VERIFY_NAME_CONTEXT, 2);
-	}
-	actionMap.set(GET_WEIRD_NAME_ACTION, getWeirdPlayerName);
+				action = WELCOME_ACTION;
+				context = NAME_CONTEXT;
+			break;
+			case GET_NAME_ACTION:
+				// Get the player's name and store it
+				// Then, ask them if the name is correct
+				let playerName = assistant.getArgument('given-name');
+				let player = {};
+				player.name = playerName;
+				updatePlayer(assistant, player);
 
-	// Player said we didn't get their name right
-	// Try it one more time
-	function retryCharacterName(assistant) {
-		// Reset the player
-		updatePlayer(assistant, undefined);
+				// Verify the name is correct
+				speech = getVerifyPlayerName(player, false);
 
-		// Ask the player to retry their name again
-		assistant.data.speech = getRetryPlayerName();
-		say(assistant, VERIFY_NAME_NO_ACTION, NAME_CONTEXT, 5);
-	}
-	actionMap.set(VERIFY_NAME_NO_ACTION, retryCharacterName);
+				action = GET_NAME_ACTION;
+				context = VERIFY_NAME_CONTEXT;
+				timeout = 2;
+			break;
+			case GET_WEIRD_NAME_ACTION:
+				// Used when we don't recognize a player's name
 
-	// If the player says their name is correct, move on to next stage of character creation
-	// Generate each stat and tell the player what the stats are
-	// Then ask if they are ready to go
-	function generatePlayerStats(assistant) {
-		// Generate player stats
-		assistant.data.player.strengthStat = getRandomNumber(0, 20);
-		assistant.data.player.dexterityStat = getRandomNumber(0, 20);
-		assistant.data.player.intelligenceStat = getRandomNumber(0, 20);
+				// Make the player
+				playerName = assistant.getRawInput();
+				player = {};
+				player.name = playerName;
+				updatePlayer(assistant, player);
 
-		// Tell the player about the stats
-		assistant.data.speech = getGenerateStatsBegin(assistant.data.player);
-		assistant.data.speech += '\n';
+				// Verify that the name is correct
+				speech = getVerifyPlayerName(player, true);
 
-		// Print the value for each stat
-		assistant.data.speech += getStrengthStat(assistant.data.player);
-		assistant.data.speech += '\n';
-		assistant.data.speech += getDexterityStat(assistant.data.player);
-		assistant.data.speech += '\n';
-		assistant.data.speech += getIntelligenceStat(assistant.data.player);
-		assistant.data.speech += '\n';
+				action = GET_NAME_ACTION;
+				context = VERIFY_NAME_CONTEXT;
+				timeout = 2;
+			break;
+			case VERIFY_NAME_NO_ACTION:
+				// Player said we didn't get their name right
+				// Try it one more time
 
-		// Ask the player if they want to start a game
-		assistant.data.speech += getBeginNewGame();
+				// Reset the player
+				updatePlayer(assistant, undefined);
 
-		say(assistant, VERIFY_NAME_YES_ACTION, READY_FOR_ADVENTURE_CONTEXT, 5);
-	}
-	actionMap.set(VERIFY_NAME_YES_ACTION, generatePlayerStats);
+				// Ask the player to retry their name again
+				speech = getRetryPlayerName();
 
+				action = VERIFY_NAME_NO_ACTION;
+				context = NAME_CONTEXT;
+			break;
+			case VERIFY_NAME_YES_ACTION:
+				// The player has confirmed their name is correct
+				// Now we can move on to character creation
+				// Generate each stat and tell the player what the stats are
+				// Then ask if they are ready to go
 
+				player = assistant.data.player;
+				// Generate player stats
+				player.strengthStat = getRandomNumber(0, 20);
+				player.dexterityStat = getRandomNumber(0, 20);
+				player.intelligenceStat = getRandomNumber(0, 20);
 
-	// This is used when the Game Master has absolutely no idea what the player just said
-	const CONFUSED_ACTION = 'input.unknown';
-	function unknownPlayerInput(assistant) {
-		console.log("Unknown player input!");
-		// If we were talking about names last, that might be a name
-		if (assistant.data.lastContext == NAME_CONTEXT) {
-			getWeirdPlayerName(assistant);
+				updatePlayer(assistant, player);
+
+				// Tell the player about the stats
+				speech = getGenerateStatsBegin(player);
+				speech += '\n';
+
+				// Print the value for each stat
+				speech += getStrengthStat(player);
+				speech += '\n';
+				speech += getDexterityStat(player);
+				speech += '\n';
+				speech += getIntelligenceStat(player);
+				speech += '\n';
+
+				// Ask the player if they want to start a game
+				speech += getBeginNewGame();
+
+				action = VERIFY_NAME_YES_ACTION;
+				context = READY_FOR_ADVENTURE_CONTEXT;
+			break;
+			case HELP_ACTION:
+				// Player has asked for help
+				speech = getHelp(assistant.data.lastContext, assistant.data.player);
+
+				// Preserve the last action and context; reset context timeout
+				action = assistant.data.currentAction;
+				context = assistant.data.lastContext;
+			break;
+			default:
+				// The Game Master has absolutely no idea what the player just said
+				console.log("Unknown player input!");
+				// If we were talking about names last, that might be a name
+				if (assistant.data.lastContext == NAME_CONTEXT) {
+					determineAction(assistant, GET_WEIRD_NAME_ACTION);
+				}
+				else {
+					// No idea
+					// Get the dialog line telling the player we don't know what they said
+					speech = getMisheardDialog(assistant.data.misheardReplyCount);
+
+					assistant.data.misheardReplyCount++;
+					// Exceeded try count; tell them we give up
+					if(assistant.data.misheardReplyCount >= MAX_MISHEARD_TRIES) {
+							// Can't understand the player, close the conversation
+							assistant.tell(speech);
+							return;
+					}
+					else {
+							console.log("Unable to resolve player input: " + assistant.getRawInput());
+							// Ask the player to repeat
+							// If on the try before the last try, offer some help
+							if(assistant.data.misheardReplyCount == MAX_MISHEARD_TRIES - 1) {
+								console.log("Seeking help for player.");
+								speech += '\n';
+								speech += getHelp(assistant.data.lastContext, assistant.data.player);
+							}
+
+							// Manually ask the player to repeat to avoid resetting misheardReplyCount
+							assistant.data.speech = speech;
+							assistant.ask(speech);
+							return;
+					}
+				}
+			break;
+		}
+
+		assistant.data.speech = speech;
+
+		if(gameOver) {
+			// Game is over; close the conversation
+			assistant.tell(speech);
 		}
 		else {
-			// No idea
-			let assistantDialog = getMisheardDialog(assistant.data.misheardReplyCount);
-			assistant.data.misheardReplyCount++;
-			if(assistant.data.misheardReplyCount >= MAX_MISHEARD_TRIES) {
-					// Can't understand the player, close the conversation
-					assistant.tell(assistantDialog);
-			}
-			else {
-					console.log("Unable to resolve player input: " + assistant.getRawInput());
-					// Ask the player to repeat
-					// If on the try before the last try, offer some help
-					if(assistant.data.misheardReplyCount == MAX_MISHEARD_TRIES - 1)
-					{
-						console.log("Seeking help for player.");
-						assistantDialog += '\n';
-						assistantDialog += getHelp(assistant.data.lastContext, assistant.data.player);
-					}
-					assistant.ask(assistantDialog);
-			}
+			// Ask the player what to do next
+			say(assistant, action, context, timeout);
 		}
 	}
-	actionMap.set(CONFUSED_ACTION, unknownPlayerInput);
-
-	// Called when the player asks for help
-	function playerNeedsHelp(assistant) {
-		assistant.data.speech = getHelp(assistant.data.lastContext, assistant.data.player);
-		say(assistant, assistant.data.currentAction, assistant.data.lastContext, 5);
-	}
-	actionMap.set(HELP_ACTION, playerNeedsHelp);
-
-	assistant.handleRequest(actionMap);
-
 
 	// Helpers
 	function say(assistant, action, context, length) {
