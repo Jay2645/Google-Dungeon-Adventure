@@ -842,7 +842,7 @@ app.post('/', function (request, response) {
 			break;
 			case HELP_ACTION:
 				// Player has asked for help
-				speech = getHelp(assistant.data.lastContext, assistant.data.player);
+				speech = getHelp(assistant.data.lastContext, player);
 
 				// Preserve the last action and context; reset context timeout
 				action = assistant.data.currentAction;
@@ -874,7 +874,7 @@ app.post('/', function (request, response) {
 							if(assistant.data.misheardReplyCount == MAX_MISHEARD_TRIES - 1) {
 								console.log("Seeking help for player.");
 								speech += '\n';
-								speech += getHelp(assistant.data.lastContext, assistant.data.player);
+								speech += getHelp(assistant.data.lastContext, player);
 							}
 
 							// Manually ask the player to repeat to avoid resetting misheardReplyCount
