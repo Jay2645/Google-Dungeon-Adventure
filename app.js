@@ -460,7 +460,7 @@ function msg (text) {
 		text = text.replace(/<br\/>/mg,"\n");
 		text = text.replace(/\\"/mg, "\"");
 		speech += text;
-		console.log(text);
+		//console.log(text);
 }
 
 // A Quest function. Ends the game.
@@ -912,7 +912,7 @@ app.post('/', function (request, response) {
 	}
 
 	function updatePlayer(assistant, player) {
-		assistant.data.player = player;
+		//assistant.data.player = player;
 	}
 });
 
