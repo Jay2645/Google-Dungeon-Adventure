@@ -420,10 +420,10 @@ app.post('/', function (request, response) {
 				action = WELCOME_ACTION;
 				context = NAME_CONTEXT;
 
-				player = {};
-				player.name = "";
-				player.objectName = "player";
-				player.inventory = {};
+				xmlImport.player = {};
+				xmlImport.player.name = "";
+				xmlImport.player.objectName = "player";
+				xmlImport.player.inventory = {};
 
 				// Also, import XML data
 				readXMLFile();
@@ -432,7 +432,7 @@ app.post('/', function (request, response) {
 				// Get the player's name and store it
 				// Then, ask them if the name is correct
 				var playerName = assistant.getArgument('given-name');
-				player.name = playerName;
+				xmlImport.player.name = playerName;
 
 				// Verify the name is correct
 				speech = getVerifyPlayerName(player, false);
@@ -446,7 +446,7 @@ app.post('/', function (request, response) {
 
 				// Make the player
 				var playerName = assistant.getRawInput();
-				player.name = playerName;
+				xmlImport.player.name = playerName;
 
 				// Verify that the name is correct
 				speech = getVerifyPlayerName(player, true);
@@ -460,7 +460,7 @@ app.post('/', function (request, response) {
 				// Try it one more time
 
 				// Reset the player name
-				player.name = "";
+				xmlImport.player.name = "";
 
 				// Ask the player to retry their name again
 				speech = getRetryPlayerName();
@@ -475,9 +475,9 @@ app.post('/', function (request, response) {
 				// Then ask if they are ready to go
 
 				// Generate player stats
-				player.strengthStat = getRandomNumber(0, 20);
-				player.dexterityStat = getRandomNumber(0, 20);
-				player.intelligenceStat = getRandomNumber(0, 20);
+				xmlImport.player.strengthStat = getRandomNumber(0, 20);
+				xmlImport.player.dexterityStat = getRandomNumber(0, 20);
+				xmlImport.player.intelligenceStat = getRandomNumber(0, 20);
 
 				// Tell the player about the stats
 				speech = getGenerateStatsBegin(player);
