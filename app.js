@@ -435,7 +435,7 @@ app.post('/', function (request, response) {
 				xmlImport.player.name = playerName;
 
 				// Verify the name is correct
-				speech = getVerifyPlayerName(player, false);
+				speech = getVerifyPlayerName(xmlImport.player, false);
 
 				action = GET_NAME_ACTION;
 				context = VERIFY_NAME_CONTEXT;
@@ -449,7 +449,7 @@ app.post('/', function (request, response) {
 				xmlImport.player.name = playerName;
 
 				// Verify that the name is correct
-				speech = getVerifyPlayerName(player, true);
+				speech = getVerifyPlayerName(xmlImport.player, true);
 
 				action = GET_NAME_ACTION;
 				context = VERIFY_NAME_CONTEXT;
@@ -480,15 +480,15 @@ app.post('/', function (request, response) {
 				xmlImport.player.intelligenceStat = getRandomNumber(0, 20);
 
 				// Tell the player about the stats
-				speech = getGenerateStatsBegin(player);
+				speech = getGenerateStatsBegin(xmlImport.player);
 				speech += '\n';
 
 				// Print the value for each stat
-				speech += getStrengthStat(player);
+				speech += getStrengthStat(xmlImport.player);
 				speech += '\n';
-				speech += getDexterityStat(player);
+				speech += getDexterityStat(xmlImport.player);
 				speech += '\n';
-				speech += getIntelligenceStat(player);
+				speech += getIntelligenceStat(xmlImport.player);
 				speech += '\n';
 
 				// Ask the player if they want to start a game
@@ -501,7 +501,7 @@ app.post('/', function (request, response) {
 				// This starts the gameplay loop
 				// MoveObject moves the player into the first room
 				// This will trigger all "first time" actions and add it to the speech variable
-				MoveObject(player.objectName, rooms[0].name);
+				MoveObject(xmlImport.player.objectName, rooms[0].name);
 
 				action = READY_TO_PLAY_YES_ACTION;
 				context = GAME_CONTEXT;
@@ -512,7 +512,7 @@ app.post('/', function (request, response) {
 			break;
 			case HELP_ACTION:
 				// Player has asked for help
-				speech = getHelp(assistant.data.lastContext, player);
+				speech = getHelp(assistant.data.lastContext, xmlImport.player);
 
 				// Preserve the last action and context; reset context timeout
 				action = assistant.data.currentAction;
