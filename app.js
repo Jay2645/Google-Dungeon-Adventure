@@ -426,7 +426,7 @@ app.post('/', function (request, response) {
 				xmlImport.player.inventory = {};
 
 				// Also, import XML data
-				readXMLFile();
+				xmlImport.readXMLFile();
 			break;
 			case GET_NAME_ACTION:
 				// Get the player's name and store it
