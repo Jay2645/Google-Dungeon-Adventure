@@ -11,7 +11,8 @@ let app = express();
 app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json({ type: 'application/json' }));
 
-var xmlImport = require('./game');
+let xmlImport = require('./xmlImport');
+let game = require('./game');
 
 // What the assistant will say
 let speech = "";
@@ -22,8 +23,8 @@ let gameOver = false;
 // A Quest function. Moves the object to the given room.
 function MoveObject(objectName, roomName) {
 
-	var room = xmlImport.gameMap.get(roomName);
-	var object = xmlImport.objectMap.get(objectName);
+	var room = game.gameMap.get(roomName);
+	var object = game.objectMap.get(objectName);
 
 	/*if(object.context.name === room.name) {
 		// Already in the room
@@ -38,27 +39,27 @@ function MoveObject(objectName, roomName) {
 		// Update other indicies
 		for(var otherIndex in object.context.items) {
 			object.context.items[otherIndex].itemIndex = otherIndex;
-			xmlImport.objectMap.set(object.context.items[otherIndex].name, object.context.items[otherIndex]);
+			game.objectMap.set(object.context.items[otherIndex].name, object.context.items[otherIndex]);
 		}
 		// Update old maps
-		xmlImport.objectMap.set(object.context.name, object.context);
-		if(xmlImport.gameMap.has(object.context.name)) {
-			xmlImport.gameMap.set(object.context.name, object.context);
+		game.objectMap.set(object.context.name, object.context);
+		if(game.gameMap.has(object.context.name)) {
+			game.gameMap.set(object.context.name, object.context);
 		}
 	}
 
 	// If the player is moving, update POV stuff
-	if(objectName === xmlImport.player.objectName) {
+	if(objectName === game.player.objectName) {
 		// Trigger before first enter
 		if(room.firstTime) {
 			eval(room.beforeFirstEnter);
 		}
 		// Reset the first time bool on the previous room
-		if(xmlImport.player.currentRoom != undefined) {
-			xmlImport.player.currentRoom.firstTime = false;
+		if(game.player.currentRoom != undefined) {
+			game.player.currentRoom.firstTime = false;
 		}
 		// Move the player's room
-		xmlImport.player.currentRoom = room;
+		game.player.currentRoom = room;
 		if(room.firstTime) {
 			eval(room.firstEnter);
 		}
@@ -68,9 +69,9 @@ function MoveObject(objectName, roomName) {
 	object.context = room;
 	object.itemIndex = room.items.push(object) - 1;
 
-	xmlImport.gameMap.set(roomName, room);
-	xmlImport.objectMap.set(roomName, room);
-	xmlImport.objectMap.set(object.name, object);
+	game.gameMap.set(roomName, room);
+	game.objectMap.set(roomName, room);
+	game.objectMap.set(object.name, object);
 }
 
 // A Quest function. Makes the game say whatever is in the text.
@@ -88,8 +89,8 @@ function finish() {
 
 // A Quest function. Returns whether the object has the given flag set.
 function GetBoolean(objectName, flag) {
-	if(xmlImport.objectMap.has(objectName)) {
-		var object = xmlImport.objectMap.get(objectName);
+	if(game.objectMap.has(objectName)) {
+		var object = game.objectMap.get(objectName);
 		if(object[flag] === undefined) {
 			return false;
 		}
@@ -420,10 +421,10 @@ app.post('/', function (request, response) {
 				action = WELCOME_ACTION;
 				context = NAME_CONTEXT;
 
-				xmlImport.player = {};
-				xmlImport.player.name = "";
-				xmlImport.player.objectName = "player";
-				xmlImport.player.inventory = {};
+				game.player = {};
+				game.player.name = "";
+				game.player.objectName = "player";
+				game.player.inventory = {};
 
 				// Also, import XML data
 				xmlImport.readXMLFile();
@@ -432,10 +433,10 @@ app.post('/', function (request, response) {
 				// Get the player's name and store it
 				// Then, ask them if the name is correct
 				var playerName = assistant.getArgument('given-name');
-				xmlImport.player.name = playerName;
+				game.player.name = playerName;
 
 				// Verify the name is correct
-				speech = getVerifyPlayerName(xmlImport.player, false);
+				speech = getVerifyPlayerName(game.player, false);
 
 				action = GET_NAME_ACTION;
 				context = VERIFY_NAME_CONTEXT;
@@ -446,10 +447,10 @@ app.post('/', function (request, response) {
 
 				// Make the player
 				var playerName = assistant.getRawInput();
-				xmlImport.player.name = playerName;
+				game.player.name = playerName;
 
 				// Verify that the name is correct
-				speech = getVerifyPlayerName(xmlImport.player, true);
+				speech = getVerifyPlayerName(game.player, true);
 
 				action = GET_NAME_ACTION;
 				context = VERIFY_NAME_CONTEXT;
@@ -460,7 +461,7 @@ app.post('/', function (request, response) {
 				// Try it one more time
 
 				// Reset the player name
-				xmlImport.player.name = "";
+				game.player.name = "";
 
 				// Ask the player to retry their name again
 				speech = getRetryPlayerName();
@@ -475,20 +476,20 @@ app.post('/', function (request, response) {
 				// Then ask if they are ready to go
 
 				// Generate player stats
-				xmlImport.player.strengthStat = getRandomNumber(0, 20);
-				xmlImport.player.dexterityStat = getRandomNumber(0, 20);
-				xmlImport.player.intelligenceStat = getRandomNumber(0, 20);
+				game.player.strengthStat = getRandomNumber(0, 20);
+				game.player.dexterityStat = getRandomNumber(0, 20);
+				game.player.intelligenceStat = getRandomNumber(0, 20);
 
 				// Tell the player about the stats
-				speech = getGenerateStatsBegin(xmlImport.player);
+				speech = getGenerateStatsBegin(game.player);
 				speech += '\n';
 
 				// Print the value for each stat
-				speech += getStrengthStat(xmlImport.player);
+				speech += getStrengthStat(game.player);
 				speech += '\n';
-				speech += getDexterityStat(xmlImport.player);
+				speech += getDexterityStat(game.player);
 				speech += '\n';
-				speech += getIntelligenceStat(xmlImport.player);
+				speech += getIntelligenceStat(game.player);
 				speech += '\n';
 
 				// Ask the player if they want to start a game
@@ -501,7 +502,7 @@ app.post('/', function (request, response) {
 				// This starts the gameplay loop
 				// MoveObject moves the player into the first room
 				// This will trigger all "first time" actions and add it to the speech variable
-				MoveObject(xmlImport.player.objectName, xmlImport.rooms[0].name);
+				MoveObject(game.player.objectName, xmlImport.rooms[0].name);
 
 				action = READY_TO_PLAY_YES_ACTION;
 				context = GAME_CONTEXT;
@@ -512,7 +513,7 @@ app.post('/', function (request, response) {
 			break;
 			case HELP_ACTION:
 				// Player has asked for help
-				speech = getHelp(assistant.data.lastContext, xmlImport.player);
+				speech = getHelp(assistant.data.lastContext, game.player);
 
 				// Preserve the last action and context; reset context timeout
 				action = assistant.data.currentAction;
@@ -556,7 +557,7 @@ app.post('/', function (request, response) {
 			break;
 		}
 
-		updatePlayer(assistant, xmlImport.player);
+		updatePlayer(assistant, game.player);
 		assistant.data.speech = speech;
 
 		if(gameOver) {
@@ -588,7 +589,7 @@ app.post('/', function (request, response) {
 
 function xmlDone() {
   console.log("XML callback!");
-  MoveObject(xmlImport.player.objectName, xmlImport.rooms[0].name);
+  MoveObject(game.player.objectName, xmlImport.rooms[0].name);
 }
 
 // Start the server
