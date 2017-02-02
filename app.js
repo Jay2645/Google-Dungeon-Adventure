@@ -3,8 +3,6 @@
 // Enable actions client library debugging
 process.env.DEBUG = 'actions-on-google:*';
 
-let fs = require('fs');
-let xml2js = require('xml2js');
 let ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
 let express = require('express');
 let bodyParser = require('body-parser');
@@ -13,406 +11,26 @@ let app = express();
 app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json({ type: 'application/json' }));
 
-// Load the game itself
-let parser = new xml2js.Parser();
-let gameMap = new Map();
-let rooms = [];
-
-// Holds all objects
-let objectMap = new Map();
+var xmlImport = require('./game');
 
 // What the assistant will say
 let speech = "";
 // Whether this action closes the game
 let gameOver = false;
 
-let player = {};
-
-// We can't push notifications to the player, so any "SetTimeout" functions need to be removed
-// The problem is these are followed by a code block, which could have nested brackets
-// This will find those brackets and remove that block
-function stripSetTimeout(block, startIndex) {
-		//console.log("Searching "+block +", starting at " + startIndex);
-    var currPos = startIndex,
-	    openBrackets = 0,
-	    stillSearching = true,
-	    waitForChar = false;
-
-	while (stillSearching && currPos <= block.length) {
-	  var currChar = block.charAt(currPos);
-
-	  if (!waitForChar) {
-	    switch (currChar) {
-	      case '{':
-	        openBrackets++;
-	        break;
-	      case '}':
-	        openBrackets--;
-	        break;
-	      case '"':
-	      case "'":
-	        waitForChar = currChar;
-	        break;
-	      case '/':
-	        var nextChar = block.charAt(currPos + 1);
-	        if (nextChar === '/') {
-	          waitForChar = '\n';
-	        } else if (nextChar === '*') {
-	          waitForChar = '*/';
-	        }
-	    }
-	  } else {
-	    if (currChar === waitForChar) {
-	      if (waitForChar === '"' || waitForChar === "'") {
-	        block.charAt(currPos - 1) !== '\\' && (waitForChar = false);
-	      } else {
-	        waitForChar = false;
-	      }
-	    } else if (currChar === '*') {
-	      block.charAt(currPos + 1) === '/' && (waitForChar = false);
-	    }
-	  }
-
-	  currPos++
-	  if (openBrackets === 0) { stillSearching = false; }
-	}
-
-	//console.log("Substring: " +block.substring(startIndex , currPos)); // contents of the outermost brackets incl. everything inside
-	return currPos;
-}
-	// This function takes an input script and turns it into a Javascript function
-function convertScriptToJS(script) {
-	if(script === undefined) {
-		return Function("");
-	}
-
-	// First, add semicolons to the end of each argument
-	script = script.replace(/\)\s/mg, ");");
-	// Fix if statements getting semicolons
-	script = script.replace(/\);{/mg, ") {");
-	// Remove "play sound" and "stop sound" functions
-	script = script.replace(/play sound \(.+\);/mg, "");
-	script = script.replace(/stop sound/mg, "");
-	// Add the "finish" function
-	script = script.replace(/finish\s/mg, "finish();");
-	// Fix newlines
-	script = script.replace(/\n\s+/mg, "\n");
-	script = script.replace(/\n+/mg, "\n");
-	// Add quotes to parameters
-	// GetBoolean function
-	var booleanQuoteRegex = /GetBoolean\(([^"].+[^"]),/mg;
-	script = script.replace(booleanQuoteRegex, "GetBoolean(\"$1\",");
-	// MoveObject function
-	var moveObjectRegex = /MoveObject \(([^"].+[^"]), ([^"].+[^"])\)/mg;
-	script = script.replace(moveObjectRegex, "MoveObject (\"$1\", \"$2\")");
-	// SetObjectFlagOn function
-	var setObjectFlagOnRegex = /SetObjectFlagOn \(([^"].+[^"]),/mg;
-	script = script.replace(setObjectFlagOnRegex, "SetObjectFlagOn(\"$1\",");
-	// SetObjectFlagOff function
-	var setObjectFlagOffRegex = /SetObjectFlagOff \(([^"].+[^"]),/mg;
-	script = script.replace(setObjectFlagOffRegex, "SetObjectFlagOff(\"$1\",");
-	// Got function
-	var gotRegex = /Got\(([^"].+[^")])\)/mg;
-	script = script.replace(gotRegex, "Got(\"$1\")");
-	// HelperOpenObject function
-	var helperOpenObjectRegex = /HelperOpenObject \(([^"].+[^")])\)/mg;
-	script = script.replace(helperOpenObjectRegex, "HelperOpenObject(\"$1\")");
-	// HelperCloseObject function
-	var helperCloseObjectRegex = /HelperCloseObject \(([^"].+[^")])\)/mg;
-	script = script.replace(helperCloseObjectRegex, "HelperCloseObject(\"$1\")");
-	// MakeObjectVisible function
-	var makeObjectVisibleRegex = /MakeObjectVisible \(([^"].+[^")])\)/mg;
-	script = script.replace(makeObjectVisibleRegex, "MakeObjectVisible(\"$1\")");
-	// RemoveObject function
-	var removeObjectRegex = /RemoveObject \(([^"].+[^")])\)/mg;
-	script = script.replace(removeObjectRegex, "RemoveObject(\"$1\")");
-	// AddToInventory function
-	var addToInventoryRegex = /AddToInventory \(([^"].+[^")])\)/mg;
-	script = script.replace(addToInventoryRegex, "AddToInventory(\"$1\")");
-
-	// Turn wait into pause
-	var waitRegex = /wait {/mg;
-	script = script.replace(waitRegex, "msg('<break time=\"1\">'); {");
-
-	// SetTimeout, which isn't supported until Google allows push notifications
-	var setTimeoutRegex = /SetTimeout \(\d+\) /mg;
-	var result = setTimeoutRegex.exec(script);
-	while(result != null) {
-		//console.log(script);
-		script = script.replace(script.substring(result.index, stripSetTimeout(script, setTimeoutRegex.lastIndex)), "");
-		result = setTimeoutRegex.exec(script);
-	}
-
-	//console.log(script);
-
-	//script = "msg (\"Hello, world!\");";
-	//var func = new Function(script);
-	//console.log(script);
-	//eval(script);
-	return script;
-	//func();
-	//return func;
-}
-
-function getObjectFromXML(gameObject) {
-	let object = {};
-	// Fetch the object's name
-	object.name = gameObject['$'].name;
-
-	// Fetch basic object properties
-	// Whether this object is visible
-	if(gameObject.visible != undefined) {
-		object.visible = gameObject.visible[0]['_'];
-	}
-	// Whether this object can be dropped
-	if(gameObject.drop != undefined) {
-		object.drop = gameObject.drop[0]['_'];
-	}
-	if(gameObject.take != undefined) {
-		object.take = convertScriptToJS(gameObject.take[0]['_']);
-	}
-	if(gameObject.look != undefined) {
-		if(gameObject.look[0] != undefined && gameObject.look[0]['_']) {
-			object.look = convertScriptToJS(gameObject.look[0]['_']);
-		}
-		else {
-			object.look = convertScriptToJS("msg(\""+gameObject.look+"\");");
-		}
-	}
-	else if(gameObject.attr != undefined) {
-		object.look = convertScriptToJS(gameObject.attr[0]['_']);
-	}
-
-	if(gameObject.breathe != undefined) {
-		object.breathe = gameObject.breathe[0];
-	}
-	if(gameObject.breathe != undefined) {
-		object.smell = gameObject.smell[0];
-	}
-	if(gameObject.scenery != undefined && gameObject.scenery[0]['_'] != undefined) {
-		object.scenery = gameObject.scenery[0]['_'];
-	}
-	if(gameObject.takeMsg != undefined) {
-		object.takeMsg = gameObject.takemsg[0];
-	}
-	if(gameObject.takeMsg != undefined) {
-		object.dropMsg = gameObject.dropmsg[0];
-	}
-	if(gameObject.openmsg != undefined) {
-		object.openMsg = gameObject.openmsg[0];
-	}
-	if(gameObject.isopen != undefined) {
-		object.isopen = gameObject.isopen[0]['_'];
-	}
-	if(gameObject.closemsg != undefined) {
-		object.closeMsg = gameObject.closemsg[0];
-	}
-	if(gameObject.feature_container != undefined) {
-		object.feature_container = gameObject.feature_container[0];
-	}
-	if(gameObject.kick != undefined) {
-		object.kick = gameObject.kick[0];
-	}
-	if(gameObject.hit != undefined) {
-		object.hit = gameObject.hit[0];
-	}
-	if(gameObject.hurt != undefined) {
-		object.hurt = gameObject.hurt[0];
-	}
-	if(gameObject.break != undefined) {
-		object.break = gameObject.break[0];
-	}
-	if(gameObject.stroke != undefined) {
-		object.stroke = gameObject.stroke[0];
-	}
-	if(gameObject.pet != undefined) {
-		object.pet = gameObject.pet[0];
-	}
-	if(gameObject.feed != undefined) {
-		object.feed = gameObject.feed[0];
-	}
-	if(gameObject.pull != undefined) {
-		object.pull = gameObject.pull[0];
-	}
-	if(gameObject.push != undefined) {
-		object.push = gameObject.push[0];
-	}
-	if(gameObject.knockon != undefined) {
-		object.knockon = gameObject.knockon[0];
-	}
-	if(gameObject.nokeymessage != undefined) {
-		object.nokeymessage = gameObject.nokeymessage[0];
-	}
-	if(gameObject.sit != undefined) {
-		object.sit = gameObject.sit[0];
-	}
-
-	if(gameObject.climb != undefined) {
-		if(gameObject.climb[0]['_'] != undefined) {
-			object.climb = convertScriptToJS(gameObject.climb[0]['_']);
-		}
-		else {
-			object.climb = convertScriptToJS("msg(\""+gameObject.climb[0]+"\");");
-		}
-	}
-
-	if(gameObject.onclose != undefined) {
-		object.onClose = convertScriptToJS(gameObject.onclose[0]['_']);
-	}
-	if(gameObject.onopen != undefined) {
-		object.onOpen = convertScriptToJS(gameObject.onopen[0]['_']);
-	}
-
-	if(gameObject.displayverbs != undefined) {
-		object.displayVerbs = gameObject.displayverbs[0].value;
-	}
-	// Get inherited object properties
-	if(gameObject.inherit != undefined) {
-		object.inherit = [];
-		for(var inheritedObj in gameObject.inherit) {
-			object.inherit[inheritedObj] = gameObject.inherit[inheritedObj]['$'].name;
-		}
-	}
-
-	// Get the description, if it exists
-	if(gameObject.description != undefined) {
-		// We need to set the room description to be a string first
-		object.description = "";
-		object.description += gameObject.description;
-		// Replace HTML tags with Javascript-friendly ones
-		object.description = object.description.replace(/<br\/>/mg,"\n");
-		object.description = object.description.replace(/\\"/mg, "\"");
-	}
-
-	for(var beforefirstenter in gameObject.beforefirstenter) {
-		var beforeFirstEntranceText = gameObject.beforefirstenter[beforefirstenter]['_'];
-		if(beforeFirstEntranceText === undefined) {
-			continue;
-		}
-		object.beforeFirstEnter = convertScriptToJS(beforeFirstEntranceText);
-	}
-
-	for(var firstEnter in gameObject.firstenter) {
-		var firstEntranceText = gameObject.firstenter[firstEnter]['_'];
-		if(firstEntranceText === undefined) {
-			continue;
-		}
-		object.firstEnter = convertScriptToJS(firstEntranceText);
-	}
-
-	// Get script which plays when the player enters the object
-	for(var entrance in gameObject.enter) {
-		var entranceText = gameObject.enter[entrance]['_'];
-		if(entranceText === undefined) {
-			continue;
-		}
-		object.enter = convertScriptToJS(entranceText);
-	}
-
-	// Iterate over all options the player can take
-	for(var option in gameObject.options) {
-		object.options = [];
-		for(var item in gameObject.options[option].item) {
-			object.options[item] = {};
-			// Assign the name of the room connected with this object to the key
-			for(var kvp in gameObject.options[option].item[item]) {
-				object.options[item][kvp] = gameObject.options[option].item[item][kvp][0];
-			}
-		}
-	}
-
-	// Find exits
-	if(gameObject.exit != undefined) {
-		object.exits = {};
-		object.firstTime = true;
-		for(var rawExit in gameObject.exit) {
-			var exits = gameObject.exit[rawExit]['$'];
-			if(exits != undefined) {
-				var exit = {};
-				exit.to = exits['to'];
-				exit.firstTime = true;
-
-				//console.dir(gameObject.exit[rawExit]);
-				var rawScript = gameObject.exit[rawExit].script;
-				if(rawScript != undefined) {
-					var script = convertScriptToJS(rawScript[0]['_']);
-					exit.script = script;
-					//console.log(exits['alias'] +": "+script);
-				}
-				object.exits[exits['alias']] = exit;
-				//console.dir(room);
-			}
-		}
-	}
-
-	// Find items contained inside this object
-	object.items = [];
-	var roomItems = gameObject.object;
-	for(var itemIndex in roomItems) {
-		object.items[itemIndex] = getObjectFromXML(roomItems[itemIndex]);
-		object.items[itemIndex].context = object;
-		object.items[itemIndex].itemIndex = itemIndex;
-
-		/*if(globals.has(item.name)) {
-			console.log("Duplicate item! "+item.name);
-		}
-		else {
-			globals.set(item.name, item);
-		}*/
-		//console.dir(item);
-	}
-	objectMap.set(object.name, object);
-	return object;
-}
-
-
-function readXMLFile() {
-	// Populate the game from an XML file
-	fs.readFile('game.aslx', function(err, data) {
-			parser.parseString(data, function (err, result) {
-					console.log("Read from file!");
-					player.objectName = result.asl.game[0].pov[0]['_'];
-
-					var gameObjects = result.asl.object;
-					// Iterate over all objects in the game
-					for(var object in gameObjects) {
-						let room = getObjectFromXML(gameObjects[object]);
-						gameMap.set(room.name, room);
-						rooms[object] = room;
-					}
-
-					//for(var room in rooms) {
-						/*console.log(rooms[room].name + ' connects to:');
-						for(var option in rooms[room].exits) {
-							console.log(rooms[room].exits[option].to);
-							//console.log(option +': '+gameMap.get(key));
-						}
-						console.log(rooms[room].name + ' has objects:');
-						for(var object in rooms[room].items) {
-							console.log(rooms[room].items[object].name);
-						}*/
-						//console.log(rooms[room].name + ": "+rooms[room].beforeFirstEnter);
-						//console.dir(rooms[room]);
-						//console.log(rooms[room].items);
-					//}
-
-					//console.dir(rooms[2].items[9]);
-			});
-	});
-}
 
 // A Quest function. Moves the object to the given room.
 function MoveObject(objectName, roomName) {
 
-	var room = gameMap.get(roomName);
-	var object = objectMap.get(objectName);
+	var room = xmlImport.gameMap.get(roomName);
+	var object = xmlImport.objectMap.get(objectName);
 
 	/*if(object.context.name === room.name) {
 		// Already in the room
 		return;
 	}*/
 
-	console.log("Moving "+object.name+" from "+object.context.name +" to "+room.name);
+	//console.log("Moving "+object.name+" from "+object.context.name +" to "+room.name);
 
 	if(object.context != undefined) {
 		// Remove from the old context
@@ -420,39 +38,39 @@ function MoveObject(objectName, roomName) {
 		// Update other indicies
 		for(var otherIndex in object.context.items) {
 			object.context.items[otherIndex].itemIndex = otherIndex;
-			objectMap.set(object.context.items[otherIndex].name, object.context.items[otherIndex]);
+			xmlImport.objectMap.set(object.context.items[otherIndex].name, object.context.items[otherIndex]);
 		}
 		// Update old maps
-		objectMap.set(object.context.name, object.context);
-		if(gameMap.has(object.context.name)) {
-			gameMap.set(object.context.name, object.context);
+		xmlImport.objectMap.set(object.context.name, object.context);
+		if(xmlImport.gameMap.has(object.context.name)) {
+			xmlImport.gameMap.set(object.context.name, object.context);
 		}
 	}
 
 	// If the player is moving, update POV stuff
-	if(objectName === player.objectName) {
+	if(objectName === xmlImport.player.objectName) {
 		// Trigger before first enter
 		if(room.firstTime) {
 			eval(room.beforeFirstEnter);
 		}
 		// Reset the first time bool on the previous room
-		if(player.currentRoom != undefined) {
-			player.currentRoom.firstTime = false;
+		if(xmlImport.player.currentRoom != undefined) {
+			xmlImport.player.currentRoom.firstTime = false;
 		}
 		// Move the player's room
-		player.currentRoom = room;
+		xmlImport.player.currentRoom = room;
 		if(room.firstTime) {
 			eval(room.firstEnter);
 		}
-		msg(room.description);
+		eval(room.description);
 	}
 
 	object.context = room;
 	object.itemIndex = room.items.push(object) - 1;
 
-	gameMap.set(roomName, room);
-	objectMap.set(roomName, room);
-	objectMap.set(object.name, object);
+	xmlImport.gameMap.set(roomName, room);
+	xmlImport.objectMap.set(roomName, room);
+	xmlImport.objectMap.set(object.name, object);
 }
 
 // A Quest function. Makes the game say whatever is in the text.
@@ -460,7 +78,7 @@ function msg (text) {
 		text = text.replace(/<br\/>/mg,"\n");
 		text = text.replace(/\\"/mg, "\"");
 		speech += text;
-		//console.log(text);
+		console.log(text);
 }
 
 // A Quest function. Ends the game.
@@ -470,8 +88,8 @@ function finish() {
 
 // A Quest function. Returns whether the object has the given flag set.
 function GetBoolean(objectName, flag) {
-	if(globals.has(objectName)) {
-		var object = globals.get(objectName);
+	if(xmlImport.objectMap.has(objectName)) {
+		var object = xmlImport.objectMap.get(objectName);
 		if(object[flag] === undefined) {
 			return false;
 		}
@@ -720,6 +338,54 @@ helpActions.set(READY_FOR_ADVENTURE_CONTEXT, helpReadyForAdventure);
 const GAME_CONTEXT = 'playing_game';
 const READY_TO_PLAY_YES_ACTION = 'verify_ready_to_play_yes';
 
+function getExits() {
+	const EXIT_LOCATIONS = ['Exits are to the ',
+		'There are exits to the ',
+		'You can exit to the ',
+		'You are able to move to the '
+	];
+	const NO_EXIT = 'You cannot see an exit!';
+
+	// Find exits
+	var exits = [];
+	if(player.currentRoom === undefined || player.currentRoom.exits === undefined) {
+		return NO_EXIT;
+	}
+	for(var exit in player.currentRoom.exits) {
+		exits.push(exit);
+	}
+	if(exits.length === 0) {
+		return NO_EXIT;
+	}
+
+	// Print exits
+	var exitString = getRandomPrompt(EXIT_LOCATIONS);
+	for(var i = 0; i < exits.length; i++) {
+		exitString += exits[i];
+		if(i + 1 === exits.length) {
+			exitString += '.';
+		}
+		else {
+			if(exits.length > 2) {
+				exitString += ', ';
+			}
+			if(i + 2 === exits.length) {
+				exitString += 'and ';
+			}
+		}
+	}
+	return exitString;
+}
+
+const LOOK_DIRECTION_ACTION = 'look_direction_action';
+function getLookDirection(direction) {
+	const CANT_SEE = 'You can\'t see much to the ';
+	if(player.currentRoom === undefined || player.currentRoom.exits === undefined || player.currentRoom.exits[direction] === undefined) {
+		return CANT_SEE + direction + '.';
+	}
+	return player.currentRoom.exits[direction].look;
+}
+
 // Switch between various things for the assistant to say
 app.post('/', function (request, response) {
 	//console.log('headers: ' + JSON.stringify(request.headers));
@@ -840,6 +506,10 @@ app.post('/', function (request, response) {
 				action = READY_TO_PLAY_YES_ACTION;
 				context = GAME_CONTEXT;
 			break;
+			case LOOK_DIRECTION_ACTION:
+				speech = getLookDirection();
+
+			break;
 			case HELP_ACTION:
 				// Player has asked for help
 				speech = getHelp(assistant.data.lastContext, player);
@@ -916,10 +586,15 @@ app.post('/', function (request, response) {
 	}
 });
 
+function xmlDone() {
+  console.log("XML callback!");
+  MoveObject(xmlImport.player.objectName, xmlImport.rooms[0].name);
+}
+
 // Start the server
 var server = app.listen(app.get('port'), function () {
 	console.log('App listening on port %s', server.address().port);
 	console.log('Press Ctrl+C to quit.');
-	//readXMLFile();
-	//MoveObject(player.objectName, rooms[0].name);
+  //xmlImport.xmlCallback = xmlDone;
+	//xmlImport.readXMLFile();
 });
