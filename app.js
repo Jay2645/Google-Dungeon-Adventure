@@ -267,7 +267,7 @@ app.post('/', function (request, response) {
 		game.clearLog();
 		speech = "";
 
-		gameOver = false;
+		game.gameOver = false;
 
 		switch(action) {
 			case WELCOME_ACTION:
@@ -421,7 +421,7 @@ app.post('/', function (request, response) {
 		updatePlayer(assistant, game.player);
 		assistant.data.speech = speech;
 
-		if(gameOver) {
+		if(game.gameOver) {
 			// Game is over; close the conversation
 			assistant.tell(speech);
 		}
