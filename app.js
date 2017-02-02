@@ -501,7 +501,7 @@ app.post('/', function (request, response) {
 				// This starts the gameplay loop
 				// MoveObject moves the player into the first room
 				// This will trigger all "first time" actions and add it to the speech variable
-				MoveObject(xmlImport.player.objectName, rooms[0].name);
+				MoveObject(xmlImport.player.objectName, xmlImport.rooms[0].name);
 
 				action = READY_TO_PLAY_YES_ACTION;
 				context = GAME_CONTEXT;
