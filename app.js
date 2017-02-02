@@ -556,7 +556,7 @@ app.post('/', function (request, response) {
 			break;
 		}
 
-		updatePlayer(assistant, player);
+		updatePlayer(assistant, xmlImport.player);
 		assistant.data.speech = speech;
 
 		if(gameOver) {
