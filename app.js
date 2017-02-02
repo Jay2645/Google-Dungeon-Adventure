@@ -264,7 +264,7 @@ app.post('/', function (request, response) {
 		let context = "";
 		// The timeout for the context
 		let timeout = 5;
-		module.exports.clearLog();
+		game.clearLog();
 		speech = "";
 
 		gameOver = false;
