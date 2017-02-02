@@ -16,8 +16,6 @@ let game = require('./game');
 
 // What the assistant will say
 let speech = "";
-// Whether this action closes the game
-let gameOver = false;
 
 let helpActions = new Map();
 
@@ -266,6 +264,7 @@ app.post('/', function (request, response) {
 		let context = "";
 		// The timeout for the context
 		let timeout = 5;
+		module.exports.clearLog();
 		speech = "";
 
 		gameOver = false;
@@ -362,7 +361,9 @@ app.post('/', function (request, response) {
 				// This starts the gameplay loop
 				// MoveObject moves the player into the first room
 				// This will trigger all "first time" actions and add it to the speech variable
-				MoveObject(game.player.objectName, game.rooms[0].name);
+				game.moveObject(game.player.objectName, game.rooms[0].name);
+
+				speech = game.log;
 
 				action = READY_TO_PLAY_YES_ACTION;
 				context = GAME_CONTEXT;
@@ -449,7 +450,7 @@ app.post('/', function (request, response) {
 
 function xmlDone() {
   console.log("XML callback!");
-  MoveObject(game.player.objectName, game.rooms[0].name);
+  game.moveObject(game.player.objectName, game.rooms[0].name);
 }
 
 // Start the server
