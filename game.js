@@ -302,7 +302,7 @@ var getObjectFromXML = function (gameObject) {
       object.description = convertScriptToJS(gameObject.description[0]['_']);
     }
 
-		console.dir(gameObject.description[0]);
+		//console.dir(gameObject.description[0]);
 	}
 
 	for(var beforefirstenter in gameObject.beforefirstenter) {
