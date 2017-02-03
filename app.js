@@ -449,14 +449,14 @@ app.post('/', function (request, response) {
 });
 
 function xmlDone() {
-  console.log("XML callback!");
-  game.moveObject(game.player.objectName, game.rooms[0].name);
+  console.log("XML callback! Player: "+game.player.id +", initial room: "+game.rooms[0].id);
+  game.moveObject(game.player, game.rooms[0]);
 }
 
 // Start the server
 var server = app.listen(app.get('port'), function () {
 	console.log('App listening on port %s', server.address().port);
 	console.log('Press Ctrl+C to quit.');
-  //xmlImport.xmlCallback = xmlDone;
-	//xmlImport.readXMLFile();
+  xmlImport.xmlCallback = xmlDone;
+	xmlImport.readXMLFile();
 });

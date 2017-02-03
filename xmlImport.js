@@ -4,6 +4,8 @@ let fs = require('fs');
 // Load the game itself
 let parser = new xml2js.Parser();
 let game = require('./game');
+let ecsComponents = require('./ecsComponents');
+let ecs = require('./ecs');
 
 module.exports = {
   xmlCallback: function () {},
@@ -12,13 +14,14 @@ module.exports = {
   	fs.readFile('game.aslx', function(err, data) {
   			parser.parseString(data, function (err, result) {
   					console.log("Read from file!");
-  					game.player.objectName = result.asl.game[0].pov[0]['_'];
+  					game.playerObjectName = result.asl.game[0].pov[0]['_'];
+            game.createBasicObjects();
 
   					var gameObjects = result.asl.object;
   					// Iterate over all objects in the game
   					for(var object in gameObjects) {
   						let room = getObjectFromXML(gameObjects[object]);
-  						game.gameMap.set(room.name, room);
+  						game.gameMap.set(room.components.NamedComponent.entityName, room);
   						game.rooms[object] = room;
   					}
 
@@ -96,9 +99,17 @@ var stripSetTimeout = function (block, startIndex) {
 }
 
 // This function takes an input script and turns it into a Javascript function
-var convertScriptToJS = function (script) {
-	if(script === undefined) {
-		return Function("");
+var convertScriptToJS = function (xmlScript) {
+	if(xmlScript === undefined) {
+		return "";
+	}
+
+  var script = "";
+	if(xmlScript['_'] != undefined) {
+		script = xmlScript['_'];
+	}
+	else {
+		script = "msg(\""+xmlScript+"\");";
 	}
 
 	// First, add semicolons to the end of each argument
@@ -170,139 +181,191 @@ var convertScriptToJS = function (script) {
 }
 
 var getObjectFromXML = function (gameObject) {
-	let object = {};
+	let object = ecs.getNewEntity();
+
 	// Fetch the object's name
-	object.name = gameObject['$'].name;
+  object.addComponent(ecsComponents.getNamedComponent(gameObject['$'].name));
+  // If this is the player, update the player
+  if(object.components.NamedComponent.entityName === game.playerObjectName) {
+    game.player = object;
+  }
+	//object.name = gameObject['$'].name;
+
+  // Get inherited object properties
+  if(gameObject.inherit != undefined) {
+    for(var inheritedObj in gameObject.inherit) {
+      object = game.inheritObject(object, gameObject.inherit[inheritedObj]['$'].name);
+    }
+  }
 
 	// Fetch basic object properties
 	// Whether this object is visible
 	if(gameObject.visible != undefined) {
-		object.visible = gameObject.visible[0]['_'];
+		var visible = gameObject.visible[0]['_'];
+    if(visible) {
+        object.addComponent(ecsComponents.getVisibleComponent(true));
+    }
 	}
-	// Whether this object can be dropped
-	if(gameObject.drop != undefined) {
-		object.drop = gameObject.drop[0]['_'];
-	}
-	if(gameObject.take != undefined) {
-		object.take = convertScriptToJS(gameObject.take[0]['_']);
-	}
-	if(gameObject.look != undefined) {
-		if(gameObject.look[0] != undefined && gameObject.look[0]['_']) {
-			object.look = convertScriptToJS(gameObject.look[0]['_']);
-		}
-		else {
-			object.look = convertScriptToJS("msg(\""+gameObject.look+"\");");
-		}
-	}
-	else if(gameObject.attr != undefined) {
-		object.look = convertScriptToJS(gameObject.attr[0]['_']);
+  else {
+    object.addComponent(ecsComponents.getVisibleComponent(true));
+  }
+
+	if(gameObject.scenery != undefined && gameObject.scenery[0]['_'] != undefined) {
+		var scenery = gameObject.scenery[0]['_'];
+    if(scenery) {
+      object.addComponent(ecsComponents.getSceneryComponent(true));
+    }
 	}
 
+  // Get the description, if it exists
+  if(gameObject.description != undefined) {
+      object.addComponent(ecsComponents.getDescriptionComponent(convertScriptToJS(gameObject.description[0])));
+  }
+  else if(gameObject.look != undefined) {
+    object.addComponent(ecsComponents.getDescriptionComponent(convertScriptToJS(gameObject.look[0])));
+  }
+  else if(gameObject.attr != undefined) {
+    object.addComponent(ecsComponents.getDescriptionComponent(convertScriptToJS(gameObject.attr[0])));
+  }
+
+  var dropMsg = "";
+  if(gameObject.dropMsg != undefined) {
+    dropMsg = gameObject.dropmsg[0];
+  }
+	// Whether this object can be dropped
+	if(gameObject.drop != undefined) {
+    // If we have drop defined as true or false:
+		var drop = gameObject.drop[0]['_'];
+    if(drop) {
+      object.addComponent(ecsComponents.getDroppableComponent(true, convertScriptToJS(dropMsg)));
+    }
+    else if(dropMsg != "") {
+      // We can't drop the item, but we have a drop message telling us why
+      object.addComponent(ecsComponents.getDroppableComponent(false, convertScriptToJS(dropMsg)));
+    }
+	}
+  else if(gameObject.take != undefined) {
+    object.addComponent(ecsComponents.getDroppableComponent(true, convertScriptToJS(dropMsg)));
+  }
+  else if(dropMsg != "") {
+    // It is undefined whether we can drop the object,
+    // but we can't take it and we have a drop message explaining why we can't drop it
+    object.addComponent(ecsComponents.getDroppableComponent(false, convertScriptToJS(dropMsg)));
+  }
+
+  var takeMsg = "";
+  if(gameObject.takeMsg != undefined) {
+    takeMsg = gameObject.takemsg[0];
+  }
+	if(gameObject.take != undefined) {
+		var take = convertScriptToJS(gameObject.take[0]);
+    object.addComponent(ecsComponents.getTakeableComponent(take, convertScriptToJS(takeMsg)));
+	}
+  else if(takeMsg != "") {
+    object.addComponent(ecsComponents.getTakeableComponent("", convertScriptToJS(takeMsg)));
+  }
+
+  //console.log(object);
+
 	if(gameObject.breathe != undefined) {
-		object.breathe = gameObject.breathe[0];
+		object.addComponent(ecsComponents.getBreatheableComponent(convertScriptToJS(gameObject.breathe[0])));
 	}
-	if(gameObject.breathe != undefined) {
-		object.smell = gameObject.smell[0];
+	if(gameObject.smell != undefined) {
+	   object.addComponent(ecsComponents.getSmellableComponent(convertScriptToJS(gameObject.smell[0])));
 	}
-	if(gameObject.scenery != undefined && gameObject.scenery[0]['_'] != undefined) {
-		object.scenery = gameObject.scenery[0]['_'];
-	}
-	if(gameObject.takeMsg != undefined) {
-		object.takeMsg = gameObject.takemsg[0];
-	}
-	if(gameObject.takeMsg != undefined) {
-		object.dropMsg = gameObject.dropmsg[0];
-	}
+
+  var openMsg = "";
 	if(gameObject.openmsg != undefined) {
-		object.openMsg = gameObject.openmsg[0];
+		openMsg = convertScriptToJS(gameObject.openmsg[0]);
 	}
+  var isOpen = false;
 	if(gameObject.isopen != undefined) {
-		object.isopen = gameObject.isopen[0]['_'];
+		isOpen = gameObject.isopen[0]['_'];
 	}
+  var closeMsg = "";
 	if(gameObject.closemsg != undefined) {
-		object.closeMsg = gameObject.closemsg[0];
+		closeMsg = convertScriptToJS(gameObject.closemsg[0]);
 	}
-	if(gameObject.feature_container != undefined) {
-		object.feature_container = gameObject.feature_container[0];
+  var onClose = "";
+  if(gameObject.onclose != undefined) {
+    onClose = convertScriptToJS(gameObject.onclose[0]);
+  }
+  var onOpen = "";
+  if(gameObject.onopen != undefined) {
+    onOpen = convertScriptToJS(gameObject.onopen[0]);
+  }
+  var locked = false;
+	if(gameObject.locked != undefined) {
+		locked = gameObject.locked[0]['_'];
 	}
+  var noKeyMsg = "";
+	if(gameObject.nokeymessage != undefined) {
+		noKeyMsg = convertScriptToJS(gameObject.nokeymessage[0]);
+	}
+  if(noKeyMsg != "" && !locked) {
+    locked = true;
+  }
+  var unlockMsg = "";
+	if(gameObject.unlockmessage != undefined) {
+		unlockMsg = convertScriptToJS(gameObject.unlockmessage[0]);
+	}
+  var lockMsg = "";
+	if(gameObject.lockmessage != undefined) {
+		lockMsg = convertScriptToJS(gameObject.lockmessage[0]);
+	}
+  var knockOnMsg = "";
+  if(gameObject.knockon != undefined) {
+    knockOnMsg = convertScriptToJS(gameObject.knockon[0]);
+  }
+  if(isOpen || openMsg != "" || onOpen != "" || closeMsg != "" || onClose != "" || knockOnMsg != "" || locked || noKeyMsg != "" || unlockMsg != "" || lockMsg != "") {
+    object.addComponent(ecsComponents.getOpenableComponent(isOpen, onOpen, onClose, openMsg, closeMsg, knockOnMsg, locked, noKeyMsg, lockMsg, unlockMsg));
+  }
+
+
 	if(gameObject.kick != undefined) {
-		object.kick = gameObject.kick[0];
+		object.kick = convertScriptToJS(gameObject.kick[0]);
 	}
 	if(gameObject.hit != undefined) {
-		object.hit = gameObject.hit[0];
+		object.hit = convertScriptToJS(gameObject.hit[0]);
 	}
 	if(gameObject.hurt != undefined) {
-		object.hurt = gameObject.hurt[0];
+		object.hurt = convertScriptToJS(gameObject.hurt[0]);
 	}
 	if(gameObject.break != undefined) {
-		object.break = gameObject.break[0];
+		object.break = convertScriptToJS(gameObject.break[0]);
 	}
 	if(gameObject.stroke != undefined) {
-		object.stroke = gameObject.stroke[0];
+		object.stroke = convertScriptToJS(gameObject.stroke[0]);
 	}
 	if(gameObject.pet != undefined) {
-		object.pet = gameObject.pet[0];
+		object.pet = convertScriptToJS(gameObject.pet[0]);
 	}
 	if(gameObject.feed != undefined) {
-		object.feed = gameObject.feed[0];
+		object.feed = convertScriptToJS(gameObject.feed[0]);
 	}
 	if(gameObject.pull != undefined) {
-		object.pull = gameObject.pull[0];
+		object.pull = convertScriptToJS(gameObject.pull[0]);
 	}
 	if(gameObject.push != undefined) {
-		object.push = gameObject.push[0];
+		object.push = convertScriptToJS(gameObject.push[0]);
 	}
 	if(gameObject.knockon != undefined) {
-		object.knockon = gameObject.knockon[0];
-	}
-	if(gameObject.nokeymessage != undefined) {
-		object.nokeymessage = gameObject.nokeymessage[0];
+		object.knockon = convertScriptToJS(gameObject.knockon[0]);
 	}
 	if(gameObject.sit != undefined) {
-		object.sit = gameObject.sit[0];
+		object.sit = convertScriptToJS(gameObject.sit[0]);
 	}
 
 	if(gameObject.climb != undefined) {
-		if(gameObject.climb[0]['_'] != undefined) {
-			object.climb = convertScriptToJS(gameObject.climb[0]['_']);
-		}
-		else {
-			object.climb = convertScriptToJS("msg(\""+gameObject.climb[0]+"\");");
-		}
-	}
-
-	if(gameObject.onclose != undefined) {
-		object.onClose = convertScriptToJS(gameObject.onclose[0]['_']);
-	}
-	if(gameObject.onopen != undefined) {
-		object.onOpen = convertScriptToJS(gameObject.onopen[0]['_']);
+		object.climb = convertScriptToJS(gameObject.climb[0]);
 	}
 
 	if(gameObject.displayverbs != undefined) {
 		object.displayVerbs = gameObject.displayverbs[0].value;
 	}
-	// Get inherited object properties
-	if(gameObject.inherit != undefined) {
-		object.inherit = [];
-		for(var inheritedObj in gameObject.inherit) {
-			object.inherit[inheritedObj] = gameObject.inherit[inheritedObj]['$'].name;
-		}
-	}
-
-	// Get the description, if it exists
-	if(gameObject.description != undefined) {
-    if(gameObject.description[0]['_'] === undefined) {
-		    object.description = convertScriptToJS("msg(\""+gameObject.description[0]+"\");");
-    }
-    else {
-      object.description = convertScriptToJS(gameObject.description[0]['_']);
-    }
-
-		//console.dir(gameObject.description[0]);
-	}
 
 	for(var beforefirstenter in gameObject.beforefirstenter) {
-		var beforeFirstEntranceText = gameObject.beforefirstenter[beforefirstenter]['_'];
+		var beforeFirstEntranceText = gameObject.beforefirstenter[beforefirstenter];
 		if(beforeFirstEntranceText === undefined) {
 			continue;
 		}
@@ -310,7 +373,7 @@ var getObjectFromXML = function (gameObject) {
 	}
 
 	for(var firstEnter in gameObject.firstenter) {
-		var firstEntranceText = gameObject.firstenter[firstEnter]['_'];
+		var firstEntranceText = gameObject.firstenter[firstEnter];
 		if(firstEntranceText === undefined) {
 			continue;
 		}
@@ -319,7 +382,7 @@ var getObjectFromXML = function (gameObject) {
 
 	// Get script which plays when the player enters the object
 	for(var entrance in gameObject.enter) {
-		var entranceText = gameObject.enter[entrance]['_'];
+		var entranceText = gameObject.enter[entrance];
 		if(entranceText === undefined) {
 			continue;
 		}
@@ -353,7 +416,7 @@ var getObjectFromXML = function (gameObject) {
 				//console.dir(gameObject.exit[rawExit]);
 				var rawScript = gameObject.exit[rawExit].script;
 				if(rawScript != undefined) {
-					var script = convertScriptToJS(rawScript[0]['_']);
+					var script = convertScriptToJS(rawScript[0]);
 					exit.script = script;
 					//console.log(exits['alias'] +": "+script);
 				}
@@ -363,22 +426,25 @@ var getObjectFromXML = function (gameObject) {
 		}
 	}
 
-	// Find items contained inside this object
-	object.items = [];
+  // Find items contained inside this object
+	var items = [];
 	var roomItems = gameObject.object;
 	for(var itemIndex in roomItems) {
-		object.items[itemIndex] = getObjectFromXML(roomItems[itemIndex]);
-		object.items[itemIndex].context = object;
-		object.items[itemIndex].itemIndex = itemIndex;
-
-		/*if(globals.has(item.name)) {
-			console.log("Duplicate item! "+item.name);
-		}
-		else {
-			globals.set(item.name, item);
-		}*/
-		//console.dir(item);
+		items[itemIndex] = getObjectFromXML(roomItems[itemIndex]);
+		items[itemIndex].context = object;
+		items[itemIndex].itemIndex = itemIndex;
 	}
-	game.objectMap.set(object.name, object);
+
+  if(items.length > 0) {
+    if(object.components.ContainerComponent != undefined) {
+      object.components.ContainerComponent.items = items;
+    }
+    else {
+      object.addComponent(ecsComponents.getContainerComponent(items));
+    }
+  }
+  console.log(object);
+
+  game.objectMap.set(object.components.NamedComponent.entityName, object);
 	return object;
 }

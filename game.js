@@ -1,4 +1,8 @@
+let ecs = require('./ecs');
+let ecsComponents = require('./ecsComponents');
+
 module.exports = {
+  playerObjectName: "",
   player: {},
   rooms: [],
   gameMap: new Map(),
@@ -7,8 +11,30 @@ module.exports = {
   gameOver: false,
   log: "",
 
+  inheritObject: function(derivedObject, objectName) {
+    return Inherit(derivedObject, objectName);
+  },
+
+  createBasicObjects: function() {
+    CreateBasicObjects();
+  },
+
   // A Quest function. Moves the object to the given room.
-  moveObject: function (objectName, roomName) {
+  moveObject: function (object, room) {
+    var objectName = object.id;
+    var roomName = room.id;
+
+    if(objectName === undefined || roomName === undefined) {
+      console.log("Did not pass an entity to moveObject!");
+      return;
+    }
+
+    if(object.components.NamedComponent != undefined) {
+      objectName = object.components.NamedComponent.entityName;
+    }
+    if(room.components.NamedComponent != undefined) {
+      roomName = room.components.NamedComponent.entityName;
+    }
     MoveObject(objectName, roomName);
   },
 
@@ -64,9 +90,77 @@ module.exports = {
   }
 };
 
+function CreateBasicObjects() {
+  var plural = ecs.getNewEntity();
+  plural.addComponent(ecsComponents.getNamedComponent("plural"));
+  plural.addComponent(ecsComponents.getPluralComponent(2));
+  plural.addComponent(ecsComponents.getGenderComponent("they", "them"));
+  module.exports.objectMap.set(plural.components.NamedComponent.entityName, plural);
+
+  var containerBase = ecs.getNewEntity();
+  containerBase.addComponent(ecsComponents.getNamedComponent("container_base"));
+  containerBase.addComponent(ecsComponents.getContainerComponent([]));
+  module.exports.objectMap.set(containerBase.components.NamedComponent.entityName, containerBase);
+
+  var closedContainer = ecs.getNewEntity();
+  closedContainer.addComponent(ecsComponents.getNamedComponent("container_closed"));
+  closedContainer = Inherit(closedContainer, "container_base");
+  closedContainer.addComponent(ecsComponents.getOpenableComponent(false));
+  module.exports.objectMap.set(closedContainer.components.NamedComponent.entityName, closedContainer);
+
+  var openContainer = ecs.getNewEntity();
+  openContainer.addComponent(ecsComponents.getNamedComponent("container_closed"));
+  openContainer = Inherit(openContainer, "container_open");
+  openContainer.addComponent(ecsComponents.getOpenableComponent(true));
+  module.exports.objectMap.set(openContainer.components.NamedComponent.entityName, openContainer);
+
+  var surface = ecs.getNewEntity();
+  surface.addComponent(ecsComponents.getNamedComponent("surface"));
+  surface = Inherit(surface, "container_base");
+  surface.addComponent(ecsComponents.getTransparentComponent(true));
+  surface.addComponent(ecsComponents.getPrefixComponent("on which there is"));
+  module.exports.objectMap.set(surface.components.NamedComponent.entityName, surface);
+
+  var container = ecs.getNewEntity();
+  container.addComponent(ecsComponents.getNamedComponent("container"));
+  container = Inherit(container, "container_open");
+  module.exports.objectMap.set(container.components.NamedComponent.entityName, container);
+
+  var containerLimited = ecs.getNewEntity();
+  containerLimited.addComponent(ecsComponents.getNamedComponent("container_limited"));
+  containerLimited = Inherit(containerLimited, "container");
+  containerLimited.addComponent(ecsComponents.getContainerComponent([], 1, 100));
+  module.exports.objectMap.set(containerLimited.components.NamedComponent.entityName, containerLimited);
+
+  var containerLockable = ecs.getNewEntity();
+  containerLockable.addComponent(ecsComponents.getNamedComponent("container_lockable"));
+  containerLockable = Inherit(containerLockable, "container_closed");
+  containerLockable.addComponent(ecsComponents.getOpenableComponent(false, "", "", "", "", "", true, "You do not have the key.", "Locked.", "Unlocked."));
+  module.exports.objectMap.set(containerLockable.components.NamedComponent.entityName, containerLockable);
+
+  var switchable = ecs.getNewEntity();
+  switchable.addComponent(ecsComponents.getNamedComponent("switchable"));
+  switchable.addComponent(ecsComponents.getSwitchableComponent(false));
+  module.exports.objectMap.set(switchable.components.NamedComponent.entityName, switchable);
+}
+
+function Inherit(derivedObject, parentName) {
+  var inheritedGameObj = module.exports.objectMap.get(parentName);
+  //console.log(derivedObject + " is inheriting "+parentName + inheritedGameObj);
+  if(inheritedGameObj != undefined) {
+    // Copy all components from parent object
+    for(var component in inheritedGameObj.components) {
+      if(component == 'NamedComponent') {
+        continue;
+      }
+      derivedObject.addComponent(inheritedGameObj.components[component]);
+    }
+  }
+  return derivedObject;
+}
+
 // A Quest function. Moves the object to the given room.
 function MoveObject(objectName, roomName) {
-
   var room = module.exports.gameMap.get(roomName);
   var object = module.exports.objectMap.get(objectName);
 
@@ -79,16 +173,17 @@ function MoveObject(objectName, roomName) {
 
   if(object.context != undefined) {
     // Remove from the old context
-    object.context.items.splice(object.itemIndex, 1);
+    object.context.components.ContainerComponent.items.splice(object.itemIndex, 1);
     // Update other indicies
-    for(var otherIndex in object.context.items) {
-      object.context.items[otherIndex].itemIndex = otherIndex;
-      module.exports.objectMap.set(object.context.items[otherIndex].name, object.context.items[otherIndex]);
+    for(var otherIndex in object.context.components.ContainerComponent.items) {
+      var otherObject = object.context.components.ContainerComponent.items[otherIndex];
+      otherObject.itemIndex = otherIndex;
+      module.exports.objectMap.set(otherObject.components.NamedComponent.entityName, otherObject);
     }
     // Update old maps
-    module.exports.objectMap.set(object.context.name, object.context);
-    if(module.exports.gameMap.has(object.context.name)) {
-      module.exports.gameMap.set(object.context.name, object.context);
+    module.exports.objectMap.set(object.context.components.NamedComponent.entityName, object.context);
+    if(module.exports.gameMap.has(object.context.components.NamedComponent.entityName)) {
+      module.exports.gameMap.set(object.context.components.NamedComponent.entityName, object.context);
     }
   }
 
@@ -111,7 +206,7 @@ function MoveObject(objectName, roomName) {
   }
 
   object.context = room;
-  object.itemIndex = room.items.push(object) - 1;
+  object.itemIndex = room.components.ContainerComponent.items.push(object) - 1;
 
   module.exports.gameMap.set(roomName, room);
   module.exports.objectMap.set(roomName, room);
